@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .my {
+            color: cadetblue;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .good {
+            width: 100%;
+            height: 5px;
+            background-color: green;
+        }
+
+        .bad {
+            width: 100%;
+            height: 5px;
+            background-color: red;
+        }
+    </style>
+    <script src="https://unpkg.com/peerjs@1.1.0/dist/peerjs.min.js"></script>
+</head>
+<body>
+<div id="status" class="bad"></div>
+Current ID: <label id="labelId"></label><br>
+File Size: <label id="labelSize">0 Mbyte</label><br>
+Average Latency: <label id="labelPing">0 ms</label><br>
+Incoming Speed: <label id="labelSpeed">0 Mbyte/s</label><br>
+<img id="image" src="" height="300px">
+<input id="input" type="file">
+<button id="btn" onclick="doStartTest();">DO TEST</button>
+<br>
+<input id="chat" type="text" placeholder="Type message" onkeydown="return sendText(event);">
+<script>
+    window.onerror = function (msg) {
+        alert(msg);
+    };
+
+    var btn = document.getElementById("btn");
+    var labelPing = document.getElementById("labelPing");
+    var labelSpeed = document.getElementById("labelSpeed");
+    var labelSize = document.getElementById("labelSize");
+    var inputFile = document.getElementById("input");
+    var chat = document.getElementById("chat");
+    var image = document.getElementById("image");
+
+    var url = new URL(window.location.href);
+    var baseId = "18ahjASkjh9w875asdmjMNNasd98dijgNmjn34b5v6t7iuhJhgGGKNn987XXX";
+    var currentId = baseId + url.searchParams.get("id");
+    document.getElementById("labelId").innerText = url.searchParams.get("id") + "";
+    var peer = new Peer(currentId, {debug: 0});
+    var connection = null;
+    peer.on('error', function (err) {
+        alert(err.type + ": " + err.message);
+    });
+    var targetId = window.prompt("Choose target peer id:", "null");
+    if (targetId) {
+        onConnection(peer.connect(baseId + targetId));
+    } else {
+        peer.on('connection', onConnection);
+    }
+    function onConnection(conn) {
+        connection = conn;
+        connection.on('open', function () {
+            var status = document.querySelector("#status").classList;
+            status.remove("bad");
+            status.add("good");
+        });
+        connection.on('error', function (err) {
+            var status = document.querySelector("#status").classList;
+            status.add("bad");
+            status.remove("good");
+        });
+        connection.on('data', onReceiveData);
+    }
+
+    //
+    var fileData = null;
+    var ping = 0;
+    var sendTime;
+
+    function onReceiveData(data) {
+        if (data[0] === "ping") {
+            inputFile.classList.add("hidden");
+            btn.classList.add("hidden");
+            connection.send(["pong"]);
+            sendTime = Date.now();
+        } else if (data[0] === "pong") {
+            ping = (Date.now() - sendTime) / 2;
+            labelPing.innerText = ping + " ms";
+            connection.send(["data", fileData]);
+            sendTime = Date.now();
+        } else if (data[0] === "data") {
+            if (data[1]) {
+                fileData = data[1];
+                var size = fileData.byteLength / 1024 / 1024;
+                labelSize.innerText = size + " Mbyte";
+                var mbPerSec = size / ((Date.now() - sendTime - ping) / 1000);
+                labelSpeed.innerText = mbPerSec + " Mbyte/s";
+                URL.revokeObjectURL(image.src);
+                image.src = URL.createObjectURL(new Blob([fileData], {type: 'application/octet-binary'}));
+            }
+            connection.send(["ping"]);
+            sendTime = Date.now();
+        } else {
+            var lbl = document.createElement("label");
+            lbl.innerText = data;
+            document.body.insertBefore(lbl, chat.nextSibling);
+            document.body.insertBefore(document.createElement("br"), chat.nextSibling);
+        }
+    }
+
+    function doStartTest() {
+        fileData = inputFile.files[0];
+        sendTime = Date.now();
+        connection.send(['ping']);
+        inputFile.classList.add("hidden");
+        btn.classList.add("hidden");
+    }
+
+    function sendText(event) {
+        if (event.keyCode === 13 && event.target.value) {
+            var lbl = document.createElement("label");
+            lbl.classList.add("my");
+            lbl.innerText = event.target.value;
+            document.body.insertBefore(lbl, chat.nextSibling);
+            document.body.insertBefore(document.createElement("br"), chat.nextSibling);
+            connection.send(event.target.value);
+            event.target.value = "";
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .good {
+            width: 100%;
+            height: 5px;
+            background-color: green;
+        }
+
+        .bad {
+            width: 100%;
+            height: 5px;
+            background-color: red;
+        }
+    </style>
+    <script src="https://unpkg.com/peerjs@1.1.0/dist/peerjs.min.js"></script>
+    <script src="https://jsmpeg.com/jsmpeg.min.js"></script>
+</head>
+<body>
+<div id="status" class="bad"></div>
+Current ID: <label id="labelId"></label>
+<br>
+<input id="input" type="file">
+<button id="btn" onclick="doTest();">PLAY</button>
+<br>
+<canvas id="video-canvas"></canvas>
+<br>
+<label id="currentTime"></label> <input id="seeker" type="range" min="0" step="1" value="0" class="hidden" disabled>
+<label id="maxTime"></label>
+</body>
+<script>
+    window.onerror = function (msg) {
+        alert(msg);
+    };
+
+    var btn = document.getElementById("btn");
+    var inputFile = document.getElementById("input");
+    var seeker = document.getElementById("seeker");
+    var currTime = document.getElementById("currentTime");
+    var maxTime = document.getElementById("maxTime");
+    var canvas = document.getElementById('video-canvas');
+
+    var url = new URL(window.location.href);
+    var baseId = "28ahjASkjh9w875asdmjMNNasd98dijgNmjn34b5v6t7iuhJhgGGKNn987XXX";
+    var currentId = baseId + url.searchParams.get("id");
+    document.getElementById("labelId").innerText = url.searchParams.get("id") + "";
+    var peer = new Peer(currentId, {debug: 0});
+    var connection = null;
+    peer.on('error', function (err) {
+        alert(err.type + ": " + err.message);
+    });
+    var targetId = window.prompt("Choose target peer id:", "null");
+    if (targetId) {
+        onConnection(peer.connect(baseId + targetId));
+    } else {
+        peer.on('connection', onConnection);
+    }
+
+    function onConnection(conn) {
+        connection = conn;
+        connection.on('open', function () {
+            var status = document.querySelector("#status").classList;
+            status.remove("bad");
+            status.add("good");
+        });
+        connection.on('error', function () {
+            var status = document.querySelector("#status").classList;
+            status.add("bad");
+            status.remove("good");
+        });
+        connection.on("data", onReceiveData);
+    }
+
+    //
+
+    var iAmSender = false;
+    var player = null;
+    var dataArrBuf = null;
+
+    function onReceiveData(data) {
+        if (iAmSender) {
+            if (!player) {
+                inputFile.classList.add("hidden");
+                btn.classList.add("hidden");
+                player = new JSMpeg.Player(dataArrBuf, {
+                    source: DataSource,
+                    video: false,
+                    canvas: canvas
+                });
+            }
+            if (Array.isArray(data)) {
+                connection.send(dataArrBuf.slice(data[0], data[1]));
+            } else {
+                switch (data.event) {
+                    case "play":
+                        player.currentTime = data.time;
+                        player.play();
+                        break;
+                    case "pause":
+                        player.currentTime = data.time;
+                        player.pause();
+                        break;
+                    case "sync":
+                        if (Math.trunc(player.currentTime) !== Math.trunc(data.time)) {
+                            player.currentTime = data.time;
+                            player.play();
+                        }
+                        break;
+                }
+            }
+        } else {
+            if (!player) {
+                inputFile.classList.add("hidden");
+                btn.classList.add("hidden");
+                seeker.classList.remove("hidden");
+                player = new JSMpeg.Player(connection, {
+                    source: RTCSource,
+                    audio: false,
+                    canvas: canvas,
+                    fileSize: data,
+                    chunkSize: 204800,
+                    onStalled: function () {
+                        connection.send({event: "pause", time: player.currentTime});
+                    }
+                });
+                canvas.addEventListener("click", togglePlayPause);
+            }
+            if (!Array.isArray(data)) {
+                switch (data.event) {
+                    //
+                }
+            }
+        }
+    }
+
+    function togglePlayPause() {
+        if (player.paused) {
+            player.play();
+            connection.send({event: "play", time: player.currentTime});
+        } else {
+            player.pause();
+            connection.send({event: "pause", time: player.currentTime});
+        }
+    }
+
+    function doTest() {
+        iAmSender = true;
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            dataArrBuf = event.target.result;
+            connection.send(dataArrBuf.byteLength);
+        };
+        reader.readAsArrayBuffer(document.getElementById("input").files[0]);
+    }
+
+    //
+
+    var DataSource = (function () {
+        "use strict";
+
+        var DataSource = function (data, options) {
+            this.data = data;
+            this.destination = null;
+
+            this.completed = false;
+            this.established = false;
+
+            this.loadedSize = 0;
+            this.chunkSize = options.chunkSize || 1024 * 1024;
+        };
+
+        DataSource.prototype.connect = function (destination) {
+            this.destination = destination;
+        };
+
+        DataSource.prototype.start = function () {
+            this.established = true;
+            this.loadNextChunk();
+        };
+
+        DataSource.prototype.resume = function (secondsHeadroom) {
+            if (this.completed) {
+                return;
+            }
+            this.loadNextChunk();
+        };
+
+        DataSource.prototype.loadNextChunk = function () {
+            var start = this.loadedSize,
+                end = Math.min(this.loadedSize + this.chunkSize, this.data.byteLength);
+            if (start >= this.data.byteLength) {
+                this.completed = true;
+                return;
+            }
+            var chunk = this.data.slice(start, end);
+            this.loadedSize += chunk.byteLength;
+            if (this.destination) {
+                this.destination.write(chunk);
+            }
+        };
+
+        return DataSource;
+    })();
+
+    var RTCSource = (function () {
+        "use strict";
+
+        var RTCSource = function (connection, options) {
+            this.connection = connection;
+            this.destination = null;
+
+            this.completed = false;
+            this.established = false;
+
+            this.isLoading = false;
+
+            this.fileSize = options.fileSize || 0;
+            this.loadedSize = 0;
+            this.chunkSize = options.chunkSize || 1024 * 1024;
+
+            this.prevTruncTime = 0;
+            this.prevSyncTime = 0;
+        };
+
+        RTCSource.prototype.connect = function (destination) {
+            this.destination = destination;
+        };
+
+        RTCSource.prototype.start = function () {
+            this.connection.on('data', function (data) {
+                if (data instanceof ArrayBuffer) {
+                    this.onChunkLoad(data);
+                }
+            }.bind(this));
+            this.loadNextChunk();
+        };
+
+        RTCSource.prototype.resume = function (secondsHeadroom) {
+            var truncTime = Math.trunc(player.currentTime);
+            if (this.prevTruncTime !== truncTime) {
+                this.prevTruncTime = truncTime;
+                seeker.value = this.prevTruncTime;
+                currTime.innerText = this.prevTruncTime;
+            }
+            if (this.isLoading || this.completed) {
+                return;
+            }
+            if (JSMpeg.Now() - this.prevSyncTime > 1) {
+                this.prevSyncTime = JSMpeg.Now();
+                this.connection.send({event: "sync", time: player.currentTime});
+            }
+            if (10 > secondsHeadroom) {
+                this.loadNextChunk();
+            }
+        };
+
+        RTCSource.prototype.loadNextChunk = function () {
+            var start = this.loadedSize,
+                end = Math.min(this.loadedSize + this.chunkSize, this.fileSize);
+
+            if (start >= this.fileSize) {
+                this.completed = true;
+                return;
+            }
+
+            this.isLoading = true;
+            this.connection.send([start, end]);
+        };
+
+        RTCSource.prototype.onChunkLoad = function (data) {
+            this.established = true;
+            this.loadedSize += data.byteLength;
+            this.isLoading = false;
+
+            if (this.destination) {
+                this.destination.write(data);
+                var maxTimeVal = Math.trunc(this.destination.currentTime);
+                seeker.setAttribute("max", maxTimeVal);
+                maxTime.innerText = maxTimeVal;
+            }
+        };
+
+        return RTCSource;
+    })();
+</script>
+</html>
