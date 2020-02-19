@@ -1,16 +1,41 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-</head>
-<body>
-Current ID: <label id="labelId"></label><br>
-<a id="test" href="./test.html?id=">TEST</a><br>
-<a id="video" href="./video.html?id=">VIDEO</a><br>
-</body>
-<script>
-    var id = Math.floor(Math.random() * 100) + 1;
-    document.getElementById("test").href += id;
-    document.getElementById("video").href += id;
-    document.getElementById("labelId").innerText += id;
-</script>
-</html>
+	<head>		
+		<title>
+			RANDOMIZER
+		</title>
+	</head>
+	<body>
+		<button id="btn" onclick="generate();">GENERATE</button>
+		<br>
+		<label id="lbl"></label>
+		<script type="text/javascript">
+			var lbl = document.getElementById("lbl");
+			var forceList = [391,816,642,243,116,792,978,659,501,430];
+			var forceIndex = 0;
+			var isForceNeeded = false;
+			var timerId;
+
+    		function timer() {
+    			isForceNeeded = true;
+    			timerId = setTimeout(timer, 5000);
+    		}
+
+			function random(min, max) {
+  				return Math.round(min - 0.5 + Math.random() * (max - min + 1));
+			}
+
+			function generate() {
+				clearTimeout(timerId);
+				if (isForceNeeded) {
+					lbl.innerText = forceList[forceIndex++];
+					if (forceIndex >= forceList.length) forceIndex = 0;
+				} else {
+					lbl.innerText = random(100,999);
+				}
+				timer();
+				isForceNeeded = false;
+			}
+		</script>
+	</body>
+</html
