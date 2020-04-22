@@ -1,41 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-	<head>		
-		<title>
-			RANDOMIZER
-		</title>
-	</head>
-	<body>
-		<button id="btn" onclick="generate();">GENERATE</button>
-		<br>
-		<label id="lbl"></label>
-		<script type="text/javascript">
-			var lbl = document.getElementById("lbl");
-			var forceList = [391,816,642,243,116,792,978,659,501,430];
-			var forceIndex = 0;
-			var isForceNeeded = false;
-			var timerId;
-
-    		function timer() {
-    			isForceNeeded = true;
-    			timerId = setTimeout(timer, 5000);
-    		}
-
-			function random(min, max) {
-  				return Math.round(min - 0.5 + Math.random() * (max - min + 1));
-			}
-
-			function generate() {
-				clearTimeout(timerId);
-				if (isForceNeeded) {
-					lbl.innerText = forceList[forceIndex++];
-					if (forceIndex >= forceList.length) forceIndex = 0;
-				} else {
-					lbl.innerText = random(100,999);
-				}
-				timer();
-				isForceNeeded = false;
-			}
-		</script>
-	</body>
-</html
+<head>
+</head>
+<body>
+<a id="webrtc" href="./webrtc/index.html">WebRTC</a><br>
+<a id="randomizer" href="./randomizer/index.html">RANDOMIZER</a><br>
+<a id="calculator" href="./calculator/index.html">CALCULATOR</a><br>
+</body>
+</html>
