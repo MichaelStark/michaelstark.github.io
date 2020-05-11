@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url(./back.jpeg);
+            background-size: 100% 100%;
+        }
+
+        #meet {
+            width: 80%;
+            height: 80%;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/hmac-sha256.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/enc-base64-min.js"></script>
+    <script src='https://meet.talrace.com/external_api.js'></script>
+</head>
+
+<body>
+    <div id="meet"></div>
+</body>
+
+<script>
+    var person = prompt("Please enter your {name}.{secret}", "");
+    if (person) {
+        var delimiterIndex = person.lastIndexOf(".");
+
+        var header = base64url(CryptoJS.enc.Utf8.parse(JSON.stringify({
+            "alg": "HS256",
+            "typ": "JWT"
+        })));
+        var payload = base64url(CryptoJS.enc.Utf8.parse(JSON.stringify({
+            "context": {
+                "user": {
+                    "avatar": "https://afrans.by/css/img/footer-logo.png",
+                    "name": person.substring(0, delimiterIndex)
+                }
+            },
+            "aud": "Jitsi",
+            "iss": "Unitely",
+            "room": "AFRANS",
+            "exp": 2222222222
+        })));
+        var signature = base64url(CryptoJS.HmacSHA256(header + "." + payload, person.substring(delimiterIndex + 1)));
+
+        var api = new JitsiMeetExternalAPI('meet.talrace.com', {
+            roomName: 'AFRANS',
+            width: '100%',
+            height: '100%',
+            parentNode: document.getElementById('meet'),
+            jwt: header + "." + payload + "." + signature
+        });
+        api.on('readyToClose', () => { api.dispose(); });
+    }
+
+    function base64url(source) {
+        encodedSource = CryptoJS.enc.Base64.stringify(source);
+        encodedSource = encodedSource.replace(/=+$/, '');
+        encodedSource = encodedSource.replace(/\+/g, '-');
+        encodedSource = encodedSource.replace(/\//g, '_');
+        return encodedSource;
+    }
+</script>
+
+</html>
