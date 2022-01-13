@@ -19,6 +19,18 @@
     <link rel="icon" href="./icon/favicon-192x192.png">
     <link rel="apple-touch-icon" href="./icon/favicon-192x192.png">
     <style>
+        /* TODO for orientation test */
+        @keyframes rotate {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* TODO for orientation test */
+        .rotate {
+            animation: rotate 0.1s linear infinite;
+        }
+
         @font-face {
             font-family: 'Numans';
             src: url('./font/Numans-Regular.ttf') format('truetype');
@@ -187,7 +199,7 @@
 </head>
 
 <body>
-    <div id="version">v1.15</div>
+    <div id="version">v1.16</div>
     <div id="calc">
         <div class="row">
             <div class="displayS1" id="display">0</div>
@@ -227,9 +239,10 @@
 <script>
     window.onerror = (message, url, lineNumber) => notify("Error", message + "\n(" + url + ":" + lineNumber + ")"); // debug
     window.ontouchend = _ => false; // disable long press vibration ! do not disable context menu
-    window.addEventListener("load", _ => navigator.serviceWorker.register("./sw.js"));
-    window.setTimeout(_ => document.getElementById("version").remove(), 1000);
+    window.addEventListener("load", _ => navigator.serviceWorker.register("./sw.js")); // enable PWA
+    window.setTimeout(_ => document.getElementById("version").remove(), 1000); // hide version
 
+    // notification
     var isNotificationGranted = window.Notification && Notification.permission === "granted";
     if (navigator.permissions) {
         navigator.permissions.query({ name: 'notifications' }).then(status => status.onchange = _ => isNotificationGranted = window.Notification && Notification.permission === "granted");
@@ -334,6 +347,7 @@
 
     var magicHistory = "";
     var magicToxicResult = "";
+    var displayDownTest = false;
 
     function magic(e) {
         var target = e.target.closest("div");
@@ -344,12 +358,28 @@
                 break;
             case "+-":
                 // info
-                notify("Information", "AC  reload app\n⁺/₋  magic info\n%    wunderkind\n+    toxic force\n=    history peek");
+                notify("Information", "AC  reload app\n⁺/₋  magic info\n%    wunderkind\n-     display down (test)\n+    toxic force\n=    history peek");
                 break;
             case "%":
                 // wunderkind
                 target.innerText = 9 - ((isDigitsTyping ? inputValue : resultValue.toString()).match(/\d/g).reduce((a, b) => a + Number(b), 0) % 9);
                 window.setTimeout(_ => target.innerText = "%", 1000);
+                break;
+            case "-":
+                // display down (test)
+                if (!displayDownTest) {
+                    var calcEl = document.getElementById("calc");
+                    window.ondeviceorientation = (e) => {
+                        if ((e.beta > 160 || e.beta < -160) && e.gamma > -15 && e.gamma < 15) {
+                            calcEl.classList.add("rotate");
+                        } else {
+                            calcEl.classList.remove("rotate");
+                        }
+                    };
+                } else {
+                    window.ondeviceorientation = null;
+                }
+                displayDownTest = !displayDownTest;
                 break;
             case "+":
                 // toxic
