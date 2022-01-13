@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Calculator</title>
+    <link rel="manifest" href="./manifest.json">
+    <meta name="description" content="Magic calculator" />
+    <meta name="copyright" content="(C) Michael Stark, 2022">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Calculator">
+    <meta name="apple-mobile-web-app-title" content="Calculator">
+    <meta name="theme-color" content="#000000">
+    <meta name="msapplication-navbutton-color" content="#000000">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="msapplication-starturl" content="/">
+    <link rel="shortcut icon" type="image/x-icon" href="./icon/favicon.ico">
+    <link rel="icon" href="./icon/favicon-192x192.png">
+    <link rel="apple-touch-icon" href="./icon/favicon-192x192.png">
+    <style>
+        @font-face {
+            font-family: 'Numans';
+            src: url('font/Numans-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Prompt';
+            src: url('font/Prompt-ExtraLight.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            touch-action: none;
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+        }
+
+        html,
+        body {
+            background-color: #000;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-size: min(2.7vh, 4.31vw);
+            overflow: hidden;
+        }
+
+        #version {
+            position: absolute;
+            color: #FFF;
+            font-family: monospace;
+        }
+
+        #bottomOffset {
+            height: 4rem;
+        }
+
+        #calc {
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            max-width: 23.2rem;
+            height: 100%;
+            margin: auto;
+        }
+
+        [id="0"] {
+            flex-grow: 1;
+            padding-right: 5.8rem;
+        }
+
+        #display {
+            color: #FFF;
+            font-family: 'Prompt', sans-serif;
+            text-align: right;
+            line-height: 8rem;
+            width: 100%;
+            padding: 0 .4rem;
+            overflow: hidden;
+            letter-spacing: -.12rem;
+            white-space: nowrap;
+        }
+
+        .displayS1 {
+            font-size: 6rem;
+        }
+
+        .displayS2 {
+            font-size: 4rem;
+        }
+
+        .displayS3 {
+            font-size: 3rem;
+        }
+
+        .displayS4 {
+            font-size: 2.5rem;
+        }
+
+        .displayS5 {
+            font-size: 2rem;
+        }
+
+        .displayS6 {
+            font-size: 1.7rem;
+        }
+
+        .displayS7 {
+            font-size: 1.4rem;
+        }
+
+        .displayS8 {
+            font-size: 1.2rem;
+        }
+
+        .displayS9 {
+            font-size: 1rem;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+        }
+
+        .button {
+            background-color: #AAA;
+            color: #000;
+            font-family: 'Numans', sans-serif;
+            text-align: center;
+            font-size: 2rem;
+            border-radius: 2.5rem;
+            width: 5rem;
+            height: 5rem;
+            margin: 0.4rem;
+            line-height: 5rem;
+        }
+
+        .operation {
+            font-size: 3rem;
+            color: #FFF;
+            background-color: #FC9D15;
+        }
+
+        .digit {
+            color: #FFF;
+            background-color: #333;
+        }
+
+        .pushOff {
+            transition: background-color 0.5s linear;
+        }
+
+        .pushDigit {
+            background-color: #777;
+            transition: 0.1s linear;
+        }
+
+        .pushUtil {
+            background-color: #CCC;
+            transition: 0.1s linear;
+        }
+
+        .pushOperation {
+            background-color: #FFCBAA;
+            transition: 0.1s linear;
+        }
+
+        .pushedOperation {
+            background-color: #FFF;
+            color: #FCA017;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="version">v11</div>
+    <div id="calc">
+        <div class="row">
+            <div class="displayS1" id="display">0</div>
+        </div>
+        <div class="row">
+            <div class="button pushOff" id="C">AC</div>
+            <div class="button pushOff" id="+-">⁺/₋</div>
+            <div class="button pushOff" id="%">%</div>
+            <div class="button operation pushOff" id="÷">÷</div>
+        </div>
+        <div class="row">
+            <div class="button digit pushOff" id="7">7</div>
+            <div class="button digit pushOff" id="8">8</div>
+            <div class="button digit pushOff" id="9">9</div>
+            <div class="button operation pushOff" id="x">×</div>
+        </div>
+        <div class="row">
+            <div class="button digit pushOff" id="4">4</div>
+            <div class="button digit pushOff" id="5">5</div>
+            <div class="button digit pushOff" id="6">6</div>
+            <div class="button operation pushOff" id="-">-</div>
+        </div>
+        <div class="row">
+            <div class="button digit pushOff" id="1">1</div>
+            <div class="button digit pushOff" id="2">2</div>
+            <div class="button digit pushOff" id="3">3</div>
+            <div class="button operation pushOff" id="+">+</div>
+        </div>
+        <div class="row">
+            <div class="button digit pushOff" id="0">0</div>
+            <div class="button digit pushOff" id=".">.</div>
+            <div class="button operation pushOff" id="=">=</div>
+        </div>
+        <div id="bottomOffset"></div>
+    </div>
+</body>
+<script>
+    window.onerror = (message, url, lineNumber) => alert(message + "\n(" + url + ":" + lineNumber + ")"); // debug
+    window.ontouchend = _ => false; // disable long press vibration ! do not disable context menu
+    window.addEventListener("load", _ => navigator.serviceWorker.register("./sw.js"));
+    window.setTimeout(_ => document.getElementById("version").remove(), 1000);
+
+    var formatter = new Intl.NumberFormat(navigator.language, { maximumFractionDigits: 20 });
+    var displayEl = document.getElementById("display");
+    var resetEl = document.getElementById("C");
+    var buttonElList = document.getElementsByClassName("button");
+    var digitElList = document.getElementsByClassName("digit");
+    var operationElList = document.getElementsByClassName("operation");
+    var pushedBtnsCount = 0;
+    var longPressTarget;
+    var longPressTimer;
+
+    displayEl.addEventListener("pointerdown", removeLastSymbolHandler);
+    for (el of buttonElList) {
+        el.addEventListener("pointerdown", startBtnHandler);
+        el.addEventListener("pointerup", endBtnHandler);
+        el.addEventListener("pointercancel", cancelBtnHandler);
+    };
+
+    function getPushClass(classList) {
+        if (classList.contains("digit")) {
+            return "pushDigit";
+        } else if (classList.contains("operation")) {
+            return "pushOperation";
+        } else {
+            return "pushUtil";
+        }
+    }
+
+    function startBtnHandler(e) {
+        pushedBtnsCount++;
+        var target = e.target.closest("div");
+        target.classList.remove("pushOff");
+        for (el of operationElList) {
+            el.classList.remove("pushedOperation");
+        }
+        target.classList.add(getPushClass(target.classList));
+        target.setPointerCapture(e.pointerId); // fix for mouse leave
+        if (longPressTimer) {
+            clearTimeout(longPressTimer);
+            longPressTimer = null;
+            longPressTarget = null;
+        }
+        if (pushedBtnsCount === 1) {
+            longPressTimer = window.setTimeout(_ => {
+                if (window.navigator.vibrate) {
+                    window.navigator.vibrate(200);
+                }
+                longPressTarget = target;
+            }, 3000);
+        }
+    }
+
+    function endBtnHandler(e) {
+        cancelBtnHandler(e);
+        var target = e.target.closest("div");
+        if (longPressTarget === target) {
+            longPressTarget = null;
+            target.classList.remove("pushedOperation");
+            magic(e);
+        } else {
+            if (window.navigator.vibrate) {
+                window.navigator.vibrate(1);
+            }
+            btnHandler(e);
+        }
+    }
+
+    function cancelBtnHandler(e) {
+        pushedBtnsCount--;
+        var target = e.target.closest("div");
+        target.classList.remove(getPushClass(target.classList));
+        for (el of operationElList) {
+            el.classList.remove("pushedOperation");
+        }
+        target.classList.add("pushOff");
+        if (target.classList.contains("operation") && target.id !== "=") {
+            target.classList.add("pushedOperation");
+        }
+        if (longPressTimer) {
+            clearTimeout(longPressTimer);
+            longPressTimer = null;
+        }
+    }
+
+    var resultValue = 0;
+    var inputValue = "0";
+    var operation = "";
+    var isDigitsTyping = false;
+
+    var magicHistory = "";
+    var magicToxicResult = "";
+
+    function magic(e) {
+        var target = e.target.closest("div");
+        switch (target.id) {
+            case "C":
+                // reload
+                document.location.reload();
+                break;
+            case "+-":
+                // info
+                alert("AC  reload\n+/-  info\n%    wunderkind\n+    toxic\n=    history");
+                break;
+            case "%":
+                // wunderkind
+                target.innerText = 9 - ((isDigitsTyping ? inputValue : resultValue.toString()).match(/\d/g).reduce((a, b) => a + Number(b), 0) % 9);
+                window.setTimeout(_ => target.innerText = "%", 1000);
+                break;
+            case "+":
+                // toxic
+                magicToxicResult = inputValue;
+                reset();
+                break;
+            case "=":
+                // history
+                alert(magicHistory);
+                break;
+        }
+    }
+
+    function reset() {
+        resetEl.innerText = "AC";
+        resultValue = 0;
+        inputValue = "0";
+        operation = "";
+        isDigitsTyping = false;
+        displayValue(inputValue);
+    }
+
+    function removeLastSymbolHandler(e) {
+        // do not remove last zero or if exponential notation
+        if (inputValue.length && inputValue !== "0" && !inputValue.includes("e")) {
+            window.navigator.vibrate(1);
+            inputValue = inputValue.slice(0, -1);
+            // remove negative sign if value is 0
+            if (inputValue.startsWith("-") && Number(inputValue) === 0) {
+                inputValue = inputValue.slice(1);
+            }
+            // set value to 0 if removed last digit
+            if (!inputValue.length || inputValue === "-") {
+                inputValue = "0";
+            }
+            displayValue(inputValue);
+        }
+    }
+
+    function btnHandler(e) {
+        var target = e.target.closest("div");
+        if (digitElList.namedItem(target.id)) {
+            // max 13 digits and only one decimal dot and do not edit exponential notation
+            if (inputValue.replace(/\D/g, "").length < 13 && !inputValue.includes("e") && (target.id !== "." || !inputValue.includes("."))) {
+                // prevent containing just zeros or starts with zero
+                if (inputValue === "0" && target.id !== ".") {
+                    inputValue = "";
+                }
+                resetEl.innerText = "C";
+                isDigitsTyping = true;
+                inputValue += target.innerText;
+                displayValue(inputValue);
+            }
+        } else {
+            switch (target.id) {
+                case "C":
+                    if (target.innerText === "AC") {
+                        reset();
+                    } else {
+                        resetEl.innerText = "AC";
+                        inputValue = "0";
+                        displayValue(inputValue);
+                    }
+                    break;
+                case "%":
+                    if (inputValue.length && inputValue !== "0" && !inputValue.includes("e")) {
+                        inputValue = Number(inputValue) / 100;
+                        if (operation === "+" || operation === "-") {
+                            inputValue = resultValue * inputValue;
+                        }
+                        inputValue = inputValue.toString();
+                        displayValue(inputValue);
+                    }
+                    break;
+                case "+-":
+                    if (Number(inputValue) !== 0) {
+                        if (Number(inputValue) > 0) {
+                            inputValue = "-" + inputValue;
+                        } else {
+                            inputValue = inputValue.slice(1);
+                        }
+                        displayValue(inputValue);
+                    }
+                    break;
+                default:
+                    magicHistory += inputValue + target.id;
+                    if (operation === "") {
+                        resultValue = Number(inputValue);
+                    } else if (isDigitsTyping) {
+                        switch (operation) {
+                            case "+":
+                                resultValue = resultValue + Number(inputValue);
+                                break;
+                            case "-":
+                                resultValue = resultValue - Number(inputValue);
+                                break;
+                            case "x":
+                                resultValue = resultValue * Number(inputValue);
+                                break;
+                            case "÷":
+                                resultValue = resultValue / Number(inputValue);
+                                break;
+                            case "=":
+                                resultValue = Number(inputValue);
+                                break;
+                        }
+                    }
+                    if (magicToxicResult && target.id === "=") {
+                        resultValue = magicToxicResult;
+                        magicToxicResult = "";
+                    }
+                    resetEl.innerText = "C";
+                    isDigitsTyping = false;
+                    inputValue = "0";
+                    operation = target.id;
+                    displayValue(resultValue.toString());
+                    break;
+            }
+        }
+    }
+
+    function displayValue(value, showAsIs = false) {
+        // fix formatter if last symbol is 0 or .
+        var isNeedZeroFormatFix = value.includes(".") && (value[value.length - 1] === "0" || value[value.length - 1] === ".");
+        if (isNeedZeroFormatFix) {
+            value += "1";
+        }
+        if (showAsIs || value.includes("e")) {
+            displayEl.innerText = value;
+        } else {
+            displayEl.innerText = formatter.format(value);
+        }
+        if (isNeedZeroFormatFix) {
+            displayEl.innerText = displayEl.innerText.slice(0, -1);
+        }
+        // calculate font
+        var sizeIndex = 1;
+        do {
+            displayEl.className = "displayS" + sizeIndex;
+        } while (sizeIndex++ < 10 && displayEl.scrollWidth > displayEl.clientWidth);
+    }
+</script>
+
+</html>
