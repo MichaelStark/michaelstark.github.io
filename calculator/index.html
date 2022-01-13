@@ -187,7 +187,7 @@
 </head>
 
 <body>
-    <div id="version">v1.11</div>
+    <div id="version">v1.12</div>
     <div id="calc">
         <div class="row">
             <div class="displayS1" id="display">0</div>
@@ -225,10 +225,13 @@
     </div>
 </body>
 <script>
-    window.onerror = (message, url, lineNumber) => alert(message + "\n(" + url + ":" + lineNumber + ")"); // debug
+    window.onerror = (message, url, lineNumber) => notify(message + "\n(" + url + ":" + lineNumber + ")"); // debug
     window.ontouchend = _ => false; // disable long press vibration ! do not disable context menu
     window.addEventListener("load", _ => navigator.serviceWorker.register("./sw.js"));
     window.setTimeout(_ => document.getElementById("version").remove(), 1000);
+
+    var isNotificationGranted = window.Notification && Notification.permission === "granted";
+    window.onload = _ => !isNotificationGranted && Notification.requestPermission();
 
     var formatter = new Intl.NumberFormat(navigator.language, { maximumFractionDigits: 20 });
     var displayEl = document.getElementById("display");
@@ -313,6 +316,16 @@
         }
     }
 
+    function notify(msg) {
+        if (isNotificationGranted) {
+            new Notification("eRculator", {
+                body: msg
+            });
+        } else {
+            alert(msg);
+        }
+    }
+
     var resultValue = 0;
     var inputValue = "0";
     var operation = "";
@@ -330,7 +343,7 @@
                 break;
             case "+-":
                 // info
-                alert("AC  reload\n+/-  info\n%    wunderkind\n+    toxic\n=    history");
+                notify("AC  reload\n+/-  info\n%    wunderkind\n+    toxic\n=    history");
                 break;
             case "%":
                 // wunderkind
@@ -344,7 +357,7 @@
                 break;
             case "=":
                 // history
-                alert(magicHistory);
+                notify(magicHistory);
                 break;
         }
     }
