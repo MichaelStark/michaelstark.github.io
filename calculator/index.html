@@ -187,7 +187,7 @@
 </head>
 
 <body>
-    <div id="version">v1.14</div>
+    <div id="version">v1.15</div>
     <div id="calc">
         <div class="row">
             <div class="displayS1" id="display">0</div>
@@ -225,14 +225,14 @@
     </div>
 </body>
 <script>
-    window.onerror = (message, url, lineNumber) => notify(message + "\n(" + url + ":" + lineNumber + ")"); // debug
+    window.onerror = (message, url, lineNumber) => notify("Error", message + "\n(" + url + ":" + lineNumber + ")"); // debug
     window.ontouchend = _ => false; // disable long press vibration ! do not disable context menu
     window.addEventListener("load", _ => navigator.serviceWorker.register("./sw.js"));
     window.setTimeout(_ => document.getElementById("version").remove(), 1000);
 
     var isNotificationGranted = window.Notification && Notification.permission === "granted";
     if (navigator.permissions) {
-        navigator.permissions.query({ name: 'notifications' }).then(status => status.onchange = change => isNotificationGranted = window.Notification && Notification.permission === "granted");
+        navigator.permissions.query({ name: 'notifications' }).then(status => status.onchange = _ => isNotificationGranted = window.Notification && Notification.permission === "granted");
     }
     window.onload = _ => !isNotificationGranted && Notification.requestPermission();
 
@@ -319,13 +319,9 @@
         }
     }
 
-    function notify(msg) {
+    function notify(title, msg) {
         if (isNotificationGranted) {
-            navigator.serviceWorker.ready.then(registration => registration.showNotification("eRculator", {
-                body: msg,
-                icon: "./icon/favicon-192x192.png",
-                silent: true
-            }));
+            navigator.serviceWorker.ready.then(registration => registration.showNotification(title, { body: msg, silent: true }));
         } else {
             alert(msg);
         }
@@ -348,7 +344,7 @@
                 break;
             case "+-":
                 // info
-                notify("AC  reload\n+/-  info\n%    wunderkind\n+    toxic\n=    history");
+                notify("Information", "AC  reload app\n⁺/₋  magic info\n%    wunderkind\n+    toxic force\n=    history peek");
                 break;
             case "%":
                 // wunderkind
@@ -362,7 +358,7 @@
                 break;
             case "=":
                 // history
-                notify(magicHistory);
+                notify("History", magicHistory);
                 break;
         }
     }
