@@ -1,0 +1,176 @@
+/* TODO for orientation test */
+@keyframes rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* TODO for orientation test */
+.rotate {
+    animation: rotate 0.1s linear infinite;
+}
+
+@font-face {
+    font-family: 'Numans';
+    src: url('../fonts/Numans-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Prompt';
+    src: url('../fonts/Prompt-ExtraLight.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'RobotoMono';
+    src: url('../fonts/RobotoMono-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    touch-action: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+html,
+body {
+    background-color: #000;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: min(2.7vh, 4.31vw);
+    overflow: hidden;
+}
+
+#version {
+    position: absolute;
+    color: #FFF;
+    font-family: 'RobotoMono', monospace;
+    font-size: 0.5rem;
+}
+
+#bottomOffset {
+    height: 4rem;
+}
+
+#calc {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    max-width: 23.2rem;
+    height: 100%;
+    margin: auto;
+}
+
+[id="0"] {
+    flex-grow: 1;
+    padding-right: 5.8rem;
+}
+
+#display {
+    color: #FFF;
+    font-family: 'Prompt', sans-serif;
+    text-align: right;
+    line-height: 8rem;
+    width: 100%;
+    padding: 0 .4rem;
+    overflow: hidden;
+    letter-spacing: -.12rem;
+    white-space: nowrap;
+}
+
+.displayS1 {
+    font-size: 6rem;
+}
+
+.displayS2 {
+    font-size: 4rem;
+}
+
+.displayS3 {
+    font-size: 3rem;
+}
+
+.displayS4 {
+    font-size: 2.5rem;
+}
+
+.displayS5 {
+    font-size: 2rem;
+}
+
+.displayS6 {
+    font-size: 1.7rem;
+}
+
+.displayS7 {
+    font-size: 1.4rem;
+}
+
+.displayS8 {
+    font-size: 1.2rem;
+}
+
+.displayS9 {
+    font-size: 1rem;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+.button {
+    background-color: #AAA;
+    color: #000;
+    font-family: 'Numans', sans-serif;
+    text-align: center;
+    font-size: 2rem;
+    border-radius: 2.5rem;
+    width: 5rem;
+    height: 5rem;
+    margin: 0.4rem;
+    line-height: 5rem;
+}
+
+.operation {
+    font-size: 3rem;
+    color: #FFF;
+    background-color: #FC9D15;
+}
+
+.digit {
+    color: #FFF;
+    background-color: #333;
+}
+
+.pushOff {
+    transition: background-color 0.5s linear;
+}
+
+.pushDigit {
+    background-color: #777;
+    transition: 0.1s linear;
+}
+
+.pushUtil {
+    background-color: #CCC;
+    transition: 0.1s linear;
+}
+
+.pushOperation {
+    background-color: #FFCBAA;
+    transition: 0.1s linear;
+}
+
+.pushedOperation {
+    background-color: #FFF;
+    color: #FCA017;
+}

@@ -9,7 +9,7 @@
     "background_color": "#000000",
     "icons": [
         {
-            "src": "./icon/favicon-192x192.png",
+            "src": "./images/favicon-192x192.png",
             "sizes": "512x512",
             "type": "image/png"
         }
