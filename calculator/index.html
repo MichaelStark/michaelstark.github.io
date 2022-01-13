@@ -187,7 +187,7 @@
 </head>
 
 <body>
-    <div id="version">v1.12</div>
+    <div id="version">v1.13</div>
     <div id="calc">
         <div class="row">
             <div class="displayS1" id="display">0</div>
@@ -319,7 +319,9 @@
     function notify(msg) {
         if (isNotificationGranted) {
             new Notification("eRculator", {
-                body: msg
+                body: msg,
+                icon: "./icon/favicon.ico",
+                silent: true
             });
         } else {
             alert(msg);
