@@ -5,8 +5,9 @@ toolbox.precache([
     "css/main.css",
     "images/favicon.ico",
     "images/favicon-192x192.png",
-    "fonts/Numans-Regular.ttf",
-    "fonts/Prompt-ExtraLight.ttf",
-    "fonts/RobotoMono-Regular.ttf"
+    "fonts/SF-Pro-Display-Semibold.otf",
+    "fonts/SF-Pro-Display-Regular.otf",
+    "fonts/SF-Pro-Display-Thin.otf",
+    "fonts/SF-Mono-Light.otf"
 ]);
 toolbox.router.get("/*", toolbox.networkFirst, { networkTimeoutSeconds: 5 });

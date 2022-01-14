@@ -2,6 +2,7 @@ window.onerror = (message, url, lineNumber) => notify("Error", message + "\n(" +
 window.ontouchend = _ => false; // disable long press vibration ! do not disable context menu
 window.addEventListener("load", _ => navigator.serviceWorker.register("./sw.js")); // enable PWA
 window.setTimeout(_ => document.getElementById("version").remove(), 1000); // hide version
+document.getElementById(".").innerText = .1.toLocaleString().slice(1, 2); // set dot depend on locale
 
 // notification
 var isNotificationGranted = window.Notification && Notification.permission === "granted";
@@ -191,7 +192,7 @@ function btnHandler(e) {
             }
             resetEl.innerText = "C";
             isDigitsTyping = true;
-            inputValue += target.innerText;
+            inputValue += target.id;
             displayValue(inputValue);
         }
     } else {
