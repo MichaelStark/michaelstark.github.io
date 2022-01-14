@@ -11,30 +11,30 @@
 }
 
 @font-face {
-    font-family: 'SF-Pro-Display-Semibold';
-    src: url('../fonts/SF-Pro-Display-Semibold.otf') format('opentype');
+    font-family: 'SFMono';
+    src: url('../fonts/SFMono-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SFProDisplay';
+    src: url('../fonts/SFProDisplay-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SFProDisplay';
+    src: url('../fonts/SFProDisplay-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'SF-Pro-Display-Regular';
-    src: url('../fonts/SF-Pro-Display-Regular.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'SF-Pro-Display-Thin';
-    src: url('../fonts/SF-Pro-Display-Thin.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'SF-Mono';
-    src: url('../fonts/SF-Mono-Light.otf') format('opentype');
-    font-weight: normal;
+    font-family: 'SFProDisplay';
+    src: url('../fonts/SFProDisplay-Semibold.woff2') format('woff2');
+    font-weight: 600;
     font-style: normal;
 }
 
@@ -59,7 +59,7 @@ body {
 #version {
     position: absolute;
     color: #FFF;
-    font-family: 'SF-Mono', monospace;
+    font-family: 'SFMono';
     font-size: 0.5rem;
 }
 
@@ -79,7 +79,8 @@ body {
 
 #display {
     color: #FFF;
-    font-family: 'SF-Pro-Display-Thin', sans-serif;
+    font-family: 'SFProDisplay';
+    font-weight: 300;
     text-align: right;
     line-height: 7rem;
     width: 100%;
@@ -136,7 +137,8 @@ body {
 .button {
     background-color: #AAA;
     color: #000;
-    font-family: 'SF-Pro-Display-Semibold', sans-serif;
+    font-family: 'SFProDisplay';
+    font-weight: 600;
     text-align: center;
     font-size: 2rem;
     border-radius: 2.5rem;
@@ -154,7 +156,8 @@ body {
 }
 
 .digit {
-    font-family: 'SF-Pro-Display-Regular', sans-serif;
+    font-family: 'SFProDisplay';
+    font-weight: normal;
     font-size: 2.3rem;
     color: #FFF;
     background-color: #333;
