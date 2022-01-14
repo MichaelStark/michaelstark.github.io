@@ -77,6 +77,15 @@ body {
     padding-right: 5.8rem;
 }
 
+[id="+-"] {
+    letter-spacing: -0.5rem;
+}
+
+div#\+-:after {
+    content: "1";
+    visibility: hidden;
+}
+
 #display {
     color: #FFF;
     font-family: 'SFProDisplay';
