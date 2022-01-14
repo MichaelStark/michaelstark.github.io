@@ -6,10 +6,12 @@ document.getElementById(".").innerText = .1.toLocaleString().slice(1, 2); // set
 
 // notification
 var isNotificationGranted = window.Notification && Notification.permission === "granted";
+if (window.Notification && Notification.permission !== "granted") {
+    Notification.requestPermission();
+}
 if (navigator.permissions) {
     navigator.permissions.query({ name: 'notifications' }).then(status => status.onchange = _ => isNotificationGranted = window.Notification && Notification.permission === "granted");
 }
-window.onload = _ => !isNotificationGranted && Notification.requestPermission();
 
 var formatter = new Intl.NumberFormat(navigator.language, { maximumFractionDigits: 20 });
 var displayEl = document.getElementById("display");

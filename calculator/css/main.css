@@ -78,12 +78,15 @@ body {
 }
 
 [id="+-"] {
-    letter-spacing: -0.5rem;
+    line-height: 4rem !important;
 }
 
-div#\+-:after {
-    content: "1";
-    visibility: hidden;
+[id="+-"]>* {
+    font-size: 1.3rem;
+}
+
+[id="+-"]>sub {
+    vertical-align: initial;
 }
 
 #display {
