@@ -6,16 +6,14 @@ document.getElementById(".").innerText = .1.toLocaleString().slice(1, 2); // set
 
 // notification
 var isNotificationGranted = window.Notification && Notification.permission === "granted";
-if (window.Notification && Notification.permission !== "granted") {
-    Notification.requestPermission();
-}
 if (navigator.permissions) {
     navigator.permissions.query({ name: 'notifications' }).then(status => status.onchange = _ => isNotificationGranted = window.Notification && Notification.permission === "granted");
 }
 
 var formatter = new Intl.NumberFormat(navigator.language, { maximumFractionDigits: 20 });
+var calcEl = document.getElementById("calc");
 var displayEl = document.getElementById("display");
-var resetEl = document.getElementById("C");
+var resetEl = document.getElementById("c");
 var buttonElList = document.getElementsByClassName("button");
 var digitElList = document.getElementsByClassName("digit");
 var operationElList = document.getElementsByClassName("operation");
@@ -96,7 +94,10 @@ function cancelBtnHandler(e) {
     }
 }
 
-function notify(title, msg) {
+async function notify(title, msg) {
+    if (window.Notification && Notification.permission === "default") {
+        await Notification.requestPermission();
+    }
     if (isNotificationGranted) {
         navigator.serviceWorker.ready.then(registration => registration.showNotification(title, { body: msg, silent: true }));
     } else {
@@ -113,10 +114,10 @@ var magicHistory = "";
 var magicToxicResult = "";
 var displayDownTest = false;
 
-function magic(e) {
+async function magic(e) {
     var target = e.target.closest("div");
     switch (target.id) {
-        case "C":
+        case "c":
             // reload
             document.location.reload();
             break;
@@ -131,8 +132,14 @@ function magic(e) {
             break;
         case "-":
             // display down (test)
+            if (!DeviceOrientationEvent) {
+                notify("Error", "Device orientation is not supported by your browser");
+                break;
+            }
             if (!displayDownTest) {
-                var calcEl = document.getElementById("calc");
+                if (DeviceOrientationEvent.requestPermission) {
+                    await DeviceOrientationEvent.requestPermission(); // handle iOS 13+ devices
+                }
                 window.ondeviceorientation = (e) => {
                     if ((e.beta > 160 || e.beta < -160) && e.gamma > -15 && e.gamma < 15) {
                         calcEl.classList.add("rotate");
@@ -199,7 +206,7 @@ function btnHandler(e) {
         }
     } else {
         switch (target.id) {
-            case "C":
+            case "c":
                 if (target.innerText === "AC") {
                     reset();
                 } else {
