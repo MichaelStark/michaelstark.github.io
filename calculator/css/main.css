@@ -47,6 +47,7 @@
 
 html,
 body {
+    transition: all 0.2s ease-out;
     background-color: #000;
     width: 100%;
     height: 100%;
@@ -197,4 +198,8 @@ body {
 .pushedOperation {
     background-color: #FFF;
     color: #FE9E09;
+}
+
+.magicAlarm {
+    box-shadow: inset 0 0 10px white;
 }

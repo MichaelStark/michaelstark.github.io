@@ -54,9 +54,7 @@ function startBtnHandler(e) {
     }
     if (pushedBtnsCount === 1) {
         longPressTimer = window.setTimeout(_ => {
-            if (window.navigator.vibrate) {
-                window.navigator.vibrate(200);
-            }
+            vibrate(true);
             longPressTarget = target;
         }, 3000);
     }
@@ -70,9 +68,7 @@ function endBtnHandler(e) {
         target.classList.remove("pushedOperation");
         magic(e);
     } else {
-        if (window.navigator.vibrate) {
-            window.navigator.vibrate(1);
-        }
+        vibrate();
         btnHandler(e);
     }
 }
@@ -91,6 +87,19 @@ function cancelBtnHandler(e) {
     if (longPressTimer) {
         clearTimeout(longPressTimer);
         longPressTimer = null;
+    }
+}
+
+function vibrate(isMagic) {
+    if (navigator.vibrate) {
+        if (isMagic) {
+            navigator.vibrate(200);
+        } else {
+            navigator.vibrate(1);
+        }
+    } else if (isMagic) {
+        document.body.classList.add("magicAlarm");
+        window.setTimeout(_ => document.body.classList.remove("magicAlarm"), 200);
     }
 }
 
@@ -176,7 +185,7 @@ function reset() {
 function removeLastSymbolHandler(e) {
     // do not remove last zero or if exponential notation
     if (inputValue.length && inputValue !== "0" && !inputValue.includes("e")) {
-        window.navigator.vibrate(1);
+        vibrate();
         inputValue = inputValue.slice(0, -1);
         // remove negative sign if value is 0
         if (inputValue.startsWith("-") && Number(inputValue) === 0) {
