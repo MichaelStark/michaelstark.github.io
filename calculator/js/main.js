@@ -5,22 +5,22 @@ window.setTimeout(_ => document.getElementById("version").remove(), 1000); // hi
 document.getElementById(".").innerText = .1.toLocaleString().slice(1, 2); // set dot depend on locale
 
 // notification
-var isNotificationGranted = Notification && Notification.permission === "granted";
+var isNotificationGranted = window.Notification && Notification.permission === "granted";
 if (navigator.permissions) {
-    navigator.permissions.query({ name: "notifications" }).then(status => status.onchange = _ => isNotificationGranted = Notification && Notification.permission === "granted");
+    navigator.permissions.query({ name: "notifications" }).then(status => status.onchange = _ => isNotificationGranted = window.Notification && Notification.permission === "granted");
 }
 
 // permissions
 document.body.addEventListener("pointerdown", getPermissions);
 function getPermissions() {
     document.body.removeEventListener("pointerdown", getPermissions);
-    if (Notification && Notification.permission === "default") {
+    if (window.Notification && Notification.permission === "default") {
         Notification.requestPermission();
     }
-    if (!DeviceOrientationEvent) {
+    if (!window.DeviceOrientationEvent) {
         notify("Error", "Device orientation is not supported by your browser");
     }
-    if (DeviceOrientationEvent.requestPermission) {
+    if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission) {
         DeviceOrientationEvent.requestPermission(); // iOS 13+
     }
 }
