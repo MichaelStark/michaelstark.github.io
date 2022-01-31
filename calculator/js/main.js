@@ -11,9 +11,9 @@ if (navigator.permissions) {
 }
 
 // permissions
-document.body.addEventListener("pointerdown", getPermissions);
+window.addEventListener("pointerup", getPermissions);
 function getPermissions() {
-    document.body.removeEventListener("pointerdown", getPermissions);
+    window.removeEventListener("pointerup", getPermissions);
     if (window.Notification && Notification.permission === "default") {
         Notification.requestPermission();
     }
