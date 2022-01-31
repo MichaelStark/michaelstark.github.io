@@ -145,21 +145,25 @@ async function magic(e) {
                 notify("Error", "Device orientation is not supported by your browser");
                 break;
             }
-            if (!displayDownTest) {
-                if (DeviceOrientationEvent.requestPermission) {
-                    await DeviceOrientationEvent.requestPermission(); // handle iOS 13+ devices
-                }
-                window.ondeviceorientation = (e) => {
-                    if ((e.beta > 160 || e.beta < -160) && e.gamma > -15 && e.gamma < 15) {
-                        calcEl.classList.add("rotate");
-                    } else {
-                        calcEl.classList.remove("rotate");
+            try {
+                if (!displayDownTest) {
+                    if (DeviceOrientationEvent.requestPermission) {
+                        await DeviceOrientationEvent.requestPermission(); // handle iOS 13+ devices
                     }
-                };
-            } else {
-                window.ondeviceorientation = null;
+                    window.ondeviceorientation = (e) => {
+                        if ((e.beta > 160 || e.beta < -160) && e.gamma > -15 && e.gamma < 15) {
+                            calcEl.classList.add("rotate");
+                        } else {
+                            calcEl.classList.remove("rotate");
+                        }
+                    };
+                } else {
+                    window.ondeviceorientation = null;
+                }
+                displayDownTest = !displayDownTest;
+            } catch (error) {
+                notify("Error", error);
             }
-            displayDownTest = !displayDownTest;
             break;
         case "+":
             // toxic
