@@ -5,9 +5,24 @@ window.setTimeout(_ => document.getElementById("version").remove(), 1000); // hi
 document.getElementById(".").innerText = .1.toLocaleString().slice(1, 2); // set dot depend on locale
 
 // notification
-var isNotificationGranted = window.Notification && Notification.permission === "granted";
+var isNotificationGranted = Notification && Notification.permission === "granted";
 if (navigator.permissions) {
-    navigator.permissions.query({ name: 'notifications' }).then(status => status.onchange = _ => isNotificationGranted = window.Notification && Notification.permission === "granted");
+    navigator.permissions.query({ name: "notifications" }).then(status => status.onchange = _ => isNotificationGranted = Notification && Notification.permission === "granted");
+}
+
+// permissions
+document.body.addEventListener("pointerdown", getPermissions);
+function getPermissions() {
+    document.body.removeEventListener("pointerdown", getPermissions);
+    if (Notification && Notification.permission === "default") {
+        Notification.requestPermission();
+    }
+    if (!DeviceOrientationEvent) {
+        notify("Error", "Device orientation is not supported by your browser");
+    }
+    if (DeviceOrientationEvent.requestPermission) {
+        DeviceOrientationEvent.requestPermission(); // iOS 13+
+    }
 }
 
 var formatter = new Intl.NumberFormat(navigator.language, { maximumFractionDigits: 20 });
@@ -26,7 +41,7 @@ for (el of buttonElList) {
     el.addEventListener("pointerdown", startBtnHandler);
     el.addEventListener("pointerup", endBtnHandler);
     el.addEventListener("pointercancel", cancelBtnHandler);
-};
+}
 
 function getPushClass(classList) {
     if (classList.contains("digit")) {
@@ -53,7 +68,7 @@ function startBtnHandler(e) {
         longPressTarget = null;
     }
     if (pushedBtnsCount === 1) {
-        longPressTimer = window.setTimeout(_ => {
+        longPressTimer = setTimeout(_ => {
             vibrate(true);
             longPressTarget = target;
         }, 3000);
@@ -99,14 +114,11 @@ function vibrate(isMagic) {
         }
     } else if (isMagic) {
         document.body.classList.add("magicAlarm");
-        window.setTimeout(_ => document.body.classList.remove("magicAlarm"), 200);
+        setTimeout(_ => document.body.classList.remove("magicAlarm"), 200);
     }
 }
 
-async function notify(title, msg) {
-    if (window.Notification && Notification.permission === "default") {
-        await Notification.requestPermission();
-    }
+function notify(title, msg) {
     if (isNotificationGranted) {
         navigator.serviceWorker.ready.then(registration => registration.showNotification(title, { body: msg, silent: true }));
     } else {
@@ -123,7 +135,7 @@ var magicHistory = "";
 var magicToxicResult = "";
 var displayDownTest = false;
 
-async function magic(e) {
+function magic(e) {
     var target = e.target.closest("div");
     switch (target.id) {
         case "c":
@@ -137,33 +149,20 @@ async function magic(e) {
         case "%":
             // wunderkind
             target.innerText = 9 - ((isDigitsTyping ? inputValue : resultValue.toString()).match(/\d/g).reduce((a, b) => a + Number(b), 0) % 9);
-            window.setTimeout(_ => target.innerText = "%", 1000);
+            setTimeout(_ => target.innerText = "%", 1000);
             break;
         case "-":
             // display down (test)
-            if (!DeviceOrientationEvent) {
-                notify("Error", "Device orientation is not supported by your browser");
-                break;
-            }
-            try {
-                if (!displayDownTest) {
-                    if (DeviceOrientationEvent.requestPermission) {
-                        await DeviceOrientationEvent.requestPermission(); // handle iOS 13+ devices
+            displayDownTest = !displayDownTest;
+            window.ondeviceorientation = displayDownTest
+                ? (e) => {
+                    if ((e.beta > 160 || e.beta < -160) && e.gamma > -15 && e.gamma < 15) {
+                        calcEl.classList.add("rotate");
+                    } else {
+                        calcEl.classList.remove("rotate");
                     }
-                    window.ondeviceorientation = (e) => {
-                        if ((e.beta > 160 || e.beta < -160) && e.gamma > -15 && e.gamma < 15) {
-                            calcEl.classList.add("rotate");
-                        } else {
-                            calcEl.classList.remove("rotate");
-                        }
-                    };
-                } else {
-                    window.ondeviceorientation = null;
                 }
-                displayDownTest = !displayDownTest;
-            } catch (error) {
-                notify("Error", error);
-            }
+                : null;
             break;
         case "+":
             // toxic
