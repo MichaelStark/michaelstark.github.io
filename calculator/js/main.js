@@ -17,15 +17,13 @@ function getPermissions() {
     if (window.Notification && Notification.permission === "default") {
         Notification.requestPermission();
     }
-    if (!window.DeviceOrientationEvent) {
-        notify("Error", "Device orientation is not supported by your browser");
-    }
     if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission) {
         DeviceOrientationEvent.requestPermission(); // iOS 13+
     }
 }
 
 var formatter = new Intl.NumberFormat(navigator.language, { maximumFractionDigits: 20 });
+var overlayEl = document.getElementById("overlay");
 var calcEl = document.getElementById("calc");
 var displayEl = document.getElementById("display");
 var resetEl = document.getElementById("c");
@@ -133,7 +131,7 @@ var isDigitsTyping = false;
 
 var magicHistory = "";
 var magicToxicResult = "";
-var displayDownTest = false;
+var magicDDFResult = "";
 
 function magic(e) {
     var target = e.target.closest("div");
@@ -144,25 +142,35 @@ function magic(e) {
             break;
         case "+-":
             // info
-            notify("Information", "AC  reload app\n⁺/₋  magic info\n%    wunderkind\n-     display down (test)\n+    toxic force\n=    history peek");
+            notify("Information", "AC  reload app\n⁺/₋  magic info\n%    wunderkind\n-     display down force (0 without gyroscope)\n+    toxic force\n=    history peek");
             break;
         case "%":
             // wunderkind
-            target.innerText = 9 - ((isDigitsTyping ? inputValue : resultValue.toString()).match(/\d/g).reduce((a, b) => a + Number(b), 0) % 9);
+            target.innerText = 9 - ((isDigitsTyping ? Number(inputValue) : resultValue) % 9);
             setTimeout(_ => target.innerText = "%", 1000);
             break;
+        case "0":
+            // display down force without gyroscope
+            overlayEl.classList.remove("hidden");
+            overlayEl.onpointerdown = magicDDF;
+            setTimeout(_ => { vibrate(true); overlayEl.classList.add("hidden"); overlayEl.onpointerdown = null; }, 15000);
+            break;
         case "-":
-            // display down (test)
-            displayDownTest = !displayDownTest;
-            window.ondeviceorientation = displayDownTest
-                ? (e) => {
-                    if ((e.beta > 160 || e.beta < -160) && e.gamma > -15 && e.gamma < 15) {
-                        calcEl.classList.add("rotate");
-                    } else {
-                        calcEl.classList.remove("rotate");
-                    }
+            // display down force
+            if (!window.DeviceOrientationEvent) {
+                notify("Error", "Device orientation is not supported by your browser");
+                break;
+            }
+            magicDDFResult = inputValue;
+            overlayEl.onpointerdown = magicDDF;
+            window.ondeviceorientation = (e) => {
+                if ((e.beta > 160 || e.beta < -160) && e.gamma > -15 && e.gamma < 15) {
+                    overlayEl.classList.remove("hidden");
+                } else {
+                    overlayEl.classList.add("hidden");
                 }
-                : null;
+            };
+            reset();
             break;
         case "+":
             // toxic
@@ -174,6 +182,20 @@ function magic(e) {
             notify("History", magicHistory);
             break;
     }
+}
+
+function magicDDF() {
+    vibrate();
+    isDigitsTyping = true;
+    if (Number(magicDDFResult) === 0) {
+        var forceTime = new Date(((new Date()).getTime() + 60000));
+        magicDDFResult = forceTime.getDate().toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
+            + (forceTime.getMonth() + 1).toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
+            + forceTime.getHours().toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
+            + forceTime.getMinutes().toLocaleString(navigator.language, { minimumIntegerDigits: 2 });
+    }
+    inputValue = (Number(magicDDFResult) - resultValue).toString();
+    displayValue(inputValue);
 }
 
 function reset() {
@@ -270,9 +292,16 @@ function btnHandler(e) {
                             break;
                     }
                 }
-                if (magicToxicResult && target.id === "=") {
-                    resultValue = magicToxicResult;
-                    magicToxicResult = "";
+                if (target.id === "=") {
+                    // disable magic functions
+                    if (magicToxicResult) {
+                        resultValue = Number(magicToxicResult);
+                        magicToxicResult = "";
+                    } else if (magicDDFResult) {
+                        magicDDFResult = "";
+                        overlayEl.onpointerdown = null;
+                        window.ondeviceorientation = null;
+                    }
                 }
                 resetEl.innerText = "C";
                 isDigitsTyping = false;
@@ -302,5 +331,5 @@ function displayValue(value, showAsIs = false) {
     var sizeIndex = 1;
     do {
         displayEl.className = "displayS" + sizeIndex;
-    } while (sizeIndex++ < 10 && displayEl.scrollWidth > displayEl.clientWidth);
+    } while (sizeIndex++ < 12 && displayEl.scrollWidth > displayEl.clientWidth);
 }

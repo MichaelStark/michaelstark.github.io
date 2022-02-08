@@ -1,15 +1,3 @@
-/* TODO for orientation test */
-@keyframes rotate {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* TODO for orientation test */
-.rotate {
-    animation: rotate 0.1s linear infinite;
-}
-
 @font-face {
     font-family: 'SFMono';
     src: url('../fonts/SFMono-Light.woff2') format('woff2');
@@ -59,6 +47,12 @@ body {
     padding: 0;
     font-size: min(2.72vh, 4.15vw);
     overflow: hidden;
+}
+
+#overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
 }
 
 #version {
@@ -111,34 +105,42 @@ body {
 }
 
 .displayS2 {
-    font-size: 4rem;
+    font-size: 4.5rem;
 }
 
 .displayS3 {
-    font-size: 3rem;
+    font-size: 4rem;
 }
 
 .displayS4 {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
 }
 
 .displayS5 {
-    font-size: 2rem;
+    font-size: 3rem;
 }
 
 .displayS6 {
-    font-size: 1.7rem;
+    font-size: 2.5rem;
 }
 
 .displayS7 {
-    font-size: 1.4rem;
+    font-size: 2rem;
 }
 
 .displayS8 {
-    font-size: 1.2rem;
+    font-size: 1.7rem;
 }
 
 .displayS9 {
+    font-size: 1.4rem;
+}
+
+.displayS10 {
+    font-size: 1.2rem;
+}
+
+.displayS11 {
     font-size: 1rem;
 }
 
@@ -206,4 +208,8 @@ body {
 
 .magicAlarm {
     box-shadow: inset 0 0 10px white;
+}
+
+.hidden {
+    display: none;
 }
