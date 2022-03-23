@@ -9,8 +9,8 @@ function magic(target) {
             document.location.reload();
             break;
         case "%":
-            // wunderkind
-            target.innerText = 9 - ((isDigitsTyping ? Number(inputValue) : resultValue) % 9);
+            // numerology
+            target.innerText = 9 - ((isDigitsTyping ? inputValue : resultValue.toString()).match(/\d/g).reduce((a, b) => a + Number(b), 0) % 9);
             setTimeout(_ => target.innerText = "%", 1000);
             break;
         case "0":
