@@ -135,11 +135,11 @@ function btnHandler(target) {
                 break;
             case "%":
                 if (inputValue.length && inputValue !== "0" && !inputValue.includes("e")) {
-                    inputValue = Number(inputValue) / 100;
+                    var percent = Number(inputValue) / 100;
                     if (operation === "+" || operation === "-") {
-                        inputValue = resultValue * inputValue;
+                        percent = resultValue * percent;
                     }
-                    inputValue = inputValue.toString();
+                    inputValue = Number(percent.toFixed(12)).toString();
                     displayValue(inputValue);
                 }
                 break;
@@ -174,6 +174,10 @@ function btnHandler(target) {
                         case "=":
                             resultValue = Number(inputValue);
                             break;
+                    }
+                    resultValue = Number(resultValue.toFixed(12));
+                    if (Math.abs(resultValue) > Number.MAX_SAFE_INTEGER) {
+                        resultValue = Number.NaN;
                     }
                 }
                 if (target.id === "=") {
