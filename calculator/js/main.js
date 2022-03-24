@@ -1,6 +1,7 @@
-window.onerror = (message, url, lineNumber) => notify("Error", message + "\n(" + url + ":" + lineNumber + ")"); // debug
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("./sw.js"); // enable PWA
+}
 window.ontouchend = _ => false; // disable long press vibration ! do not disable context menu
-window.addEventListener("load", _ => navigator.serviceWorker.register("./sw.js")); // enable PWA
 document.getElementById(".").innerText = .1.toLocaleString().slice(1, 2); // set dot depend on locale
 
 // notification
