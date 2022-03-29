@@ -69,16 +69,21 @@ body {
     padding-right: 5.8rem;
 }
 
-[id="+-"] {
+[id="+-"]>*, [id="%"]>* {
     line-height: 4rem !important;
 }
 
 [id="+-"]>* {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
 }
 
-[id="+-"]>sub {
-    vertical-align: initial;
+[id="%"]>* {
+    font-size: 1rem;
+    font-variant-numeric: tabular-nums;
+}
+
+[id="+-"]>sub, [id="%"]>sub {
+    vertical-align: baseline;
 }
 
 #display {

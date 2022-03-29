@@ -10,7 +10,8 @@ function magic(target) {
             break;
         case "%":
             // numerology
-            target.innerText = 9 - ((isDigitsTyping ? inputValue : resultValue.toString()).match(/\d/g).reduce((a, b) => a + Number(b), 0) % 9);
+            var remainder = ((isDigitsTyping ? inputValue : resultValue.toString()).match(/\d/g).reduce((a, b) => a + Number(b), 0) % 9);
+            target.innerHTML = "<sup>" + remainder + "</sup>⁄<sub>" + (9 - remainder) + "</sub>";
             setTimeout(_ => target.innerText = "%", 1000);
             break;
         case "0":
