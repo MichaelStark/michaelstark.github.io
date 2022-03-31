@@ -7,7 +7,6 @@ toolbox.precache([
     "js/magic.js",
     "js/calculator.js",
     "css/main.css",
-    "images/favicon.ico",
     "images/icon-192.png",
     "images/icon-512.png",
     "images/maskable-icon-512.png",
