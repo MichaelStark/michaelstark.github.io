@@ -51,7 +51,7 @@ function startBtnHandler(e) {
     }
     if (pushedBtnsCount === 1) {
         longPressTimer = setTimeout(_ => {
-            vibrate(true);
+            feedback(true);
             longPressTarget = target;
         }, 3000);
     }
@@ -96,7 +96,7 @@ function btnHandler(target) {
     if (target === displayEl) {
         // do not remove last zero or if exponential notation
         if (inputValue.length && inputValue !== "0" && !inputValue.includes("e")) {
-            vibrate();
+            feedback();
             inputValue = inputValue.slice(0, -1);
             // remove negative sign if value is 0
             if (inputValue.startsWith("-") && Number(inputValue) === 0) {
@@ -111,7 +111,7 @@ function btnHandler(target) {
     } else if (digitElList.namedItem(target.id)) {
         // max 13 digits and only one decimal dot and do not edit exponential notation
         if (inputValue.replace(/\D/g, "").length < 13 && !inputValue.includes("e") && (target.id !== "." || !inputValue.includes("."))) {
-            vibrate();
+            feedback();
             // prevent containing just zeros or starts with zero
             if (inputValue === "0" && target.id !== ".") {
                 inputValue = "";
@@ -122,7 +122,7 @@ function btnHandler(target) {
             displayValue(inputValue);
         }
     } else {
-        vibrate();
+        feedback();
         switch (target.id) {
             case "c":
                 if (target.innerText === "AC") {

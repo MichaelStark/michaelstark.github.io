@@ -22,16 +22,17 @@ function getPermissions() {
     }
 }
 
-function vibrate(isMagic) {
+function feedback(isMagic) {
+    if (isMagic) {
+        document.body.classList.add("magicAlarm");
+        setTimeout(_ => document.body.classList.remove("magicAlarm"), 200);
+    }
     if (navigator.vibrate) {
         if (isMagic) {
             navigator.vibrate(200);
         } else {
             navigator.vibrate(1);
         }
-    } else if (isMagic) {
-        document.body.classList.add("magicAlarm");
-        setTimeout(_ => document.body.classList.remove("magicAlarm"), 200);
     }
 }
 

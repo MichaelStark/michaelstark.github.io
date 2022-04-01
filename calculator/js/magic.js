@@ -18,7 +18,7 @@ function magic(target) {
             // display down force without gyroscope
             overlayEl.classList.remove("hidden");
             overlayEl.onpointerdown = magicDDF;
-            setTimeout(_ => { vibrate(true); overlayEl.classList.add("hidden"); overlayEl.onpointerdown = null; }, 15000);
+            setTimeout(_ => { feedback(true); overlayEl.classList.add("hidden"); overlayEl.onpointerdown = null; }, 10000);
             break;
         case "-":
             // display down force
@@ -50,7 +50,7 @@ function magic(target) {
 }
 
 function magicDDF() {
-    vibrate();
+    feedback();
     isDigitsTyping = true;
     if (Number(magicDDFResult) === 0) {
         var forceTime = new Date(((new Date()).getTime() + 60000));
