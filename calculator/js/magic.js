@@ -4,32 +4,36 @@ var magicDDFResult = "";
 var magicDDFAuto = false;
 var overlayDDFEl = document.getElementById("overlayDDF");
 overlayDDFEl.onpointerdown = _ => {
-    clearPushedOperation();
     feedback();
     if (magicDDFResult) {
+        clearPushedOperation();
+        resetEl.innerText = "C";
         isDigitsTyping = true;
-        if (Number(magicDDFResult) === 0) {
+        var forceValue = Number(magicDDFResult);
+        if (forceValue === 0) {
             var forceTime = new Date(((new Date()).getTime() + 60000));
-            magicDDFResult = forceTime.getDate().toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
+            forceValue = Number(
+                forceTime.getDate().toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
                 + (forceTime.getMonth() + 1).toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
                 + forceTime.getHours().toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
-                + forceTime.getMinutes().toLocaleString(navigator.language, { minimumIntegerDigits: 2 });
+                + forceTime.getMinutes().toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
+            );
         }
         switch (operation) {
             case "+":
-                inputValue = (Number(magicDDFResult) - resultValue).toString();
+                inputValue = (forceValue - resultValue).toString();
                 break;
             case "-":
-                inputValue = (resultValue - Number(magicDDFResult)).toString();
+                inputValue = (resultValue - forceValue).toString();
                 break;
             case "x":
-                inputValue = (Number(magicDDFResult) / resultValue).toString();
+                inputValue = (forceValue / resultValue).toString();
                 break;
             case "÷":
-                inputValue = (resultValue / Number(magicDDFResult)).toString();
+                inputValue = (resultValue / forceValue).toString();
                 break;
             default:
-                inputValue = magicDDFResult;
+                inputValue = forceValue.toString();
                 break;
         }
         displayValue(inputValue);
