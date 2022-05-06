@@ -1,5 +1,4 @@
 var formatter = new Intl.NumberFormat(navigator.language, { maximumFractionDigits: 20 });
-var overlayEl = document.getElementById("overlay");
 var calcEl = document.getElementById("calc");
 var displayEl = document.getElementById("display");
 var resetEl = document.getElementById("c");
@@ -53,7 +52,7 @@ function startBtnHandler(e) {
         longPressTimer = setTimeout(_ => {
             feedback(true);
             longPressTarget = target;
-        }, 3000);
+        }, 2000);
     }
 }
 
@@ -181,15 +180,8 @@ function btnHandler(target) {
                     }
                 }
                 if (target.id === "=") {
-                    // disable magic functions
-                    if (magicToxicResult) {
-                        resultValue = Number(magicToxicResult);
-                        magicToxicResult = "";
-                    } else if (magicDDFResult) {
-                        magicDDFResult = "";
-                        overlayEl.onpointerdown = null;
-                        window.ondeviceorientation = null;
-                    }
+                    applyMagic();
+                    disableMagic();
                 }
                 resetEl.innerText = "C";
                 isDigitsTyping = false;
