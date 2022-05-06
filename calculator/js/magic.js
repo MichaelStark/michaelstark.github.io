@@ -36,6 +36,7 @@ overlayDDFEl.onpointerdown = _ => {
     }
 };
 window.ondeviceorientation = (e) => {
+    deviceOrientationGranted = true;
     if (magicDDFResult && magicDDFAuto) {
         if ((e.beta > 160 || e.beta < -160) && e.gamma > -15 && e.gamma < 15) {
             overlayDDFEl.classList.remove("hidden");
@@ -73,8 +74,8 @@ function magic(target) {
             disableMagic();
             magicDDFResult = inputValue;
             magicDDFAuto = true;
-            if (!window.DeviceOrientationEvent) {
-                notify("Error", "Device orientation is not supported by your browser - please use manual mode");
+            if (!deviceOrientationGranted) {
+                alert("Device orientation is not available - please use manual mode");
             }
             reset();
             break;
@@ -86,7 +87,11 @@ function magic(target) {
             break;
         case "=":
             // history
-            notify("History", magicHistory);
+            if (isNotificationGranted) {
+                navigator.serviceWorker.ready.then(registration => registration.showNotification("History", { body: magicHistory, silent: true }));
+            } else {
+                alert(magicHistory);
+            }
             break;
     }
 }

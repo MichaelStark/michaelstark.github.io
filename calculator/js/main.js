@@ -1,25 +1,27 @@
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./sw.js"); // enable PWA
 }
-window.ontouchend = _ => false; // disable long press vibration ! do not disable context menu
 document.getElementById(".").innerText = .1.toLocaleString().slice(1, 2); // set dot depend on locale
 
-// notification
+// permissions
 var isNotificationGranted = window.Notification && Notification.permission === "granted";
+var deviceOrientationGranted = false;
+
+// notification
 if (navigator.permissions) {
     navigator.permissions.query({ name: "notifications" }).then(status => status.onchange = _ => isNotificationGranted = window.Notification && Notification.permission === "granted");
 }
 
-// permissions
-window.addEventListener("pointerup", getPermissions);
-function getPermissions() {
-    window.removeEventListener("pointerup", getPermissions);
+// requests
+window.ontouchend = _ => {
+    window.ontouchend = _ => false; // disable long press vibration ! do not disable context menu
     if (window.Notification && Notification.permission === "default") {
         Notification.requestPermission();
     }
-    if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission) {
+    if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission && !deviceOrientationGranted) {
         DeviceOrientationEvent.requestPermission(); // iOS 13+
     }
+    return false;
 }
 
 function feedback(isMagic) {
@@ -33,13 +35,5 @@ function feedback(isMagic) {
         } else {
             navigator.vibrate(1);
         }
-    }
-}
-
-function notify(title, msg) {
-    if (isNotificationGranted) {
-        navigator.serviceWorker.ready.then(registration => registration.showNotification(title, { body: msg, silent: true }));
-    } else {
-        alert(msg);
     }
 }
