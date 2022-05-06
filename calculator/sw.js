@@ -2,6 +2,9 @@ importScripts("js/sw-toolbox.js");
 toolbox.precache([
     "index.html",
     "readme.html",
+    "i18n/i18n.js",
+    "js/i18nextBrowserLanguageDetector.min.js",
+    "js/i18next.js",
     "js/main.js",
     "js/rc.js",
     "js/magic.js",

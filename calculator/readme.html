@@ -30,17 +30,17 @@
             overflow: hidden;
         }
     </style>
+    <script src="./i18n/i18n.js"></script>
+    <script src="./js/i18nextBrowserLanguageDetector.min.js"></script>
+    <script src="./js/i18next.js"></script>
 </head>
 
 <body>
-    Magic eЯculator v1.43<br><br>
-    AC/C reload app<br>
-    ⁺⁄₋ remote control<br>
-    % numerology (remainder / 9-remainder)<br>
-    + toxic force<br>
-    - display down force<br>
-    0 display down force manually<br>
-    = history peek<br>
+    <script>
+        i18next.use(i18nextBrowserLanguageDetector).init(i18n).then(_ => {
+            document.body.innerHTML = i18next.t("readme");
+        });
+    </script>
 </body>
 
 </html>

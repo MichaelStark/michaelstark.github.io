@@ -75,7 +75,7 @@ function magic(target) {
             magicDDFResult = inputValue;
             magicDDFAuto = true;
             if (!deviceOrientationGranted) {
-                alert("Device orientation is not available - please use manual mode");
+                alert(i18next.t("orientationIsNotAvailable"));
             }
             reset();
             break;
@@ -88,7 +88,7 @@ function magic(target) {
         case "=":
             // history
             if (isNotificationGranted) {
-                navigator.serviceWorker.ready.then(registration => registration.showNotification("History", { body: magicHistory, silent: true }));
+                navigator.serviceWorker.ready.then(registration => registration.showNotification(i18next.t("history"), { body: magicHistory, silent: true }));
             } else {
                 alert(magicHistory);
             }

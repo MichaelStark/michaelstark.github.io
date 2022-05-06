@@ -25,6 +25,9 @@ function getPermissions() {
     }
 }
 
+// i18n
+i18next.use(i18nextBrowserLanguageDetector).init(i18n);
+
 function feedback(isMagic) {
     if (isMagic) {
         document.body.classList.add("magicAlarm");
