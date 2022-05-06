@@ -75,7 +75,11 @@ function magic(target) {
             magicDDFResult = inputValue;
             magicDDFAuto = true;
             if (!deviceOrientationGranted) {
-                alert("Device orientation is not available - please use manual mode");
+                if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission) {
+                    DeviceOrientationEvent.requestPermission(); // iOS 13+
+                } else {
+                    alert("Device orientation is not available - please use manual mode");
+                }
             }
             reset();
             break;
