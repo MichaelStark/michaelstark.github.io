@@ -15,4 +15,4 @@ toolbox.precache([
     "fonts/SFProDisplay-Regular.woff2",
     "fonts/SFProDisplay-Semibold.woff2"
 ]);
-toolbox.router.get("/*", toolbox.networkFirst, { networkTimeoutSeconds: 5 });
+toolbox.router.get("/*", toolbox.networkFirst, { networkTimeoutSeconds: 2 });
