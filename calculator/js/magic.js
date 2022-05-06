@@ -4,8 +4,9 @@ var magicDDFResult = "";
 var magicDDFAuto = false;
 var overlayDDFEl = document.getElementById("overlayDDF");
 overlayDDFEl.onpointerdown = _ => {
+    clearPushedOperation();
+    feedback();
     if (magicDDFResult) {
-        feedback();
         isDigitsTyping = true;
         if (Number(magicDDFResult) === 0) {
             var forceTime = new Date(((new Date()).getTime() + 60000));
@@ -14,7 +15,23 @@ overlayDDFEl.onpointerdown = _ => {
                 + forceTime.getHours().toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
                 + forceTime.getMinutes().toLocaleString(navigator.language, { minimumIntegerDigits: 2 });
         }
-        inputValue = (Number(magicDDFResult) - resultValue).toString();
+        switch (operation) {
+            case "+":
+                inputValue = (Number(magicDDFResult) - resultValue).toString();
+                break;
+            case "-":
+                inputValue = (resultValue - Number(magicDDFResult)).toString();
+                break;
+            case "x":
+                inputValue = (Number(magicDDFResult) / resultValue).toString();
+                break;
+            case "÷":
+                inputValue = (resultValue / Number(magicDDFResult)).toString();
+                break;
+            default:
+                inputValue = magicDDFResult;
+                break;
+        }
         displayValue(inputValue);
     }
 };
@@ -49,8 +66,8 @@ function magic(target) {
                 magicDDFAuto = false;
                 overlayDDFEl.classList.remove("hidden");
                 setTimeout(_ => { feedback(true); overlayDDFEl.classList.add("hidden"); magicDDFAuto = true; }, 10000);
-                break;
             }
+            break;
         case "-":
             // display down force
             disableMagic();

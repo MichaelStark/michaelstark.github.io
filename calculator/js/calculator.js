@@ -32,14 +32,18 @@ function getPushClass(classList) {
     }
 }
 
+function clearPushedOperation() {
+    for (el of operationElList) {
+        el.classList.remove("pushedOperation");
+    }
+}
+
 function startBtnHandler(e) {
     pushedBtnsCount++;
     var target = e.target.closest("div");
     if (target !== displayEl) {
         target.classList.remove("pushOff");
-        for (el of operationElList) {
-            el.classList.remove("pushedOperation");
-        }
+        clearPushedOperation();
         target.classList.add(getPushClass(target.classList));
     }
     target.setPointerCapture(e.pointerId); // fix for mouse leave
@@ -77,9 +81,7 @@ function cancelBtnHandler(e) {
     var target = e.target.closest("div");
     if (target !== displayEl) {
         target.classList.remove(getPushClass(target.classList));
-        for (el of operationElList) {
-            el.classList.remove("pushedOperation");
-        }
+        clearPushedOperation();
         target.classList.add("pushOff");
         if (target.classList.contains("operation") && target.id !== "=") {
             target.classList.add("pushedOperation");
