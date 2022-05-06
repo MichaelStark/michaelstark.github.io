@@ -36,8 +36,8 @@ overlayDDFEl.onpointerdown = _ => {
     }
 };
 window.ondeviceorientation = (e) => {
-    deviceOrientationGranted = true;
-    if (magicDDFResult && magicDDFAuto) {
+    deviceOrientationGranted = e.alpha != null && e.beta != null && e.gamma != null;
+    if (deviceOrientationGranted && magicDDFResult && magicDDFAuto) {
         if ((e.beta > 160 || e.beta < -160) && e.gamma > -15 && e.gamma < 15) {
             overlayDDFEl.classList.remove("hidden");
         } else {
