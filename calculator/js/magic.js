@@ -9,36 +9,33 @@ overlayDDFEl.onpointerdown = _ => {
         clearPushedOperation();
         resetEl.innerText = "C";
         isDigitsTyping = true;
-        var forceValue = Number(magicDDFResult);
-        if (forceValue === 0) {
+        var forceValue = magicDDFResult;
+        if (forceValue === "0") {
             var forceTime = new Date(((new Date()).getTime() + 60000));
-            forceValue = Number(
-                forceTime.getDate().toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
+            forceValue = forceTime.getDate().toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
                 + (forceTime.getMonth() + 1).toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
                 + forceTime.getHours().toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
-                + forceTime.getMinutes().toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
-            );
+                + forceTime.getMinutes().toLocaleString(navigator.language, { minimumIntegerDigits: 2 });
         }
         switch (operation) {
             case "+":
-                inputValue = (forceValue - resultValue).toString();
+                inputValue = (Number(forceValue) - resultValue).toString();
                 break;
             case "-":
-                inputValue = (resultValue - forceValue).toString();
+                inputValue = (resultValue - Number(forceValue)).toString();
                 break;
             case "x":
-                inputValue = (forceValue / resultValue).toString();
+                inputValue = (Number(forceValue) / resultValue).toString();
                 break;
             case "÷":
-                inputValue = (resultValue / forceValue).toString();
+                inputValue = (resultValue / Number(forceValue)).toString();
                 break;
             default:
-                var forceValueString = forceValue.toString();
-                if (inputValue != forceValueString) {
-                    if (forceValueString.startsWith(inputValue)) {
-                        inputValue += forceValueString[inputValue.length];
+                if (inputValue !== forceValue) {
+                    if (forceValue.startsWith(inputValue)) {
+                        inputValue += forceValue[inputValue.length];
                     } else {
-                        inputValue = forceValueString[0];
+                        inputValue = forceValue[0];
                     }
                 }
                 break;
