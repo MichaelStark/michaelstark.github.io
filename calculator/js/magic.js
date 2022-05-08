@@ -33,7 +33,14 @@ overlayDDFEl.onpointerdown = _ => {
                 inputValue = (resultValue / forceValue).toString();
                 break;
             default:
-                inputValue = forceValue.toString();
+                var forceValueString = forceValue.toString();
+                if (inputValue != forceValueString) {
+                    if (forceValueString.startsWith(inputValue)) {
+                        inputValue += forceValueString[inputValue.length];
+                    } else {
+                        inputValue = forceValueString[0];
+                    }
+                }
                 break;
         }
         displayValue(inputValue);
@@ -62,7 +69,7 @@ function magic(target) {
         case "%":
             // numerology
             var remainder = ((isDigitsTyping ? inputValue : resultValue.toString()).match(/\d/g).reduce((a, b) => a + Number(b), 0) % 9);
-            target.innerHTML = "<sup>" + remainder + "</sup>⁄<sub>" + (9 - remainder) + "</sub>";
+            target.innerHTML = "<sup>" + (remainder || 9) + "</sup>⁄<sub>" + (9 - remainder) + "</sub>";
             setTimeout(_ => target.innerText = "%", 1000);
             break;
         case "0":
