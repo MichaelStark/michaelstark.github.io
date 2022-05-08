@@ -14,6 +14,8 @@ const i18n = {
                     "            application. If any function does not work, delete the application, clear the site data in the browser and" +
                     "            install the application again.</p>" +
                     "        <p style=\"text-align: center;\">Permissions</p>" +
+                    "        <p style=\"text-align: justify;\">In order for the application to request possible permissions, you need to press" +
+                    "            once anywhere on the screen when you first start it.</p>" +
                     "        <p style=\"text-align: justify;\"><span style=\"text-decoration: underline;\">Android</span>: permission to display" +
                     "            notifications. If enabled, the \"peek\" function will be displayed in the notification panel. Thus, you can" +
                     "            receive notifications on your smart watch. Otherwise, the information will be displayed in a pop-up window." +
@@ -39,10 +41,10 @@ const i18n = {
                     "                the operations were before, the result of the calculations will always be your entered number.</li>" +
                     "            <li style=\"text-align: justify;\"><strong>-</strong><br />DD force or force screen down. Designed to force a" +
                     "                number by fitting the calculation result to the force using \"blind input of a random number\". Enter the" +
-                    "                desired number for force and turn on the function. You can also leave the number 0 before turning on the" +
-                    "                function - this way we will force the number of the format: DayMonthHoursMinutes. The resulting time" +
-                    "                will be +1 minute to the time on your device. The forcing process itself requires turning the device" +
-                    "                screen down. Usually, this process can be done automatically if permission was not required to access" +
+                    "                desired number for force and turn on the function. Button = disables the function. You can also leave the" +
+                    "                number 0 before turning on the function - this way we will force the number of the format: DayMonthHoursMinutes." +
+                    "                The resulting time will be +1 minute to the time on your device. The forcing process itself requires turning" +
+                    "                the device screen down. Usually, this process can be done automatically if permission was not required to access" +
                     "                the device orientation. In the inverted state - the application turns off the ability to use the" +
                     "                calculator and itself enters the missing number after pressing the screen. The desired number is adapted" +
                     "                to the last operation before the device is turned over. But it is desirable to use + or -. In the case" +
@@ -76,6 +78,8 @@ const i18n = {
                     "            интернет после первого полного запуска приложения. В случае неработоспособности какой-либо функции" +
                     "            &ndash; удалите приложение, очистите данные сайта в браузере и установите приложение заново.</p>" +
                     "        <p style=\"text-align: center;\">Разрешения</p>" +
+                    "        <p style=\"text-align: justify;\">Что бы приложение запросило возможные разрешения, нужно при первом запуске" +
+                    "            нажать один раз в любом месте экрана.</p>" +
                     "        <p style=\"text-align: justify;\"><span style=\"text-decoration: underline;\">Android</span>: разрешение для" +
                     "            отображения уведомлений. Если разрешить, то функция &laquo;подсмотреть&raquo; будет отображаться в" +
                     "            панели уведомлений. Таким образом можно получать уведомления на смарт часах. В противном случае &ndash;" +
@@ -98,10 +102,10 @@ const i18n = {
                     "                были операции до этого &ndash; результатом вычислений всегда будет ваше введенное число.</li>" +
                     "            <li style=\"text-align: justify;\"><strong>-</strong><br />DD форс или форс экраном вниз. Предназначен для" +
                     "                форсирования числа, путем подгона результата вычислений к форсу с помощью &laquo;слепого ввода" +
-                    "                случайного числа&raquo;. Вводим нужное число для форса и включаем функцию. Также можно перед" +
-                    "                включением функции оставить цифру 0 &ndash; таким образом мы будем форсировать число формата:" +
-                    "                ДеньМесяцЧасыМинуты. Результирующее время будет равно +1 минута ко времени на вашем устройстве. Сам" +
-                    "                процесс форсирования требует переворачивания устройства экраном вниз. Обычно этот процесс может" +
+                    "                случайного числа&raquo;. Вводим нужное число для форса и включаем функцию. Кнопка = отключает функцию." +
+                    "                Также можно перед включением функции оставить цифру 0 &ndash; таким образом мы будем форсировать число" +
+                    "                формата: ДеньМесяцЧасыМинуты. Результирующее время будет равно +1 минута ко времени на вашем устройстве." +
+                    "                Сам процесс форсирования требует переворачивания устройства экраном вниз. Обычно этот процесс может" +
                     "                проходить автоматически, если не потребовалось разрешение на доступ к ориентации устройства. В" +
                     "                перевернутом состоянии &ndash; приложение выключает возможность пользоваться калькулятором и само" +
                     "                вводит недостающее число после нажатия на экран. Нужное число адаптируется к последней операции до" +
