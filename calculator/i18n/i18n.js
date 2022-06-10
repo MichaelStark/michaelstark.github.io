@@ -54,7 +54,7 @@ const i18n = {
                     "                does not have access to the device orientation, after enabling this function, it will notify you about" +
                     "                it. In this case, you need to use the manual mode. You are required to tell the application when the" +
                     "                device screen will be flipped. It is enough to hold the &ldquo;0&rdquo; button for 2 seconds and after" +
-                    "                that the application works as if the device was turned over under normal conditions. From now on, after" +
+                    "                that the application works as if the device was turned over under normal conditions. From the first touch on the screen after" +
                     "                10 seconds, the application will return to normal input mode, vibrate and display a white frame around" +
                     "                the edges of the screen. Manual mode can work repeatedly and even if there is access to the orientation" +
                     "                of the device. Manual mode has priority over automatic mode. Thus, you can enter a random number simply" +
@@ -116,7 +116,7 @@ const i18n = {
                     "                ориентации устройства &ndash; после включения этой функции оно уведомит об этом. В таком случае" +
                     "                нужно воспользоваться ручным режимом. От Вас требуется сообщить приложению о том, когда экран" +
                     "                устройства будет перевернут. Достаточно удерживать 2 секунды кнопку &laquo;0&raquo; и после этого" +
-                    "                приложение работает, как если бы перевернули устройство в обычных условиях. С этого момента через 10" +
+                    "                приложение работает, как если бы перевернули устройство в обычных условиях. С момента первого касания по экрану через 10" +
                     "                секунд приложение вернется в обычный режим ввода, завибрирует и отобразится белая рамка по краям" +
                     "                экрана. Ручной режим может работать многократно и даже если есть доступ к ориентации устройства." +
                     "                Ручной режим имеет приоритет перед автоматическим. Таким образом можно вводить случайное число" +

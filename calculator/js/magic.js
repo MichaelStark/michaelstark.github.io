@@ -2,10 +2,15 @@ var magicHistory = "";
 var magicToxicResult = "";
 var magicDDFResult = "";
 var magicDDFAuto = false;
+var magicDDFManualTimeout = false;
 var overlayDDFEl = document.getElementById("overlayDDF");
 overlayDDFEl.onpointerdown = _ => {
     feedback();
     if (magicDDFResult) {
+        if (!magicDDFAuto && !magicDDFManualTimeout) {
+            magicDDFManualTimeout = true;
+            setTimeout(_ => { feedback(true); overlayDDFEl.classList.add("hidden"); magicDDFAuto = true; magicDDFManualTimeout = false; }, 10000);
+        }
         clearPushedOperation();
         resetEl.innerText = "C";
         isDigitsTyping = true;
@@ -74,7 +79,6 @@ function magic(target) {
             if (magicDDFResult) {
                 magicDDFAuto = false;
                 overlayDDFEl.classList.remove("hidden");
-                setTimeout(_ => { feedback(true); overlayDDFEl.classList.add("hidden"); magicDDFAuto = true; }, 10000);
             }
             break;
         case "-":
