@@ -1,5 +1,5 @@
-if (window.location.protocol === "file:") {
-    window.location.replace("https://michaelstark.github.io/calculator");
+if (window.location.origin !== "https://michaelstark.github.io") {
+    window.location.replace("https://michaelstark.github.io/calculator/");
 }
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./sw.js"); // enable PWA
