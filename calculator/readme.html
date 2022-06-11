@@ -28,14 +28,16 @@
             height: calc(100% - 20px);
         }
     </style>
-    <script src="./i18n/i18n.js"></script>
-    <script src="./js/i18nextBrowserLanguageDetector.min.js"></script>
-    <script src="./js/i18next.js"></script>
+    <script src="./js/version.js"></script>
+    <script src="./js/i18n/i18n.js"></script>
+    <script src="./js/i18n/i18nextBrowserLanguageDetector.min.js"></script>
+    <script src="./js/i18n/i18next.js"></script>
 </head>
 
 <body>
-    <div style="text-align: center;"><strong>CalculaTool v1.47<br /></strong>&copy; Michael Stark,
-        2022</div>
+    <div style="text-align: center;"><strong>Mindculatool
+            <script>document.write(version);</script><br />
+        </strong>&copy; Michael Stark, 2022</div>
     <script>
         i18next.use(i18nextBrowserLanguageDetector).init(i18n).then(_ => {
             document.body.innerHTML += i18next.t("readme");

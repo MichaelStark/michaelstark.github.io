@@ -2,7 +2,7 @@
     "id": "/calculator/",
     "name": "Calculator",
     "short_name": "Calculator",
-    "description": "Magic calculator",
+    "description": "Calculator",
     "start_url": "/calculator/",
     "display": "fullscreen",
     "orientation": "portrait",

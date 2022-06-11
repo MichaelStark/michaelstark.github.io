@@ -1,17 +1,33 @@
-var formatter = new Intl.NumberFormat(navigator.language, { maximumFractionDigits: 20 });
-var calcEl = document.getElementById("calc");
-var displayEl = document.getElementById("display");
-var resetEl = document.getElementById("c");
-var buttonElList = document.getElementsByClassName("button");
-var digitElList = document.getElementsByClassName("digit");
-var operationElList = document.getElementsByClassName("operation");
-var pushedBtnsCount = 0;
-var longPressTarget;
-var longPressTimer;
-var resultValue = 0;
-var inputValue = "0";
-var operation = "";
-var isDigitsTyping = false;
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("./sw.js"); // enable PWA
+}
+window.ontouchend = _ => false; // disable long press vibration ! do not disable context menu
+document.getElementById(".").innerText = .1.toLocaleString().slice(1, 2); // set dot depend on locale
+
+// i18n
+i18next.use(i18nextBrowserLanguageDetector).init(i18n);
+
+// version
+let currentVersion = localStorage.getItem("currentVersion");
+if (!currentVersion || currentVersion !== version) {
+    alert(i18next.t("newVersionAvailable"));
+    localStorage.setItem("currentVersion", version);
+}
+
+let formatter = new Intl.NumberFormat(navigator.language, { maximumFractionDigits: 20 });
+let calcEl = document.getElementById("calc");
+let displayEl = document.getElementById("display");
+let resetEl = document.getElementById("c");
+let buttonElList = document.getElementsByClassName("button");
+let digitElList = document.getElementsByClassName("digit");
+let operationElList = document.getElementsByClassName("operation");
+let pushedBtnsCount = 0;
+let longPressTarget;
+let longPressTimer;
+let resultValue = 0;
+let inputValue = "0";
+let operation = "";
+let isDigitsTyping = false;
 
 displayEl.addEventListener("pointerdown", startBtnHandler);
 displayEl.addEventListener("pointerup", endBtnHandler);
@@ -20,6 +36,20 @@ for (el of buttonElList) {
     el.addEventListener("pointerdown", startBtnHandler);
     el.addEventListener("pointerup", endBtnHandler);
     el.addEventListener("pointercancel", cancelBtnHandler);
+}
+
+function feedback(isMagic) {
+    if (isMagic) {
+        document.body.classList.add("magicAlarm");
+        setTimeout(_ => document.body.classList.remove("magicAlarm"), 200);
+    }
+    if (navigator.vibrate) {
+        if (isMagic) {
+            navigator.vibrate(200);
+        } else {
+            navigator.vibrate(1);
+        }
+    }
 }
 
 function getPushClass(classList) {
@@ -40,7 +70,7 @@ function clearPushedOperation() {
 
 function startBtnHandler(e) {
     pushedBtnsCount++;
-    var target = e.target.closest("div");
+    let target = e.target.closest("div");
     if (target !== displayEl) {
         target.classList.remove("pushOff");
         clearPushedOperation();
@@ -62,7 +92,7 @@ function startBtnHandler(e) {
 
 function endBtnHandler(e) {
     cancelBtnHandler(e);
-    var target = e.target.closest("div");
+    let target = e.target.closest("div");
     if (longPressTarget === target) {
         longPressTarget = null;
         target.classList.remove("pushedOperation");
@@ -79,7 +109,7 @@ function endBtnHandler(e) {
 
 function cancelBtnHandler(e) {
     pushedBtnsCount--;
-    var target = e.target.closest("div");
+    let target = e.target.closest("div");
     if (target !== displayEl) {
         target.classList.remove(getPushClass(target.classList));
         clearPushedOperation();
@@ -134,7 +164,7 @@ function btnHandler(target) {
                 break;
             case "%":
                 if (inputValue.length && inputValue !== "0" && !inputValue.includes("e")) {
-                    var percent = Number(inputValue) / 100;
+                    let percent = Number(inputValue) / 100;
                     if (operation === "+" || operation === "-") {
                         percent = resultValue * percent;
                     }
@@ -195,7 +225,7 @@ function btnHandler(target) {
 
 function displayValue(value, showAsIs = false) {
     // fix formatter if last symbol is 0 or .
-    var isNeedZeroFormatFix = value.includes(".") && (value[value.length - 1] === "0" || value[value.length - 1] === ".");
+    let isNeedZeroFormatFix = value.includes(".") && (value[value.length - 1] === "0" || value[value.length - 1] === ".");
     if (isNeedZeroFormatFix) {
         value += "1";
     }
@@ -208,7 +238,7 @@ function displayValue(value, showAsIs = false) {
         displayEl.innerText = displayEl.innerText.slice(0, -1);
     }
     // calculate font
-    var sizeIndex = 1;
+    let sizeIndex = 1;
     do {
         displayEl.className = "displayS" + sizeIndex;
     } while (sizeIndex++ < 12 && displayEl.scrollWidth > displayEl.clientWidth);

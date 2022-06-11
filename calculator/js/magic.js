@@ -1,9 +1,30 @@
-var magicHistory = "";
-var magicToxicResult = "";
-var magicDDFResult = "";
-var magicDDFAuto = false;
-var magicDDFManualTimeout = false;
-var overlayDDFEl = document.getElementById("overlayDDF");
+// permissions
+let isNotificationGranted = window.Notification && Notification.permission === "granted";
+let deviceOrientationGranted = false;
+
+// notification
+if (navigator.permissions) {
+    navigator.permissions.query({ name: "notifications" }).then(status => status.onchange = _ => isNotificationGranted = window.Notification && Notification.permission === "granted");
+}
+
+// requests
+window.addEventListener("pointerup", getPermissions);
+function getPermissions() {
+    window.removeEventListener("pointerup", getPermissions);
+    if (window.Notification && Notification.permission === "default") {
+        Notification.requestPermission();
+    }
+    if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission && !deviceOrientationGranted) {
+        DeviceOrientationEvent.requestPermission(); // iOS 13+
+    }
+}
+
+let magicHistory = "";
+let magicToxicResult = "";
+let magicDDFResult = "";
+let magicDDFAuto = false;
+let magicDDFManualTimeout = false;
+let overlayDDFEl = document.getElementById("overlayDDF");
 overlayDDFEl.onpointerdown = _ => {
     feedback();
     if (magicDDFResult) {
@@ -14,9 +35,9 @@ overlayDDFEl.onpointerdown = _ => {
         clearPushedOperation();
         resetEl.innerText = "C";
         isDigitsTyping = true;
-        var forceValue = magicDDFResult;
+        let forceValue = magicDDFResult;
         if (forceValue === "0") {
-            var forceTime = new Date(((new Date()).getTime() + 60000));
+            let forceTime = new Date(((new Date()).getTime() + 60000));
             forceValue = forceTime.getDate().toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
                 + (forceTime.getMonth() + 1).toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
                 + forceTime.getHours().toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
@@ -70,7 +91,7 @@ function magic(target) {
             break;
         case "%":
             // numerology
-            var remainder = ((isDigitsTyping ? inputValue : resultValue.toString()).match(/\d/g).reduce((a, b) => a + Number(b), 0) % 9);
+            let remainder = ((isDigitsTyping ? inputValue : resultValue.toString()).match(/\d/g).reduce((a, b) => a + Number(b), 0) % 9);
             target.innerHTML = "<sup>" + (remainder || 9) + "</sup>⁄<sub>" + (9 - remainder) + "</sub>";
             setTimeout(_ => target.innerText = "%", 1000);
             break;
