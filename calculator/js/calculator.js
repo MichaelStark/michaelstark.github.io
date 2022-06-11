@@ -1,3 +1,6 @@
+if (window.location.protocol === "file:") {
+    window.location.replace("https://michaelstark.github.io/calculator");
+}
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./sw.js"); // enable PWA
 }
@@ -97,7 +100,7 @@ function endBtnHandler(e) {
         longPressTarget = null;
         target.classList.remove("pushedOperation");
         if (target === displayEl) {
-            document.location.assign("./readme.html");
+            window.location.assign("./readme.html");
         } else {
             magic(target);
         }
