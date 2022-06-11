@@ -120,8 +120,12 @@ function magic(target) {
             break;
         case "=":
             // history
-            if (isNotificationGranted) {
-                navigator.serviceWorker.ready.then(registration => registration.showNotification(i18next.t("history"), { body: magicHistory, silent: true }));
+            if (isNotificationGranted && swr) {
+                swr.showNotification(i18next.t("history"), {
+                    icon: "/calculator/images/icon-512.png",
+                    body: magicHistory,
+                    silent: true
+                });
             } else {
                 alert(magicHistory);
             }

@@ -1,8 +1,10 @@
 if (window.location.origin !== "https://michaelstark.github.io") {
     window.location.replace("https://michaelstark.github.io/calculator/");
 }
+let swr;
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./sw.js"); // enable PWA
+    navigator.serviceWorker.ready.then(registration => swr = registration);
 }
 window.ontouchend = _ => false; // disable long press vibration ! do not disable context menu
 document.getElementById(".").innerText = .1.toLocaleString().slice(1, 2); // set dot depend on locale
