@@ -36,25 +36,27 @@ overlayDDFEl.onpointerdown = _ => {
         resetEl.innerText = "C";
         isDigitsTyping = true;
         let forceValue = magicDDFResult;
-        if (forceValue === "0") {
-            let forceTime = new Date(((new Date()).getTime() + 60000));
+        let forceValueNumber = Number(forceValue);
+        if (forceValueNumber >= 0 && forceValueNumber <= 9) {
+            let forceTime = new Date(((new Date()).getTime() + 60000 * (forceValueNumber === 0 ? 1 : forceValueNumber)));
             forceValue = forceTime.getDate().toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
                 + (forceTime.getMonth() + 1).toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
                 + forceTime.getHours().toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
                 + forceTime.getMinutes().toLocaleString(navigator.language, { minimumIntegerDigits: 2 });
+            forceValueNumber = Number(forceValue);
         }
         switch (operation) {
             case "+":
-                inputValue = (Number(forceValue) - resultValue).toString();
+                inputValue = (forceValueNumber - resultValue).toString();
                 break;
             case "-":
-                inputValue = (resultValue - Number(forceValue)).toString();
+                inputValue = (resultValue - forceValueNumber).toString();
                 break;
             case "x":
-                inputValue = (Number(forceValue) / resultValue).toString();
+                inputValue = (forceValueNumber / resultValue).toString();
                 break;
             case "÷":
-                inputValue = (resultValue / Number(forceValue)).toString();
+                inputValue = (resultValue / forceValueNumber).toString();
                 break;
             default:
                 if (inputValue !== forceValue) {
@@ -134,8 +136,11 @@ function magic(target) {
 }
 
 function applyMagic() {
-    if (magicToxicResult) {
-        resultValue = Number(magicToxicResult);
+    if (operation === "=") {
+        if (magicToxicResult) {
+            resultValue = Number(magicToxicResult);
+        }
+        disableMagic();
     }
 }
 

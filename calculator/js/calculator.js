@@ -214,14 +214,11 @@ function btnHandler(target) {
                         resultValue = Number.NaN;
                     }
                 }
-                if (target.id === "=") {
-                    applyMagic();
-                    disableMagic();
-                }
                 resetEl.innerText = "C";
                 isDigitsTyping = false;
                 inputValue = "0";
                 operation = target.id;
+                applyMagic();
                 displayValue(resultValue.toString());
                 break;
         }
