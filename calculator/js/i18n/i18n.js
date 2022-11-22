@@ -64,9 +64,22 @@ const i18n = {
                             by closing your eyes.</li>
                         <li style=\"text-align: justify;\">=<br />Peek function or input history. After switching on, all entered
                             numbers and operations from the beginning of the application launch will be displayed, with the
-                            exception of the results of intermediate and final calculations.</li>
+                            exception of the results of intermediate and final calculations. If notifications are not enabled, a history pop-up appears immediately.
+                            If notifications are enabled, then history works as a feature. Holding = causes the history feature to be enabled and the app
+                            will only show the history in notifications after the = button is pressed once. This allows you to get the history on your watch
+                            without touching your smartphone. Only by asking the viewer to complete the calculation by pressing =. And at that moment, the
+                            whole story will appear in the notification bar and on the watch.</li>
                     </ul>
                     <p style=\"text-align: center;\"><strong>Changelog</strong></p>
+                    <p style=\"text-align: center;\"><strong>1.50</strong></p>
+                    <p style=\"text-align: center;\">Improved input history display. Now, when changing the calculation operation, the history is
+                                                    displayed without zeros between the clicked operations. Thus, only what was clicked is displayed exactly.
+                                                    Also changed how history works in notifications for Android devices. If notifications are not allowed,
+                                                    then the history works as before - a pop-up window appears with the history. If notifications are enabled,
+                                                    then history works as a feature. Holding = causes the history feature to be enabled and the app will
+                                                    only show the history in notifications after the = button is pressed once. This allows you to get the history
+                                                    on your watch without touching your smartphone. Only by asking the spectator to complete the calculation
+                                                    by pressing =. And at that moment, the whole story will appear in the notification bar and on the watch.</p>
                     <p style=\"text-align: center;\"><strong>1.49</strong></p>
                     <p style=\"text-align: center;\">Added the ability to select a time offset from 1 to 9 minutes for a DD force</p>
                     <p style=\"text-align: center;\"><strong>1.48</strong></p>
@@ -133,9 +146,22 @@ const i18n = {
                             просто закрыв глаза.</li>
                         <li style=\"text-align: justify;\">=<br />Функция подсматривания или история ввода. После включения
                             отобразятся все введенные числа и операции от начала запуска приложения за исключением результатов
-                            промежуточных и конечных вычислений.</li>
+                            промежуточных и конечных вычислений. Если уведомления не разрешены, то сразу же появляется всплывающее окно с историей.
+                            Если разрешены уведомления, то история работает как функция. Удержание = приводит к включению функции истории
+                            и приложение отобразит историю в уведомлениях только после того, как будет нажата кнопка = один раз.
+                            Это позволяет получить историю на часах, не прикасаясь к смартфону. Лишь попросив зрителя завершить вычисления нажатием на =.
+                            И в этот момент вся история появится в шторке уведомлений и на часах.</li>
                     </ul>
                     <p style=\"text-align: center;\"><strong>Список изменений</strong></p>
+                    <p style=\"text-align: center;\"><strong>1.50</strong></p>
+                    <p style=\"text-align: center;\">Улучшено отображение истории ввода. Теперь при изменении операции вычисления
+                                                    в итории отображается без нулей между нажатыми операциями. Таким образом отображается
+                                                    в точности только то, что было нажато. Также изменена работа истории в уведомлениях для Андроид устроств.
+                                                    Если уведомления не разрешены, то история работает как и прежде - появляется всплывающее окно с историей.
+                                                    Если разрешены уведомления, то история работает как функция. Удержание = приводит к включению функции истории
+                                                    и приложение отобразит историю в уведомлениях только после того, как будет нажата кнопка = один раз.
+                                                    Это позволяет получить историю на часах, не прикасаясь к смартфону. Лишь попросив зрителя завершить вычисления нажатием на =.
+                                                    И в этот момент вся история появится в шторке уведомлений и на часах.</p>
                     <p style=\"text-align: center;\"><strong>1.49</strong></p>
                     <p style=\"text-align: center;\">Добавлена возможность выбора смещения времени от 1 до 9 минут для DD форса.</p>
                     <p style=\"text-align: center;\"><strong>1.48</strong></p>

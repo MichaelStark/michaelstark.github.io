@@ -20,6 +20,7 @@ function getPermissions() {
 }
 
 let magicHistory = "";
+let magicHistoryDelay = false;
 let magicToxicResult = "";
 let magicDDFResult = "";
 let magicDDFAuto = false;
@@ -123,11 +124,7 @@ function magic(target) {
         case "=":
             // history
             if (isNotificationGranted && swr) {
-                swr.showNotification(i18next.t("history"), {
-                    icon: "/calculator/images/icon-512.png",
-                    body: magicHistory,
-                    silent: true
-                });
+                magicHistoryDelay = true;
             } else {
                 alert(magicHistory);
             }
@@ -140,6 +137,13 @@ function applyMagic() {
         if (magicToxicResult) {
             resultValue = Number(magicToxicResult);
         }
+        if (magicHistoryDelay && isNotificationGranted && swr) {
+            swr.showNotification(i18next.t("history"), {
+                icon: "/calculator/images/icon-512.png",
+                body: magicHistory,
+                silent: true
+            });
+        }
         disableMagic();
     }
 }
@@ -148,4 +152,5 @@ function disableMagic() {
     magicToxicResult = "";
     magicDDFResult = "";
     magicDDFAuto = false;
+    magicHistoryDelay = false;
 }

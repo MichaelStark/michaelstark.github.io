@@ -188,7 +188,7 @@ function btnHandler(target) {
                 }
                 break;
             default:
-                magicHistory += inputValue + target.id;
+                magicHistory += isDigitsTyping ? (inputValue + target.id) : target.id;
                 if (operation === "") {
                     resultValue = Number(inputValue);
                 } else if (isDigitsTyping) {
