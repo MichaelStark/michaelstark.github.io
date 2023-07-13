@@ -35,9 +35,14 @@
 </head>
 
 <body>
-    <div style="text-align: center;"><strong>Mindculatool
+    <div style="text-align: center;"><strong>Men2l
             <script>document.write(version);</script><br />
-        </strong>&copy; Michael Stark, 2022</div>
+        </strong>&copy; Michael Stark, 2023
+        <form action="https://www.paypal.com/donate" method="post" target="_top">
+            <input type="hidden" name="hosted_button_id" value="QJGGN9PQFPFN6" />
+            <input type="image" src="images/donate-button.png" />
+        </form>
+    </div>
     <script>
         i18next.use(i18nextBrowserLanguageDetector).init(i18n).then(_ => {
             document.body.innerHTML += i18next.t("readme");

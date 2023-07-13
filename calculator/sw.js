@@ -12,6 +12,7 @@ toolbox.precache([
     "images/icon-192.png",
     "images/icon-512.png",
     "images/maskable-icon-512.png",
+    "images/donate-button.png",
     "fonts/SFMono-Light.woff2",
     "fonts/SFProDisplay-Light.woff2",
     "fonts/SFProDisplay-Regular.woff2",
