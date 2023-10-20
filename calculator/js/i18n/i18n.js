@@ -71,6 +71,8 @@ const i18n = {
                             whole story will appear in the notification bar and on the watch.</li>
                     </ul>
                     <p style=\"text-align: center;\"><strong>Changelog</strong></p>
+                    <p style=\"text-align: center;\"><strong>1.51</strong></p>
+                    <p style=\"text-align: center;\">The logic for displaying input history has been changed. Now line breaks appear and the result of calculations is displayed.</p>
                     <p style=\"text-align: center;\"><strong>1.50</strong></p>
                     <p style=\"text-align: center;\">Improved input history display. Now, when changing the calculation operation, the history is
                                                     displayed without zeros between the clicked operations. Thus, only what was clicked is displayed exactly.
@@ -153,6 +155,8 @@ const i18n = {
                             И в этот момент вся история появится в шторке уведомлений и на часах.</li>
                     </ul>
                     <p style=\"text-align: center;\"><strong>Список изменений</strong></p>
+                    <p style=\"text-align: center;\"><strong>1.51</strong></p>
+                    <p style=\"text-align: center;\">Изменена логика отображения истории ввода. Теперь появились переносы строк и отображается результат вычислений.</p>
                     <p style=\"text-align: center;\"><strong>1.50</strong></p>
                     <p style=\"text-align: center;\">Улучшено отображение истории ввода. Теперь при изменении операции вычисления
                                                     в итории отображается без нулей между нажатыми операциями. Таким образом отображается

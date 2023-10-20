@@ -83,6 +83,14 @@ window.ondeviceorientation = (e) => {
     }
 };
 
+function add2MagicHistory(value, needReplaceLast = false) {
+    if (!isOperationOrEmptyOrLE(value) || !isOperationOrEmptyOrLE(magicHistory.slice(magicHistory.length - 1, magicHistory.length))) {
+        magicHistory += value;
+    } else if (needReplaceLast) {
+        magicHistory = magicHistory.replace(/.$/, value);
+    }
+}
+
 function magic(target) {
     switch (target.id) {
         case "c":

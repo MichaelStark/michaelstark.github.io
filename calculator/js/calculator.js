@@ -155,12 +155,17 @@ function btnHandler(target) {
             isDigitsTyping = true;
             inputValue += target.id;
             displayValue(inputValue);
+            if (operation === "=") {
+                add2MagicHistory("\n");
+                operation = "";
+            }
         }
     } else {
         switch (target.id) {
             case "c":
                 if (target.innerText === "AC") {
                     reset();
+                    add2MagicHistory("\n");
                 } else {
                     resetEl.innerText = "AC";
                     inputValue = "0";
@@ -188,10 +193,11 @@ function btnHandler(target) {
                 }
                 break;
             default:
-                magicHistory += isDigitsTyping ? (inputValue + target.id) : target.id;
                 if (operation === "") {
+                    add2MagicHistory(inputValue + target.id);
                     resultValue = Number(inputValue);
                 } else if (isDigitsTyping) {
+                    add2MagicHistory(inputValue + target.id);
                     switch (operation) {
                         case "+":
                             resultValue = resultValue + Number(inputValue);
@@ -213,6 +219,11 @@ function btnHandler(target) {
                     if (Math.abs(resultValue) > Number.MAX_SAFE_INTEGER) {
                         resultValue = Number.NaN;
                     }
+                } else if (target.id !== "=" || target.id === "=" && operation !== "=") {
+                    add2MagicHistory(target.id, true);
+                }
+                if (target.id === "=" && operation !== "=") {
+                    add2MagicHistory(resultValue);
                 }
                 resetEl.innerText = "C";
                 isDigitsTyping = false;
@@ -223,6 +234,10 @@ function btnHandler(target) {
                 break;
         }
     }
+}
+
+function isOperationOrEmptyOrLE(value) {
+    return value.length === 0 || value === "+" || value === "-" || value === "x" || value === "÷" || value === "=" || value === "\n";
 }
 
 function displayValue(value, showAsIs = false) {
