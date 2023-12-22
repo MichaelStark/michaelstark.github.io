@@ -240,6 +240,10 @@ function isOperationOrEmptyOrLE(value) {
     return value.length === 0 || value === "+" || value === "-" || value === "x" || value === "÷" || value === "=" || value === "\n";
 }
 
+function isLE(value) {
+    return value === "\n";
+}
+
 function displayValue(value, showAsIs = false) {
     // fix formatter if last symbol is 0 or .
     let isNeedZeroFormatFix = value.includes(".") && (value[value.length - 1] === "0" || value[value.length - 1] === ".");

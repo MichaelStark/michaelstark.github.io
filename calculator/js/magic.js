@@ -20,18 +20,24 @@ function getPermissions() {
 }
 
 let magicHistory = "";
-let magicHistoryDelay = false;
+let magicHistoryBuffer = "";
+let isMagicHistoryEnabled = localStorage.getItem("isMagicHistoryEnabled") || false;
 let magicToxicResult = "";
 let magicDDFResult = "";
-let magicDDFAuto = false;
-let magicDDFManualTimeout = false;
+let isMagicDDFAuto = false;
+let isMagicDDFManualTimeout = false;
 let overlayDDFEl = document.getElementById("overlayDDF");
 overlayDDFEl.onpointerdown = _ => {
     feedback();
     if (magicDDFResult) {
-        if (!magicDDFAuto && !magicDDFManualTimeout) {
-            magicDDFManualTimeout = true;
-            setTimeout(_ => { feedback(true); overlayDDFEl.classList.add("hidden"); magicDDFAuto = true; magicDDFManualTimeout = false; }, 10000);
+        if (!isMagicDDFAuto && !isMagicDDFManualTimeout) {
+            isMagicDDFManualTimeout = true;
+            setTimeout(_ => {
+                feedback(true);
+                overlayDDFEl.classList.add("hidden");
+                isMagicDDFAuto = true;
+                isMagicDDFManualTimeout = false;
+            }, 10000);
         }
         clearPushedOperation();
         resetEl.innerText = "C";
@@ -74,7 +80,7 @@ overlayDDFEl.onpointerdown = _ => {
 };
 window.ondeviceorientation = (e) => {
     deviceOrientationGranted = e.alpha != null && e.beta != null && e.gamma != null;
-    if (deviceOrientationGranted && magicDDFResult && magicDDFAuto) {
+    if (deviceOrientationGranted && magicDDFResult && isMagicDDFAuto) {
         if ((e.beta > 160 || e.beta < -160) && e.gamma > -15 && e.gamma < 15) {
             overlayDDFEl.classList.remove("hidden");
         } else {
@@ -84,11 +90,18 @@ window.ondeviceorientation = (e) => {
 };
 
 function add2MagicHistory(value, needReplaceLast = false) {
-    if (!isOperationOrEmptyOrLE(value) || !isOperationOrEmptyOrLE(magicHistory.slice(magicHistory.length - 1, magicHistory.length))) {
-        magicHistory += value;
+    if (isLE(value) && magicHistoryBuffer.length > 0) {
+        magicHistory = magicHistoryBuffer + value + magicHistory;
+        magicHistoryBuffer = "";
+    } else if (!isOperationOrEmptyOrLE(value) || !isOperationOrEmptyOrLE(magicHistoryBuffer.slice(magicHistoryBuffer.length - 1, magicHistoryBuffer.length))) {
+        magicHistoryBuffer += value;
     } else if (needReplaceLast) {
-        magicHistory = magicHistory.replace(/.$/, value);
+        magicHistoryBuffer = magicHistoryBuffer.replace(/.$/, value);
     }
+}
+
+function getMagicHistory() {
+    return magicHistoryBuffer + "\n" + magicHistory;
 }
 
 function magic(target) {
@@ -109,7 +122,7 @@ function magic(target) {
         case "0":
             // display down force manually
             if (magicDDFResult) {
-                magicDDFAuto = false;
+                isMagicDDFAuto = false;
                 overlayDDFEl.classList.remove("hidden");
             }
             break;
@@ -117,7 +130,7 @@ function magic(target) {
             // display down force
             disableMagic();
             magicDDFResult = inputValue;
-            magicDDFAuto = true;
+            isMagicDDFAuto = true;
             if (!deviceOrientationGranted) {
                 alert(i18next.t("orientationIsNotAvailable"));
             }
@@ -132,9 +145,11 @@ function magic(target) {
         case "=":
             // history
             if (isNotificationGranted && swr) {
-                magicHistoryDelay = true;
+                isMagicHistoryEnabled = !isMagicHistoryEnabled;
+                localStorage.setItem("isMagicHistoryEnabled", isMagicHistoryEnabled);
+                alert(i18next.t(isMagicHistoryEnabled ? "magicHistoryIsEnabled" : "magicHistoryIsDisabled"));
             } else {
-                alert(magicHistory);
+                alert(getMagicHistory());
             }
             break;
     }
@@ -145,20 +160,23 @@ function applyMagic() {
         if (magicToxicResult) {
             resultValue = Number(magicToxicResult);
         }
-        if (magicHistoryDelay && isNotificationGranted && swr) {
+        disableMagic();
+    }
+    if (isMagicHistoryEnabled && isNotificationGranted && swr) {
+        swr.getNotifications().then((notifications) => {
+            notifications.forEach(notification => notification.close());
             swr.showNotification(i18next.t("history"), {
-                icon: "/calculator/images/icon-512.png",
-                body: magicHistory,
+                //tag: "history", //not working on iOS
+                icon: "./images/icon-512.png",
+                body: getMagicHistory(),
                 silent: true
             });
-        }
-        disableMagic();
+        });
     }
 }
 
 function disableMagic() {
     magicToxicResult = "";
     magicDDFResult = "";
-    magicDDFAuto = false;
-    magicHistoryDelay = false;
+    isMagicDDFAuto = false;
 }

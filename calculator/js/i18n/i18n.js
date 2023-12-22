@@ -5,6 +5,8 @@ const i18n = {
             "translation": {
                 "newVersionAvailable": "A new version is available. Check Documentation",
                 "orientationIsNotAvailable": "Device orientation is not available - please use manual mode",
+                "magicHistoryIsEnabled": "History ON",
+                "magicHistoryIsDisabled": "History OFF",
                 "history": "History",
                 "readme": `<p style=\"text-align: center;\">Description</p>
                     <p style=\"text-align: justify;\">The application is a fully working calculator with the iOS calculator interface
@@ -62,15 +64,17 @@ const i18n = {
                             the edges of the screen. Manual mode can work repeatedly and even if there is access to the orientation
                             of the device. Manual mode has priority over automatic mode. Thus, you can enter a random number simply
                             by closing your eyes.</li>
-                        <li style=\"text-align: justify;\">=<br />Peek function or input history. After switching on, all entered
-                            numbers and operations from the beginning of the application launch will be displayed, with the
-                            exception of the results of intermediate and final calculations. If notifications are not enabled, a history pop-up appears immediately.
-                            If notifications are enabled, then history works as a feature. Holding = causes the history feature to be enabled and the app
-                            will only show the history in notifications after the = button is pressed once. This allows you to get the history on your watch
-                            without touching your smartphone. Only by asking the viewer to complete the calculation by pressing =. And at that moment, the
-                            whole story will appear in the notification bar and on the watch.</li>
+                        <li style=\"text-align: justify;\">=<br />Peeping function or input history. If notifications are not allowed,
+                            a history pop-up will immediately appear. If notifications are enabled, then history works as a function.
+                            Hold = turns on/off the history function and the application will display the history in notifications after each new operation is performed.
+                            This allows you to get the history on your watch without touching your smartphone.</li>
                     </ul>
                     <p style=\"text-align: center;\"><strong>Changelog</strong></p>
+                    <p style=\"text-align: center;\"><strong>1.52</strong></p>
+                    <p style=\"text-align: center;\">Improved history display. Now the most recent calculations are at the top of the list.
+                                                    History status on/off are stored in memory. Notifications will constantly appear for every change by the user.
+                                                    Old notifications will be cleared instantly and automatically before new notification.
+                                                    Only one notification with the current history will be displayed.</p>
                     <p style=\"text-align: center;\"><strong>1.51</strong></p>
                     <p style=\"text-align: center;\">The logic for displaying input history has been changed. Now line breaks appear and the result of calculations is displayed.</p>
                     <p style=\"text-align: center;\"><strong>1.50</strong></p>
@@ -92,6 +96,8 @@ const i18n = {
             "translation": {
                 "newVersionAvailable": "Доступна новая версия. Проверьте документацию",
                 "orientationIsNotAvailable": "Нет доступа к ориентации устройства - используйте ручной режим",
+                "magicHistoryIsEnabled": "История ВКЛ",
+                "magicHistoryIsDisabled": "История ВЫКЛ",
                 "history": "История",
                 "readme": `<p style=\"text-align: center;\">Описание</p>
                     <p style=\"text-align: justify;\">Приложение представляет из себя полностью работающий калькулятор с
@@ -146,15 +152,17 @@ const i18n = {
                             экрана. Ручной режим может работать многократно и даже если есть доступ к ориентации устройства.
                             Ручной режим имеет приоритет перед автоматическим. Таким образом можно вводить случайное число
                             просто закрыв глаза.</li>
-                        <li style=\"text-align: justify;\">=<br />Функция подсматривания или история ввода. После включения
-                            отобразятся все введенные числа и операции от начала запуска приложения за исключением результатов
-                            промежуточных и конечных вычислений. Если уведомления не разрешены, то сразу же появляется всплывающее окно с историей.
-                            Если разрешены уведомления, то история работает как функция. Удержание = приводит к включению функции истории
-                            и приложение отобразит историю в уведомлениях только после того, как будет нажата кнопка = один раз.
-                            Это позволяет получить историю на часах, не прикасаясь к смартфону. Лишь попросив зрителя завершить вычисления нажатием на =.
-                            И в этот момент вся история появится в шторке уведомлений и на часах.</li>
+                        <li style=\"text-align: justify;\">=<br />Функция подсматривания или история ввода.
+                            Если уведомления не разрешены, то сразу же появляется всплывающее окно с историей.
+                            Если разрешены уведомления, то история работает как функция. Удержание = приводит к включению/выключению функции истории
+                            и приложение отобразит историю в уведомлениях после выполнения каждой новой операции.
+                            Это позволяет получить историю на часах, не прикасаясь к смартфону.</li>
                     </ul>
                     <p style=\"text-align: center;\"><strong>Список изменений</strong></p>
+                    <p style=\"text-align: center;\"><strong>1.52</strong></p>
+                    <p style=\"text-align: center;\">Улучшено отображение истории. Теперь последние операции находятся вверху списка.
+                                                    Состояние историии вкл/выкл храниться в памяти. Уведомления будут постоянно появлятся на каждое изменение пользователем.
+                                                    Старые уведомления будут очищаться. Будет отображаться только одно уведомление с актуальной историей.</p>
                     <p style=\"text-align: center;\"><strong>1.51</strong></p>
                     <p style=\"text-align: center;\">Изменена логика отображения истории ввода. Теперь появились переносы строк и отображается результат вычислений.</p>
                     <p style=\"text-align: center;\"><strong>1.50</strong></p>
