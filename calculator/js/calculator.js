@@ -57,6 +57,22 @@ function feedback(isMagic) {
     }
 }
 
+function doFakeTouchButton(id) {
+    if (!!id && id !== "") {
+        target = document.getElementById(id);
+        clearPushedOperation();
+        target.classList.remove("pushOff");
+        target.classList.add(getPushClass(target.classList));
+        if (target.classList.contains("operation") && target.id !== "=") {
+            target.classList.add("pushedOperation");
+        }
+        setTimeout(_ => {        
+            target.classList.remove(getPushClass(target.classList));
+            target.classList.add("pushOff");
+        }, 100);
+    }
+}
+
 function getPushClass(classList) {
     if (classList.contains("digit")) {
         return "pushDigit";
@@ -143,6 +159,7 @@ function btnHandler(target) {
                 inputValue = "0";
             }
             displayValue(inputValue);
+            add2MagicHistory(inputValue);
         }
     } else if (digitElList.namedItem(target.id)) {
         // max 13 digits and only one decimal dot and do not edit exponential notation
@@ -159,17 +176,23 @@ function btnHandler(target) {
                 add2MagicHistory("\n");
                 operation = "";
             }
+            add2MagicHistory(inputValue);
         }
     } else {
         switch (target.id) {
             case "c":
                 if (target.innerText === "AC") {
                     reset();
-                    add2MagicHistory("\n");
                 } else {
                     resetEl.innerText = "AC";
                     inputValue = "0";
+                    if (!isDigitsTyping && operation !== "=") {
+                        doFakeTouchButton(operation);
+                    }
                     displayValue(inputValue);
+                    if (isDigitsTyping) {
+                        add2MagicHistory(inputValue);
+                    }
                 }
                 break;
             case "%":
@@ -180,6 +203,7 @@ function btnHandler(target) {
                     }
                     inputValue = Number(percent.toFixed(12)).toString();
                     displayValue(inputValue);
+                    add2MagicHistory(inputValue);
                 }
                 break;
             case "+-":
@@ -190,14 +214,15 @@ function btnHandler(target) {
                         inputValue = inputValue.slice(1);
                     }
                     displayValue(inputValue);
+                    add2MagicHistory(inputValue);
                 }
                 break;
             default:
                 if (operation === "") {
-                    add2MagicHistory(inputValue + target.id);
+                    add2MagicHistory(target.id);
                     resultValue = Number(inputValue);
                 } else if (isDigitsTyping) {
-                    add2MagicHistory(inputValue + target.id);
+                    add2MagicHistory(target.id);
                     switch (operation) {
                         case "+":
                             resultValue = resultValue + Number(inputValue);
@@ -220,10 +245,10 @@ function btnHandler(target) {
                         resultValue = Number.NaN;
                     }
                 } else if (target.id !== "=" || target.id === "=" && operation !== "=") {
-                    add2MagicHistory(target.id, true);
+                    add2MagicHistory(target.id);
                 }
                 if (target.id === "=" && operation !== "=") {
-                    add2MagicHistory(resultValue);
+                    add2MagicHistory(resultValue.toString());
                 }
                 resetEl.innerText = "C";
                 isDigitsTyping = false;
@@ -236,8 +261,12 @@ function btnHandler(target) {
     }
 }
 
-function isOperationOrEmptyOrLE(value) {
-    return value.length === 0 || value === "+" || value === "-" || value === "x" || value === "÷" || value === "=" || value === "\n";
+function isNumber(value) {
+    return value.length > 0 && value !== "+" && value !== "-" && value !== "x" && value !== "÷" && value !== "=" && !isLE(value);
+}
+
+function isOperation(value) {
+    return value === "+" || value === "-" || value === "x" || value === "÷" || value === "=";
 }
 
 function isLE(value) {
@@ -272,4 +301,6 @@ function reset() {
     operation = "";
     isDigitsTyping = false;
     displayValue(inputValue);
+    add2MagicHistory(inputValue);
+    add2MagicHistory("\n");
 }

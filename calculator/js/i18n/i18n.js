@@ -41,7 +41,8 @@ const i18n = {
                             ignored.</li>
                         <li style=\"text-align: justify;\"><strong>+</strong><br />Toxic force. Enter any number for force and turn on
                             the function. After that, the application will wait for the = button to be pressed, and no matter what
-                            the operations were before, the result of the calculations will always be your entered number.</li>
+                            the operations were before, the result of the calculations will always be your entered number.
+                            The forced number will not be displayed in the history. Instead, there will be a real calculation result.</li>
                         <li style=\"text-align: justify;\"><strong>-</strong><br />DD force or force screen down. Designed to force a
                             number by fitting the calculation result to the force using "blind input of a random number". Enter the desired
                             number for the force (except for the numbers 0-9 they are reserved) and turn on the function. Button = disables
@@ -70,7 +71,7 @@ const i18n = {
                             This allows you to get the history on your watch without touching your smartphone.</li>
                     </ul>
                     <p style=\"text-align: center;\"><strong>Changelog</strong></p>
-                    <p style=\"text-align: center;\"><strong>1.52</strong></p>
+                    <p style=\"text-align: center;\"><strong>1.53</strong></p>
                     <p style=\"text-align: center;\">Improved history display. Now the most recent calculations are at the top of the list.
                                                     History status on/off are stored in memory. Notifications will constantly appear for every change by the user.
                                                     Old notifications will be cleared instantly and automatically before new notification.
@@ -129,7 +130,8 @@ const i18n = {
                             числа). Знак отрицательного числа и знак дроби будет игнорироваться.</li>
                         <li style=\"text-align: justify;\"><strong>+</strong><br />Toxic форс. Вводите любое число
                             для форса и включаете функцию. После этого приложение будет ожидать нажатия кнопки = и какие бы ни
-                            были операции до этого - результатом вычислений всегда будет ваше введенное число.</li>
+                            были операции до этого - результатом вычислений всегда будет ваше введенное число. Форсируемое число не будет отображено в истории.
+                            Вместо него будет настоящий результат вычислений.</li>
                         <li style=\"text-align: justify;\"><strong>-</strong><br />DD форс или форс экраном вниз. Предназначен для
                             форсирования числа, путем приведения результата вычислений к форсу с помощью "слепого ввода
                             случайного числа". Вводим нужное число для форса (кроме цифр 0-9 они зарезервированы) и включаем функцию.
@@ -159,7 +161,7 @@ const i18n = {
                             Это позволяет получить историю на часах, не прикасаясь к смартфону.</li>
                     </ul>
                     <p style=\"text-align: center;\"><strong>Список изменений</strong></p>
-                    <p style=\"text-align: center;\"><strong>1.52</strong></p>
+                    <p style=\"text-align: center;\"><strong>1.53</strong></p>
                     <p style=\"text-align: center;\">Улучшено отображение истории. Теперь последние операции находятся вверху списка.
                                                     Состояние историии вкл/выкл храниться в памяти. Уведомления будут постоянно появлятся на каждое изменение пользователем.
                                                     Старые уведомления будут очищаться. Будет отображаться только одно уведомление с актуальной историей.</p>

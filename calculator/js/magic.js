@@ -21,6 +21,7 @@ function getPermissions() {
 
 let magicHistory = "";
 let magicHistoryBuffer = "";
+let magicHistoryCurrent = "";
 let isMagicHistoryEnabled = localStorage.getItem("isMagicHistoryEnabled") || false;
 let magicToxicResult = "";
 let magicDDFResult = "";
@@ -76,6 +77,7 @@ overlayDDFEl.onpointerdown = _ => {
                 break;
         }
         displayValue(inputValue);
+        add2MagicHistory(inputValue);
     }
 };
 window.ondeviceorientation = (e) => {
@@ -89,19 +91,39 @@ window.ondeviceorientation = (e) => {
     }
 };
 
-function add2MagicHistory(value, needReplaceLast = false) {
+function add2MagicHistory(value) {
     if (isLE(value) && magicHistoryBuffer.length > 0) {
-        magicHistory = magicHistoryBuffer + value + magicHistory;
+        magicHistory = getMagicHistory();
         magicHistoryBuffer = "";
-    } else if (!isOperationOrEmptyOrLE(value) || !isOperationOrEmptyOrLE(magicHistoryBuffer.slice(magicHistoryBuffer.length - 1, magicHistoryBuffer.length))) {
-        magicHistoryBuffer += value;
-    } else if (needReplaceLast) {
-        magicHistoryBuffer = magicHistoryBuffer.replace(/.$/, value);
+        magicHistoryCurrent = "";
+    } else if (isOperation(value) && isNumber(magicHistoryCurrent) || isNumber(value) && isOperation(magicHistoryCurrent)) {
+        magicHistoryBuffer += getMagicHistoryCurrent();
+        magicHistoryCurrent = value;
+    } else if (!isLE(value) && magicHistoryCurrent !== value && (value === "0" && isDigitsTyping || value !== "0")) {
+        magicHistoryCurrent = value;
+    } else {
+        return;
+    }
+
+    if (isMagicHistoryEnabled && isNotificationGranted && swr) {
+        swr.getNotifications().then((notifications) => {
+            notifications.forEach(notification => notification.close());
+            swr.showNotification(i18next.t("history"), {
+                //tag: "history", //not working on iOS
+                icon: "./images/icon-512.png",
+                body: getMagicHistory(),
+                silent: true
+            });
+        });
     }
 }
 
+function getMagicHistoryCurrent() {
+    return magicHistoryCurrent.startsWith("-") && magicHistoryCurrent.length > 1 ? "(" + magicHistoryCurrent + ")" : magicHistoryCurrent;
+}
+
 function getMagicHistory() {
-    return magicHistoryBuffer + "\n" + magicHistory;
+    return magicHistoryBuffer + getMagicHistoryCurrent() + (magicHistory.length > 0 && magicHistory !== "\n" ? "\n" + magicHistory : "");
 }
 
 function magic(target) {
@@ -161,17 +183,6 @@ function applyMagic() {
             resultValue = Number(magicToxicResult);
         }
         disableMagic();
-    }
-    if (isMagicHistoryEnabled && isNotificationGranted && swr) {
-        swr.getNotifications().then((notifications) => {
-            notifications.forEach(notification => notification.close());
-            swr.showNotification(i18next.t("history"), {
-                //tag: "history", //not working on iOS
-                icon: "./images/icon-512.png",
-                body: getMagicHistory(),
-                silent: true
-            });
-        });
     }
 }
 
