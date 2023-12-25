@@ -66,7 +66,7 @@ function doFakeTouchButton(id) {
         if (target.classList.contains("operation") && target.id !== "=") {
             target.classList.add("pushedOperation");
         }
-        setTimeout(_ => {        
+        setTimeout(_ => {
             target.classList.remove(getPushClass(target.classList));
             target.classList.add("pushOff");
         }, 100);

@@ -29,7 +29,6 @@ let isMagicDDFAuto = false;
 let isMagicDDFManualTimeout = false;
 let overlayDDFEl = document.getElementById("overlayDDF");
 overlayDDFEl.onpointerdown = _ => {
-    feedback();
     if (magicDDFResult) {
         if (!isMagicDDFAuto && !isMagicDDFManualTimeout) {
             isMagicDDFManualTimeout = true;
@@ -43,41 +42,61 @@ overlayDDFEl.onpointerdown = _ => {
         clearPushedOperation();
         resetEl.innerText = "C";
         isDigitsTyping = true;
-        let forceValue = magicDDFResult;
-        let forceValueNumber = Number(forceValue);
+        let forceValueNumber = Number(magicDDFResult);
         if (forceValueNumber >= 0 && forceValueNumber <= 9) {
             let forceTime = new Date(((new Date()).getTime() + 60000 * (forceValueNumber === 0 ? 1 : forceValueNumber)));
-            forceValue = forceTime.getDate().toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
+            magicDDFResult = forceTime.getDate().toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
                 + (forceTime.getMonth() + 1).toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
                 + forceTime.getHours().toLocaleString(navigator.language, { minimumIntegerDigits: 2 })
                 + forceTime.getMinutes().toLocaleString(navigator.language, { minimumIntegerDigits: 2 });
-            forceValueNumber = Number(forceValue);
+            forceValueNumber = Number(magicDDFResult);
         }
+        let forceValue;
         switch (operation) {
             case "+":
-                inputValue = (forceValueNumber - resultValue).toString();
+                forceValue = (forceValueNumber - resultValue).toString();
                 break;
             case "-":
-                inputValue = (resultValue - forceValueNumber).toString();
+                forceValue = (resultValue - forceValueNumber).toString();
                 break;
             case "x":
-                inputValue = (forceValueNumber / resultValue).toString();
+                forceValue = (forceValueNumber / resultValue).toString();
                 break;
             case "÷":
-                inputValue = (resultValue / forceValueNumber).toString();
+                forceValue = (resultValue / forceValueNumber).toString();
                 break;
             default:
-                if (inputValue !== forceValue) {
-                    if (forceValue.startsWith(inputValue)) {
-                        inputValue += forceValue[inputValue.length];
-                    } else {
-                        inputValue = forceValue[0];
-                    }
-                }
+                forceValue = magicDDFResult;
                 break;
+        }
+        if (forceValue !== magicDDFResult && !isNotificationPossible()) {
+            inputValue = forceValue;
+        } else if (inputValue !== forceValue) {
+            let fakeTouchBtnId = null;
+            if (forceValue.startsWith(inputValue)) {
+                inputValue += forceValue[inputValue.length];
+            } else {
+                if (forceValue[0] === "-") {
+                    if (inputValue[0] === forceValue[1]) {
+                        inputValue = "-" + inputValue;
+                        fakeTouchBtnId = "+-";
+                    } else {
+                        inputValue = forceValue[1];
+                    }
+                } else {
+                    inputValue = forceValue[0];
+                }
+            }
+            doFakeTouchButton(fakeTouchBtnId || inputValue[inputValue.length - 1]);
+            if (isNotificationPossible()) {
+                pushNotification("dd", forceValue.length - inputValue.length);
+            }
+        } else {
+            return;
         }
         displayValue(inputValue);
         add2MagicHistory(inputValue);
+        feedback();
     }
 };
 window.ondeviceorientation = (e) => {
@@ -90,6 +109,22 @@ window.ondeviceorientation = (e) => {
         }
     }
 };
+
+function isNotificationPossible() {
+    return isNotificationGranted && swr;
+}
+
+function pushNotification(tag, msg) {
+    swr.getNotifications({ tag }).then((notifications) => {
+        notifications.forEach(notification => notification.close());
+        swr.showNotification(i18next.t(tag), {
+            tag, //not working on iOS
+            icon: "./images/icon-512.png",
+            body: msg,
+            silent: true
+        });
+    });
+}
 
 function add2MagicHistory(value) {
     if (isLE(value) && magicHistoryBuffer.length > 0) {
@@ -105,16 +140,8 @@ function add2MagicHistory(value) {
         return;
     }
 
-    if (isMagicHistoryEnabled && isNotificationGranted && swr) {
-        swr.getNotifications().then((notifications) => {
-            notifications.forEach(notification => notification.close());
-            swr.showNotification(i18next.t("history"), {
-                //tag: "history", //not working on iOS
-                icon: "./images/icon-512.png",
-                body: getMagicHistory(),
-                silent: true
-            });
-        });
+    if (isMagicHistoryEnabled && isNotificationPossible()) {
+        pushNotification("history", getMagicHistory());
     }
 }
 

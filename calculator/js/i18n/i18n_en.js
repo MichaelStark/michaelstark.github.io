@@ -5,6 +5,7 @@ const i18n_en = {
         "magicHistoryIsEnabled": "History ON",
         "magicHistoryIsDisabled": "History OFF",
         "history": "History",
+        "dd": "Touches left",
         "readme_part_1": `<p style="text-align: center;"><strong>(%) Numerology</strong></p>
             <p>Allows you to calculate the number of fate in numerology. Enter a <strong>NUMBER</strong> and enable the function. The negative sign and fraction sign will be ignored. After enabling the function, instead of the % sign, 2 digits, for 1 second, separated by a slash, will appear.</p>
             <ul>
@@ -27,7 +28,7 @@ const i18n_en = {
             <li><strong>manual</strong> - hold down the 0 button for 2 seconds until a white frame appears. This allows you to precisely control when the phone will block input. After turning on, the locking begins from the moment you first tap on the screen and for 10 seconds until the white frame appears again. This mode allows you to force the number by asking the viewer to close their eyes and not turn the phone over. Has priority over automatic mode.</li>
             </ul>
             <p>If the application has access (if not, then after enabling the function the application will notify about it) to the orientation of the device in space, then the mode will be <strong>automatic</strong>. At this moment, clicking on the screen causes a number to appear that is necessary to calculate the forced <strong>NUMBER</strong>. Formula: (any_calculations)&lt;any_operation&gt;X=<strong>NUMBER</strong>. Where X is the number that will be substituted for clicks on the screen. The required number is adapted to the last operation before turning the device over. But it is advisable to use + or -. In the case of the &times; and &divide; operations, the result of the calculation may not be accurate when duplicated on other calculators due to the nature of irrational numbers.</p>
-            <p>If there were no calculations before the input was blocked, the application will force the <strong>NUMBER</strong> one digit for each touch on the screen while the input is blocked. This is another functionality.</p>`,
+            <p>If notifications are enabled or X=<strong>NUMBER</strong>, then X will be entered one digit for each touch on the screen while input is blocked. The number of required touches will be displayed in notifications if available. If not, the X will be displayed in its entirety the first time you tap on the screen.&nbsp;Each tap on the screen will trigger an animation of pressing the desired button. This allows to broadcast phone screen to a large screen on stage.</p>`,
         "readme_part_4": `<p style="text-align: center;"><strong>(-)&nbsp;History peek</strong></p>
             <p>Peeking function or input history. When you first open the app, you'll be asked for permission to access your device's notifications. Depending on the answer,&nbsp;history works in two modes:</p>
             <ul>
@@ -44,7 +45,7 @@ const i18n_en = {
             <p style="text-align: justify;">Any function is activated by holding the corresponding button for 2 seconds. After that, the application will vibrate and a white frame will appear around the edges of the screen. Vibration is not available on iOS.</p>
             <ul>
             <ul>
-            <li style="text-align: justify;"><strong>AC/C</strong><br />Completely restarts the application and clears history.</li>
+            <li style="text-align: justify;"><strong>(AC/C)</strong><br />Completely restarts the application and clears history.</li>
             <li style="text-align: justify;"><a href="readme.html?part=1"><strong>(%) Numerology</strong></a></li>
             <li style="text-align: justify;"><a href="readme.html?part=2"><strong>(+) Toxic force</strong></a></li>
             <li style="text-align: justify;"><a href="readme.html?part=3"><strong>(-) DD force</strong></a></li>
@@ -52,8 +53,8 @@ const i18n_en = {
             </ul>
             </ul>
             <p style="text-align: center;"><strong>Changelog</strong></p>
-            <p style="text-align: center;"><strong>1.54</strong></p>
-            <p style="text-align: center;">Improved history display. Now the most recent calculations are at the top of the list. History status on/off are stored in memory. Notifications will constantly appear for every change by the user. Old notifications will be cleared instantly and automatically before new notification. Only one notification with the current history will be displayed. Improved instructions (slightly).</p>
+            <p style="text-align: center;"><strong>1.55</strong></p>
+            <p style="text-align: center;">Improved history display. Now the most recent calculations are at the top of the list. History status on/off are stored in memory. Notifications will constantly appear for every change by the user. Old notifications will be cleared. Only one notification with the current history will be displayed. Improved instructions (slightly). Improved DD Force function. Now you can broadcast your phone screen even when it is upside down. Each press will launch an animation of pressing the desired number to force. And the missing number will be recorded digitally for each click on the screen. Just turn on notifications and receive information on your watch about how many more presses are required to create the desired number for the Force.</p>
             <p style="text-align: center;"><strong>1.51</strong></p>
             <p style="text-align: center;">The logic for displaying input history has been changed. Now line breaks appear and the result of calculations is displayed.</p>
             <p style="text-align: center;"><strong>1.50</strong></p>
