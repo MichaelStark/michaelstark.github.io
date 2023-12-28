@@ -59,8 +59,8 @@ function feedback(isMagic) {
 
 function doFakeTouchButton(id) {
     if (!!id && id !== "") {
-        target = document.getElementById(id);
         clearPushedOperation();
+        let target = document.getElementById(id);
         target.classList.remove("pushOff");
         target.classList.add(getPushClass(target.classList));
         if (target.classList.contains("operation") && target.id !== "=") {
