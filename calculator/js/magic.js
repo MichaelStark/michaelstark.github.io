@@ -1,24 +1,3 @@
-// permissions
-let isNotificationGranted = window.Notification && Notification.permission === "granted";
-let deviceOrientationGranted = false;
-
-// notification
-if (navigator.permissions) {
-    navigator.permissions.query({ name: "notifications" }).then(status => status.onchange = _ => isNotificationGranted = window.Notification && Notification.permission === "granted");
-}
-
-// requests
-window.addEventListener("pointerup", getPermissions);
-function getPermissions() {
-    window.removeEventListener("pointerup", getPermissions);
-    if (window.Notification && Notification.permission === "default") {
-        Notification.requestPermission();
-    }
-    if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission && !deviceOrientationGranted) {
-        DeviceOrientationEvent.requestPermission(); // iOS 13+
-    }
-}
-
 let magicHistory = "";
 let magicHistoryBuffer = "";
 let magicHistoryCurrent = "";
@@ -34,6 +13,7 @@ overlayDDFEl.onpointerdown = _ => {
             isMagicDDFManualTimeout = true;
             setTimeout(_ => {
                 feedback(true);
+                showAlert(i18next.t("ddForceManualDisabled"), false);
                 overlayDDFEl.classList.add("hidden");
                 isMagicDDFAuto = true;
                 isMagicDDFManualTimeout = false;
@@ -110,23 +90,10 @@ window.ondeviceorientation = (e) => {
     }
 };
 
-function isNotificationPossible() {
-    return isNotificationGranted && swr;
-}
-
-function pushNotification(tag, msg) {
-    swr.getNotifications({ tag }).then((notifications) => {
-        notifications.forEach(notification => notification.close());
-        swr.showNotification(i18next.t(tag), {
-            tag, //not working on iOS
-            icon: "./images/icon-512.png",
-            body: msg,
-            silent: true
-        });
-    });
-}
-
 function add2MagicHistory(value) {
+    if (!isClientMode() && isRCEnabled()) {
+        return;
+    }
     if (isLE(value) && magicHistoryBuffer.length > 0) {
         magicHistory = getMagicHistory();
         magicHistoryBuffer = "";
@@ -154,13 +121,18 @@ function getMagicHistory() {
 }
 
 function magic(target) {
+    if (isClientMode() && target.id !== "c") {
+        return;
+    }
     switch (target.id) {
         case "c":
             // reload
+            loadingEl.classList.remove("hidden");
             document.location.reload();
             break;
         case "+-":
             // remote control
+            toggleRC();
             break;
         case "%":
             // numerology
@@ -170,44 +142,102 @@ function magic(target) {
             break;
         case "0":
             // display down force manually
-            if (magicDDFResult) {
-                isMagicDDFAuto = false;
-                overlayDDFEl.classList.remove("hidden");
+            if (isRCEnabled()) {
+                sendRCData({ type: "0" });
+            } else {
+                apply0();
             }
             break;
         case "-":
             // display down force
             disableMagic();
-            magicDDFResult = inputValue;
-            isMagicDDFAuto = true;
-            if (!deviceOrientationGranted) {
-                alert(i18next.t("orientationIsNotAvailable"));
+            if (isRCEnabled()) {
+                sendRCData({ type: "-", payload: inputValue });
+            } else {
+                applyDDForce(inputValue);
             }
             reset();
             break;
         case "+":
             // toxic
             disableMagic();
-            magicToxicResult = inputValue;
+            if (isRCEnabled()) {
+                sendRCData({ type: "+", payload: inputValue });
+            } else {
+                applyToxic(inputValue);
+            }
             reset();
             break;
         case "=":
             // history
-            if (isNotificationGranted && swr) {
-                isMagicHistoryEnabled = !isMagicHistoryEnabled;
-                localStorage.setItem("isMagicHistoryEnabled", isMagicHistoryEnabled);
-                alert(i18next.t(isMagicHistoryEnabled ? "magicHistoryIsEnabled" : "magicHistoryIsDisabled"));
+            if (isRCEnabled()) {
+                sendRCData({ type: "=" });
             } else {
-                alert(getMagicHistory());
+                if (isNotificationPossible()) {
+                    applyHistory();
+                } else {
+                    showAlert(getMagicHistory());
+                }
             }
             break;
     }
 }
 
-function applyMagic() {
+function onReceiveRCData(data) {
+    switch (data.type) {
+        case "0":
+            apply0(data.payload);
+            break;
+        case "-":
+            applyDDForce(data.payload);
+            break;
+        case "+":
+            applyToxic(data.payload);
+            break;
+        case "=":
+            applyHistory(data.payload);
+            break;
+        default:
+            pushNotification(data.type, data.payload);
+            break;
+    }
+}
+
+function apply0() {
+    if (magicDDFResult) {
+        isMagicDDFAuto = false;
+        overlayDDFEl.classList.remove("hidden");
+        showAlert(i18next.t("ddForceManualIsEnabled"), false);
+    }
+}
+
+function applyDDForce(value) {
+    magicDDFResult = value;
+    isMagicDDFAuto = true;
+    if (deviceOrientationGranted) {
+        showAlert(i18next.t("ddForceIsEnabled"), false);
+    } else {
+        showAlert(i18next.t("orientationIsNotAvailable"));
+    }
+}
+
+function applyToxic(value) {
+    magicToxicResult = value;
+    showAlert(i18next.t("toxicForceIsEnabled"), false);
+}
+
+function applyHistory() {
+    isMagicHistoryEnabled = !isMagicHistoryEnabled;
+    localStorage.setItem("isMagicHistoryEnabled", isMagicHistoryEnabled);
+    showAlert(i18next.t(isMagicHistoryEnabled ? "magicHistoryIsEnabled" : "magicHistoryIsDisabled"));
+}
+
+function applyPostMagic() {
     if (operation === "=") {
-        if (magicToxicResult) {
-            resultValue = Number(magicToxicResult);
+        if (isClientMode() || !isRCEnabled()) {
+            if (magicToxicResult) {
+                resultValue = Number(magicToxicResult);
+            }
         }
         disableMagic();
     }

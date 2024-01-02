@@ -1,11 +1,16 @@
 const i18n_ru = {
     "translation": {
         "newVersionAvailable": "Доступна новая версия. Проверьте документацию",
-        "orientationIsNotAvailable": "Нет доступа к ориентации устройства - используйте ручной режим",
+        "orientationIsNotAvailable": "DD Force ВКЛ. Нет доступа к ориентации устройства - используйте ручной режим",
         "magicHistoryIsEnabled": "История ВКЛ",
         "magicHistoryIsDisabled": "История ВЫКЛ",
+        "ddForceIsEnabled": "DD Force ВКЛ",
+        "ddForceManualIsEnabled": "Ручной режим ВКЛ",
+        "ddForceManualDisabled": "Ручной режим ВЫКЛ",
+        "toxicForceIsEnabled": "TOXIC Force ВКЛ",
         "history": "История",
         "dd": "Нажатий осталось",
+        "alert": "Alert",
         "readme_part_1": `<p style="text-align: center;"><strong>(%) Numerology</strong></p>
             <p>Позволяет вычислить число судьбы в нумерологии. Введите <strong>ЧИСЛО</strong>&nbsp;и включите функцию. Знак отрицательного числа и знак дроби будет игнорироваться. После включения функции - вместо знака % появится 2 цифры на 1 секунду, разделенные косой чертой.</p>
             <ul>

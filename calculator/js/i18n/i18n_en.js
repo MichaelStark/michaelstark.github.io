@@ -1,11 +1,16 @@
 const i18n_en = {
     "translation": {
         "newVersionAvailable": "A new version is available. Check Documentation",
-        "orientationIsNotAvailable": "Device orientation is not available - please use manual mode",
+        "orientationIsNotAvailable": "DD Force ON. Device orientation is not available - please use manual mode",
         "magicHistoryIsEnabled": "History ON",
         "magicHistoryIsDisabled": "History OFF",
+        "ddForceIsEnabled": "DD Force ON",        
+        "ddForceManualIsEnabled": "Manual mode ON",
+        "ddForceManualDisabled": "Manual mode OFF",
+        "toxicForceIsEnabled": "TOXIC Force ON",
         "history": "History",
         "dd": "Touches left",
+        "alert": "Alert",
         "readme_part_1": `<p style="text-align: center;"><strong>(%) Numerology</strong></p>
             <p>Allows you to calculate the number of fate in numerology. Enter a <strong>NUMBER</strong> and enable the function. The negative sign and fraction sign will be ignored. After enabling the function, instead of the % sign, 2 digits, for 1 second, separated by a slash, will appear.</p>
             <ul>

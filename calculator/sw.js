@@ -7,6 +7,8 @@ toolbox.precache([
     "js/i18n/i18n.js",
     "js/i18n/i18nextBrowserLanguageDetector.min.js",
     "js/i18n/i18next.js",
+    "js/peerjs.min.js",
+    "js/rc.js",
     "js/version.js",
     "js/calculator.js",
     "js/magic.js",

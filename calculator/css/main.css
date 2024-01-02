@@ -72,6 +72,7 @@ body {
 }
 
 #loading {
+    box-shadow: inherit;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -233,17 +234,21 @@ body {
 }
 
 .magicAlarm {
-    box-shadow: inset 0 0 10px #FFF;
+    box-shadow: inset 0 0 10px #FFF !important;
 }
 
 .hidden {
     display: none;
 }
 
-.rcGood {
+.rcReady {
     box-shadow: inset 0 0 10px #00FF00;
 }
 
-.rcBad {
+.rcWait {
+    box-shadow: inset 0 0 10px #ffd500;
+}
+
+.rcLoose {
     box-shadow: inset 0 0 10px #FF0000;
 }

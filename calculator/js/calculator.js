@@ -12,20 +12,52 @@ document.getElementById(".").innerText = .1.toLocaleString().slice(1, 2); // set
 // i18n
 i18next.use(i18nextBrowserLanguageDetector).init(i18n);
 
+// permissions
+let isNotificationGranted = window.Notification && Notification.permission === "granted";
+let deviceOrientationGranted = false;
+
+// notification
+if (navigator.permissions) {
+    navigator.permissions.query({ name: "notifications" }).then(status => status.onchange = _ => isNotificationGranted = window.Notification && Notification.permission === "granted");
+}
+
+// requests
+window.addEventListener("pointerup", getPermissions);
+function getPermissions() {
+    window.removeEventListener("pointerup", getPermissions);
+    if (window.Notification && Notification.permission === "default") {
+        Notification.requestPermission();
+    }
+    if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission && !deviceOrientationGranted) {
+        DeviceOrientationEvent.requestPermission(); // iOS 13+
+    }
+}
+
+// client/host mode detection
+const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+});
+const hostPeerId = params.hostPeerId || localStorage.getItem("hostPeerId");
+function isClientMode() {
+    return !!hostPeerId;
+}
+
 // version
-let currentVersion = localStorage.getItem("currentVersion");
+const currentVersion = localStorage.getItem("currentVersion");
 if (!currentVersion || currentVersion !== version) {
     alert(i18next.t("newVersionAvailable"));
     localStorage.setItem("currentVersion", version);
 }
 
-let formatter = new Intl.NumberFormat(navigator.language, { maximumFractionDigits: 20 });
-let calcEl = document.getElementById("calc");
-let displayEl = document.getElementById("display");
-let resetEl = document.getElementById("c");
-let buttonElList = document.getElementsByClassName("button");
-let digitElList = document.getElementsByClassName("digit");
-let operationElList = document.getElementsByClassName("operation");
+// vars & consts
+const formatter = new Intl.NumberFormat(navigator.language, { maximumFractionDigits: 20 });
+const loadingEl = document.getElementById("loading");
+const calcEl = document.getElementById("calc");
+const displayEl = document.getElementById("display");
+const resetEl = document.getElementById("c");
+const buttonElList = document.getElementsByClassName("button");
+const digitElList = document.getElementsByClassName("digit");
+const operationElList = document.getElementsByClassName("operation");
 let pushedBtnsCount = 0;
 let longPressTarget;
 let longPressTimer;
@@ -33,6 +65,7 @@ let resultValue = 0;
 let inputValue = "0";
 let operation = "";
 let isDigitsTyping = false;
+let alertBuffer = "";
 
 displayEl.addEventListener("pointerdown", startBtnHandler);
 displayEl.addEventListener("pointerup", endBtnHandler);
@@ -43,14 +76,58 @@ for (el of buttonElList) {
     el.addEventListener("pointercancel", cancelBtnHandler);
 }
 
+function isNotificationPossible() {
+    return isNotificationGranted && swr || isClientMode();
+}
+
+function pushNotification(tag, msg) {
+    if (isClientMode()) {
+        sendRCData({ type: tag, payload: msg });
+    } else if (isNotificationGranted && swr) {
+        swr.getNotifications({ tag }).then((notifications) => {
+            notifications.forEach(notification => notification.close());
+            swr.showNotification(i18next.t(tag), {
+                tag, //not working on iOS
+                icon: "./images/icon-512.png",
+                body: msg,
+                silent: true
+            });
+        });
+    }
+}
+
+function showAlert(text, isImportant = true) {
+    alertBuffer = "• " + text + "\n" + alertBuffer;
+    if (isClientMode()) {
+        sendRCData({ type: "alert", payload: alertBuffer });
+    } else {
+        if (isNotificationPossible()) {
+            pushNotification("alert", alertBuffer);
+        } else if (isImportant) {
+            alert(text);
+        }
+    }
+}
+
 function feedback(isMagic) {
-    if (isMagic) {
-        document.body.classList.add("magicAlarm");
-        setTimeout(_ => document.body.classList.remove("magicAlarm"), 200);
+    if (isMagic && !isClientMode()) {
+        let isRemoveNeeded = true;
+        if (isMagic === true) {
+            isMagic = "magicAlarm";
+        } else if (isRCEnabled()) {
+            document.body.className = "";
+            isRemoveNeeded = false;
+        }
+        document.body.classList.add(isMagic);
+        if (isRemoveNeeded) {
+            setTimeout(_ => document.body.classList.remove(isMagic), 200);
+        }
     }
     if (navigator.vibrate) {
         if (isMagic) {
-            navigator.vibrate(200);
+            if (!isClientMode()) {
+                navigator.vibrate(200);
+            }
         } else {
             navigator.vibrate(1);
         }
@@ -247,14 +324,12 @@ function btnHandler(target) {
                 } else if (target.id !== "=" || target.id === "=" && operation !== "=") {
                     add2MagicHistory(target.id);
                 }
-                if (target.id === "=" && operation !== "=") {
-                    add2MagicHistory(resultValue.toString());
-                }
                 resetEl.innerText = "C";
                 isDigitsTyping = false;
                 inputValue = "0";
                 operation = target.id;
-                applyMagic();
+                applyPostMagic();
+                add2MagicHistory(resultValue.toString());
                 displayValue(resultValue.toString());
                 break;
         }

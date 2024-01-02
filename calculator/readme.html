@@ -41,9 +41,16 @@
         <form action="https://www.paypal.com/donate" method="post" target="_top">
             <input type="hidden" name="hosted_button_id" value="QJGGN9PQFPFN6" />
             <input type="image" src="images/donate-button.png" />
-        </form>
+        </form><br />
+        <a onpointerdown="onCopyRCLink(event)"><strong>REMOTE CONTROL LINK</strong></a>
     </div>
     <script>
+        function onCopyRCLink(e) {
+            e.preventDefault();
+            navigator.clipboard.writeText(window.location.origin + "/calculator/?hostPeerId=" + localStorage.getItem("currentPeerId"));
+            alert("📋👍");
+            return false;
+        };
         i18next.use(i18nextBrowserLanguageDetector).init(i18n).then(_ => {
             const params = new Proxy(new URLSearchParams(window.location.search), {
                 get: (searchParams, prop) => searchParams.get(prop),
