@@ -44,7 +44,19 @@ function createPeer() {
     if (currentPeer) {
         currentPeer.destroy();
     }
-    currentPeer = new Peer(currentPeerId);
+    currentPeer = new Peer(currentPeerId, {
+        config: {
+            'iceServers': [
+                { url: 'stun:stun.l.google.com:19302' },
+                {
+                    url: 'turn:turn.bistri.com:80',
+                    credential: 'homeo',
+                    username: 'homeo'
+                },
+            ],
+            'sdpSemantics': 'unified-plan'
+        }
+    });
     currentPeer.on("open", _ => {
         clearTimeout(timeoutId);
         feedback("rcWait");
@@ -69,12 +81,7 @@ function createPeer() {
 function createConnection(newConnection) {
     connection?.close();
     connection = newConnection || currentPeer.connect(hostPeerId);
-    connection.on('open', _ => {
-        feedback("rcReady");
-        if (isClientMode()) {
-            localStorage.setItem("hostPeerId", hostPeerId);
-        }
-    });
+    connection.on('open', _ => feedback("rcReady"));
     connection.on('close', _ => feedback("rcWait"));
     connection.on('error', err => console.error(err));
     connection.on('data', onReceiveRCData);

@@ -38,8 +38,8 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
     get: (searchParams, prop) => searchParams.get(prop),
 });
 const hostPeerId = params.hostPeerId || localStorage.getItem("hostPeerId");
-function isClientMode() {
-    return !!hostPeerId;
+if (isClientMode()) {
+    localStorage.setItem("hostPeerId", hostPeerId);
 }
 
 // version
@@ -74,6 +74,10 @@ for (el of buttonElList) {
     el.addEventListener("pointerdown", startBtnHandler);
     el.addEventListener("pointerup", endBtnHandler);
     el.addEventListener("pointercancel", cancelBtnHandler);
+}
+
+function isClientMode() {
+    return !!hostPeerId;
 }
 
 function isNotificationPossible() {
@@ -194,7 +198,7 @@ function endBtnHandler(e) {
     if (longPressTarget === target) {
         longPressTarget = null;
         target.classList.remove("pushedOperation");
-        if (target === displayEl) {
+        if (target === displayEl && !isClientMode()) {
             window.location.assign("./readme.html");
         } else {
             magic(target);

@@ -14,6 +14,7 @@ const i18n_en = {
         "readme_part_1": `<div>
             <div style="text-align: center;"><strong>(⁺&frasl;₋) Remote control</strong></div>
             </div>
+            <sup><strong>ATTENTION!</strong> This feature may not work on some wireless networks. Because the phones try to connect directly without an intermediary server. It is advisable that both phones are connected to the same Wi-Fi network. This increases the chances of the phones connecting successfully.</sup>
             <p>Enables/disables remote control mode. With this feature, you can control the magical functions of another similar calculator on another device remotely. To do this, you will need good, stable Internet on both devices. We will call the viewer's phone as <strong>CLIENT</strong> device. What should be done:</p>
             <ol>
             <li>First of all, it is important to enable this function once on <strong>YOUR</strong> device (or let's call it <strong>HOST</strong> phone) in order to set a unique permanent identifier for your device. This identifier can only be changed by completely reinstalling the application.</li>
@@ -87,7 +88,7 @@ const i18n_en = {
             </ul>
             </ul>
             <p style="text-align: center;"><strong>Changelog</strong></p>
-            <p style="text-align: center;"><strong>1.56</strong></p>
+            <p style="text-align: center;"><strong>1.57</strong></p>
             <p style="text-align: center;">Added the ability to remotely control the viewer's calculator</p>
             <p style="text-align: center;"><strong>1.55</strong></p>
             <p style="text-align: center;">Improved history display. Now the most recent calculations are at the top of the list. History status on/off are stored in memory. Notifications will constantly appear for every change by the user. Old notifications will be cleared. Only one notification with the current history will be displayed. Improved instructions (slightly). Improved DD Force function. Now you can broadcast your phone screen even when it is upside down. Each press will launch an animation of pressing the desired number to force. And the missing number will be recorded digitally for each click on the screen. Just turn on notifications and receive information on your watch about how many more presses are required to create the desired number for the Force.</p>
