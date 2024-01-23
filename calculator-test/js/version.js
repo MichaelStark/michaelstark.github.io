@@ -1,0 +1,1 @@
+alert("Please install STABLE version");
