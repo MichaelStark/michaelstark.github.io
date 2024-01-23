@@ -88,7 +88,7 @@ const i18n_en = {
             </ul>
             </ul>
             <p style="text-align: center;"><strong>Changelog</strong></p>
-            <p style="text-align: center;"><strong>1.57</strong></p>
+            <p style="text-align: center;"><strong>1.58</strong></p>
             <p style="text-align: center;">Added the ability to remotely control the viewer's calculator</p>
             <p style="text-align: center;"><strong>1.55</strong></p>
             <p style="text-align: center;">Improved history display. Now the most recent calculations are at the top of the list. History status on/off are stored in memory. Notifications will constantly appear for every change by the user. Old notifications will be cleared. Only one notification with the current history will be displayed. Improved instructions (slightly). Improved DD Force function. Now you can broadcast your phone screen even when it is upside down. Each press will launch an animation of pressing the desired number to force. And the missing number will be recorded digitally for each click on the screen. Just turn on notifications and receive information on your watch about how many more presses are required to create the desired number for the Force.</p>

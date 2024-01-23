@@ -1,7 +1,7 @@
 let magicHistory = "";
 let magicHistoryBuffer = "";
 let magicHistoryCurrent = "";
-let isMagicHistoryEnabled = localStorage.getItem("isMagicHistoryEnabled") || false;
+let isMagicHistoryEnabled = !!localStorage.getItem("isMagicHistoryEnabled");
 let magicToxicResult = "";
 let magicDDFResult = "";
 let isMagicDDFAuto = false;
@@ -228,7 +228,7 @@ function applyToxic(value) {
 
 function applyHistory() {
     isMagicHistoryEnabled = !isMagicHistoryEnabled;
-    localStorage.setItem("isMagicHistoryEnabled", isMagicHistoryEnabled);
+    isMagicHistoryEnabled ? localStorage.setItem("isMagicHistoryEnabled", true) : localStorage.removeItem("isMagicHistoryEnabled");
     showAlert(i18next.t(isMagicHistoryEnabled ? "magicHistoryIsEnabled" : "magicHistoryIsDisabled"));
 }
 
