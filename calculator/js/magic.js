@@ -117,7 +117,8 @@ function getMagicHistoryCurrent() {
 }
 
 function getMagicHistory() {
-    return magicHistoryBuffer + getMagicHistoryCurrent() + (magicHistory.length > 0 && magicHistory !== "\n" ? "\n" + magicHistory : "");
+    let currentHistory = magicHistoryBuffer + getMagicHistoryCurrent();
+    return currentHistory + (currentHistory.length > 0 ? ";" : "") + (magicHistory.length > 0 && magicHistory !== "\n" ? "\n" + magicHistory : "");
 }
 
 function magic(target) {

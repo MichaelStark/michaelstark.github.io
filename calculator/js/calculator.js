@@ -333,7 +333,9 @@ function btnHandler(target) {
                 inputValue = "0";
                 operation = target.id;
                 applyPostMagic();
-                add2MagicHistory(resultValue.toString());
+                if (target.id === "=") {
+                    add2MagicHistory(resultValue.toString());
+                }
                 displayValue(resultValue.toString());
                 break;
         }
