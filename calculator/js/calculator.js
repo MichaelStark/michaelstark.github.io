@@ -328,15 +328,15 @@ function btnHandler(target) {
                 } else if (target.id !== "=" || target.id === "=" && operation !== "=") {
                     add2MagicHistory(target.id);
                 }
-                resetEl.innerText = "C";
-                isDigitsTyping = false;
-                inputValue = "0";
-                operation = target.id;
-                applyPostMagic();
+                applyPostMagic(target.id);
                 if (target.id === "=") {
                     add2MagicHistory(resultValue.toString());
                 }
                 displayValue(resultValue.toString());
+                resetEl.innerText = "C";
+                isDigitsTyping = false;
+                inputValue = "0";
+                operation = target.id;
                 break;
         }
     }

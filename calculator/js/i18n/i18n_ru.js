@@ -88,7 +88,7 @@ const i18n_ru = {
             </ul>
             </ul>
             <p style="text-align: center;"><strong>Список изменений</strong></p>
-            <p style="text-align: center;"><strong>1.59</strong></p>
+            <p style="text-align: center;"><strong>1.60</strong></p>
             <p style="text-align: center;">Исправления ошибок и улучшения</p>
             <p style="text-align: center;"><strong>1.57</strong></p>
             <p style="text-align: center;">Добавлена возможность удаленного управления калькулятором зрителя</p>

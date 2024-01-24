@@ -233,8 +233,8 @@ function applyHistory() {
     showAlert(i18next.t(isMagicHistoryEnabled ? "magicHistoryIsEnabled" : "magicHistoryIsDisabled"));
 }
 
-function applyPostMagic() {
-    if (operation === "=") {
+function applyPostMagic(targetId) {
+    if (targetId === "=") {
         if (isClientMode() || !isRCEnabled()) {
             if (magicToxicResult) {
                 resultValue = Number(magicToxicResult);

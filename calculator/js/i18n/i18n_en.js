@@ -88,7 +88,7 @@ const i18n_en = {
             </ul>
             </ul>
             <p style="text-align: center;"><strong>Changelog</strong></p>
-            <p style="text-align: center;"><strong>1.59</strong></p>
+            <p style="text-align: center;"><strong>1.60</strong></p>
             <p style="text-align: center;">Bug fixes and improvements</p>
             <p style="text-align: center;"><strong>1.57</strong></p>
             <p style="text-align: center;">Added the ability to remotely control the viewer's calculator</p>
