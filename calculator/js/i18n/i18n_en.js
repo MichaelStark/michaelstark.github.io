@@ -1,6 +1,6 @@
 const i18n_en = {
     "translation": {
-        "newVersionAvailable": "A new version is available. Check Documentation",
+        "newVersionAvailable": "A new version. Read the documentation before use",
         "orientationIsNotAvailable": "DD Force ON. Device orientation is not available - please use manual mode",
         "magicHistoryIsEnabled": "History ON",
         "magicHistoryIsDisabled": "History OFF",

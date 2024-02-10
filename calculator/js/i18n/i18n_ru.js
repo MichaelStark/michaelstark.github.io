@@ -1,6 +1,6 @@
 const i18n_ru = {
     "translation": {
-        "newVersionAvailable": "Доступна новая версия. Проверьте документацию",
+        "newVersionAvailable": "Новая версия. Прочтите документацию перед использованием",
         "orientationIsNotAvailable": "DD Force ВКЛ. Нет доступа к ориентации устройства - используйте ручной режим",
         "magicHistoryIsEnabled": "История ВКЛ",
         "magicHistoryIsDisabled": "История ВЫКЛ",
