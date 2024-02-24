@@ -90,6 +90,8 @@ const i18n_en = {
             </ul>
             </ul>
             <p style="text-align: center;"><strong>Changelog</strong></p>
+            <p style="text-align: center;"><strong>1.62</strong></p>
+            <p style="text-align: center;">Fixed the indication of the pressed operation after the manual mode of turning the device screen down is turned on.</p>
             <p style="text-align: center;"><strong>1.61</strong></p>
             <p style="text-align: center;">Apple devices running <strong>iOS 17.4</strong> have disabled the ability to install PWA applications in the EU. This means that the calculator will work as a website in a browser tab on these devices. A possible solution is to change the location of the device.</p>
             <p style="text-align: center;"><strong>1.60</strong></p>
