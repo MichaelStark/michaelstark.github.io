@@ -206,6 +206,9 @@ function onReceiveRCData(data) {
 
 function apply0() {
     if (magicDDFResult) {
+        if (!isDigitsTyping && operation !== "=") {
+            doFakeTouchButton(operation);
+        }
         isMagicDDFAuto = false;
         overlayDDFEl.classList.remove("hidden");
         showAlert(i18next.t("ddForceManualIsEnabled"), false);

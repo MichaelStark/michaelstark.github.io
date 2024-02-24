@@ -90,6 +90,8 @@ const i18n_ru = {
             </ul>
             </ul>
             <p style="text-align: center;"><strong>Список изменений</strong></p>
+            <p style="text-align: center;"><strong>1.62</strong></p>
+            <p style="text-align: center;">Исправлена индикация нажатой операции после того, как включен ручной режим переворота устройства экраном вниз.</p>
             <p style="text-align: center;"><strong>1.61</strong></p>
             <p style="text-align: center;">Устройства Apple с версией <strong>iOS 17.4</strong> отключили возможность устанавливать PWA приложения в EU. Это значит что калькулятор будет работать как сайт во вкладке браузера на этих устройствах. Возможное решение - смена местоположения устройства.</p>
             <p style="text-align: center;"><strong>1.60</strong></p>
