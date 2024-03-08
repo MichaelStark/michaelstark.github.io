@@ -71,8 +71,6 @@ const i18n_en = {
             <p>In remote control mode, turns on/off the story on the viewer&rsquo;s phone. Information will come to you in the form of notifications.</p>`,
         "readme": `<p style="text-align: center;">Description</p>
             <p style="text-align: justify;">The application is a fully working calculator with the iOS calculator interface except for the engineering mode. Automatically adapt to the locale and language of the operating system. Can be installed as an Android or iOS app, or used as a website in any browser. The application updates automatically. Does not require internet access. If the Internet is too slow and there is a delay in launching / restarting the application, turn off the Internet after the first full launch of the application. If any function does not work, delete the application, clear the site data in the browser and install the application again.</p>
-            <p style="text-align: center; color: red;">ALERT</p>
-            <p style="text-align: justify; color: red;">Apple devices running <strong>iOS 17.4</strong> have disabled the ability to install PWA applications in the EU. This means that the calculator will work as a website in a browser tab on these devices. A possible solution is to change the location of the device.</p>
             <p style="text-align: center;">Permissions</p>
             <p style="text-align: justify;">In order for the application to request possible permissions, you need to press once anywhere on the screen when you first start it.</p>
             <p style="text-align: justify;"><span style="text-decoration: underline;">Android</span>: permission to display notifications. If enabled, the "peek" function will be displayed in the notification panel. Thus, you can receive notifications on your smart watch. Otherwise, the information will be displayed in a pop-up window.</p>
@@ -91,7 +89,7 @@ const i18n_en = {
             </ul>
             <p style="text-align: center;"><strong>Changelog</strong></p>
             <p style="text-align: center;"><strong>1.62</strong></p>
-            <p style="text-align: center;">Fixed the indication of the pressed operation after the manual mode of turning the device screen down is turned on.</p>
+            <p style="text-align: center;">Fixed the indication of the pressed operation after the manual mode of turning the device screen down is turned on. Apple has changed its mind about disabling PWA applications.</p>
             <p style="text-align: center;"><strong>1.61</strong></p>
             <p style="text-align: center;">Apple devices running <strong>iOS 17.4</strong> have disabled the ability to install PWA applications in the EU. This means that the calculator will work as a website in a browser tab on these devices. A possible solution is to change the location of the device.</p>
             <p style="text-align: center;"><strong>1.60</strong></p>
