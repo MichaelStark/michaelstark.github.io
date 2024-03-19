@@ -47,8 +47,13 @@
     </div>
     <script>
         function onCopyRCLink() {
-            navigator.clipboard.writeText(window.location.origin + "/calculator/?hostPeerId=" + localStorage.getItem("currentPeerId"));
-            alert("📋👍");
+            navigator.clipboard.writeText(window.location.origin + "/calculator/?hostPeerId=" + localStorage.getItem("currentPeerId"))
+                .then(() => {
+                    alert("✓");
+                })
+                .catch((e) => {
+                    alert(e.message);
+                });
         };
         i18next.use(i18nextBrowserLanguageDetector).init(i18n).then(_ => {
             const params = new Proxy(new URLSearchParams(window.location.search), {
