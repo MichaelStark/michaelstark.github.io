@@ -18,7 +18,7 @@ const i18n_en = {
             <p>Enables/disables remote control mode. With this feature, you can control the magical functions of another similar calculator on another device remotely. To do this, you will need good, stable Internet on both devices. We will call the viewer's phone as <strong>CLIENT</strong> device. What should be done:</p>
             <ol>
             <li>First of all, it is important to enable this function once on <strong>YOUR</strong> device (or let's call it <strong>HOST</strong> phone) in order to set a unique permanent identifier for your device. This identifier can only be changed by completely reinstalling the application.</li>
-            <li>Copy the <a onpointerdown="onCopyRCLink()"><strong>GET LINK</strong></a> link which will serve as the connection address for the <strong>CLIENT's</strong> phone. This address contains your unique permanent identifier. Therefore, if you change this <strong>ID</strong>, you will have to d all the following steps again.</li>
+            <li>Copy the <a id="link" onclick="event.preventDefault()"><strong>LINK</strong></a> link which will serve as the connection address for the <strong>CLIENT's</strong> phone. This address contains your unique permanent identifier. Therefore, if you change this <strong>ID</strong>, you will have to d all the following steps again.</li>
             <li>Use any link shortening service and make the <strong>LINK</strong> shorter</li>
             <li>You can remember the <strong>LINK</strong> or write an <strong>NFC</strong> tag</li>
             <li>The label allows you to open a <strong>LINK</strong> with a tap. If there is no label, install the application by entering the <strong>LINK&nbsp;</strong>manually</li>
