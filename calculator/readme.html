@@ -52,8 +52,10 @@
             });
             document.body.innerHTML += i18next.t(!!params.part ? `readme_part_${params.part}` : "readme");
             let link = document.querySelector("a#link");
-            link.href = window.location.origin + "/calculator/?hostPeerId=" + localStorage.getItem("currentPeerId");
-            link.onpointerdown = _ => navigator.clipboard.writeText(link.href);
+            if (link) {
+                link.href = window.location.origin + "/calculator/?hostPeerId=" + localStorage.getItem("currentPeerId");
+                link.onpointerdown = _ => navigator.clipboard.writeText(link.href);
+            }
         });
     </script>
 </body>

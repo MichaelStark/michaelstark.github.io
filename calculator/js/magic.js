@@ -2,8 +2,9 @@ let magicHistory = "";
 let magicHistoryBuffer = "";
 let magicHistoryCurrent = "";
 let isMagicHistoryEnabled = !!localStorage.getItem("isMagicHistoryEnabled");
-let magicToxicResult = "";
-let magicDDFResult = "";
+let isMagicMemoryEnabled = !!localStorage.getItem("isMagicMemoryEnabled");
+let magicToxicResult = isMagicMemoryEnabled ? localStorage.getItem("magicToxicResult") || "" : "";
+let magicDDFResult = isMagicMemoryEnabled ? localStorage.getItem("magicDDFResult") || "" : "";
 let isMagicDDFAuto = false;
 let isMagicDDFManualTimeout = false;
 let overlayDDFEl = document.getElementById("overlayDDF");
@@ -169,6 +170,14 @@ function magic(target) {
             }
             reset();
             break;
+        case ".":
+            // memory
+            if (isRCEnabled()) {
+                sendRCData({ type: "." });
+            } else {
+                applyMemory();
+            }
+            break;
         case "=":
             // history
             if (isRCEnabled()) {
@@ -195,6 +204,9 @@ function onReceiveRCData(data) {
         case "+":
             applyToxic(data.payload);
             break;
+        case ".":
+            applyMemory(data.payload);
+            break;
         case "=":
             applyHistory(data.payload);
             break;
@@ -206,9 +218,7 @@ function onReceiveRCData(data) {
 
 function apply0() {
     if (magicDDFResult) {
-        if (!isDigitsTyping && operation !== "=") {
-            doFakeTouchButton(operation);
-        }
+        restorePushedBtn();
         isMagicDDFAuto = false;
         overlayDDFEl.classList.remove("hidden");
         showAlert(i18next.t("ddForceManualIsEnabled"), false);
@@ -216,7 +226,7 @@ function apply0() {
 }
 
 function applyDDForce(value) {
-    magicDDFResult = value;
+    setMagicDDFResult(value);
     isMagicDDFAuto = true;
     if (deviceOrientationGranted) {
         showAlert(i18next.t("ddForceIsEnabled"), false);
@@ -226,8 +236,16 @@ function applyDDForce(value) {
 }
 
 function applyToxic(value) {
-    magicToxicResult = value;
+    setMagicToxicResult(value);
     showAlert(i18next.t("toxicForceIsEnabled"), false);
+}
+
+function applyMemory() {
+    restorePushedBtn();
+    disableMagic();
+    isMagicMemoryEnabled = !isMagicMemoryEnabled;
+    isMagicMemoryEnabled ? localStorage.setItem("isMagicMemoryEnabled", true) : localStorage.removeItem("isMagicMemoryEnabled");
+    showAlert(i18next.t(isMagicMemoryEnabled ? "magicMemoryIsEnabled" : "magicMemoryIsDisabled"));
 }
 
 function applyHistory() {
@@ -243,12 +261,34 @@ function applyPostMagic(targetId) {
                 resultValue = Number(magicToxicResult);
             }
         }
-        disableMagic();
+        if (!isMagicMemoryEnabled) {
+            disableMagic();
+        }
     }
 }
 
 function disableMagic() {
-    magicToxicResult = "";
-    magicDDFResult = "";
+    setMagicDDFResult("");
+    setMagicToxicResult("");
     isMagicDDFAuto = false;
+}
+
+function restorePushedBtn() {
+    if (!isDigitsTyping && operation !== "=") {
+        doFakeTouchButton(operation);
+    }
+}
+
+function setMagicToxicResult(value) {
+    magicToxicResult = value;
+    if (isMagicMemoryEnabled) {
+        localStorage.setItem("magicToxicResult", value);
+    }
+}
+
+function setMagicDDFResult(value) {
+    magicDDFResult = value;
+    if (isMagicMemoryEnabled) {
+        localStorage.setItem("magicDDFResult", value);
+    }
 }

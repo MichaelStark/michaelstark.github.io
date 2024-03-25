@@ -45,7 +45,9 @@ if (isClientMode()) {
 // version
 const currentVersion = localStorage.getItem("currentVersion");
 if (!currentVersion || currentVersion !== version) {
-    alert(i18next.t("newVersionAvailable"));
+    if (!isClientMode()) {
+        alert(i18next.t("newVersionAvailable"));
+    }
     localStorage.setItem("currentVersion", version);
 }
 
