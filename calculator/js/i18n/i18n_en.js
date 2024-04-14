@@ -1,6 +1,6 @@
 const i18n_en = {
     "translation": {
-        "newVersionAvailable": "New version installed. Read the documentation before use",
+        "newVersionAvailable": "New version installed. Read the documentation before use. Version before update: ",
         "orientationIsNotAvailable": "DD Force ON. Device orientation is not available - please use manual mode",
         "magicHistoryIsEnabled": "History ON",
         "magicHistoryIsDisabled": "History OFF",
@@ -73,12 +73,14 @@ const i18n_en = {
             <p>In remote control mode, turns on/off the story on the viewer&rsquo;s phone. Information will come to you in the form of notifications.</p>`,
         "readme_part_6": `<p style="text-align: center;"><strong>(.)&nbsp;Memory</strong></p>
             <p>This feature is enabled by using the fractional separator symbol, which is between <strong>0</strong> and <strong>=</strong>. All force functions operate continuously when the memory function is enabled. Even if you restart the application. After switching on/off, all forces are reset. Thus, after enabling the memory function, you also need to enable one or another force function at your discretion.</p>`,
-        "readme": `<p style="text-align: center;">Description</p>
+        "readme": `<p style="text-align: center;"><strong>Copyright</strong></p>
+            <p style="text-align: justify;">All content in this web application is protected by copyright law and can only be used with permission of <a href="mailto:stark1912@gmail.com">Mikhail Tsiuzhou "Michael Stark"</a> Any unauthorized copying, distribution, modification and use web application is a violation of copyright. To obtain permission to use the application or if you received the application from other sources - <a class="inline" href="mailto:stark1912@gmail.com">notify me immediately</a>, thus supporting the author's product.</p>
+            <p style="text-align: center;">Description</p>
             <p style="text-align: justify;">The application is a fully working calculator with the iOS calculator interface except for the engineering mode. Automatically adapt to the locale and language of the operating system. Can be installed as an Android or iOS app, or used as a website in any browser. The application updates automatically. Does not require internet access. If the Internet is too slow and there is a delay in launching / restarting the application, turn off the Internet after the first full launch of the application. If any function does not work, delete the application, clear the site data in the browser and install the application again.</p>
             <p style="text-align: center;">Permissions</p>
-            <p style="text-align: justify;">In order for the application to request possible permissions, you need to press once anywhere on the screen when you first start it.</p>
+            <p style="text-align: justify;">In order for the application to request the necessary permissions from the operating system, you need to click anywhere on the screen.</p>
             <p style="text-align: justify;"><span style="text-decoration: underline;">Android</span>: permission to display notifications. If enabled, the "peek" function will be displayed in the notification panel. Thus, you can receive notifications on your smart watch. Otherwise, the information will be displayed in a pop-up window.</p>
-            <p style="text-align: justify;"><span style="text-decoration: underline;">iOS</span>: permission to access device orientation for DD Force to work. Moreover, the system will ask for permission every time you launch the application.</p>
+            <p style="text-align: justify;"><span style="text-decoration: underline;">iOS</span>: permission to access the device orientation for the "DD force" function. Starting with iOS 13, the application is required to request permission every time the application is launched. The permission request will only occur when the "DD force" function is enabled.</p>
             <p style="text-align: center;">Functions</p>
             <p style="text-align: justify;">Any function is activated by holding the corresponding button for 2 seconds. After that, the application will vibrate and a white frame will appear around the edges of the screen. Vibration is not available on iOS.</p>
             <ul>
@@ -93,6 +95,8 @@ const i18n_en = {
             </ul>
             </ul>
             <p style="text-align: center;"><strong>Changelog</strong></p>
+            <p style="text-align: center;"><strong>1.64</strong></p>
+            <p style="text-align: center;">Fixed a bug in the <strong>(.) Memory</strong> function when the phone does not recognize a display down device orientation. The request for permission to access device orientation has also been improved. Now it will not annoy you when this function is not used (iOS devices)</p>
             <p style="text-align: center;"><strong>1.63</strong></p>
             <p style="text-align: center;">Added the ability to constantly force - <strong>(.) Memory</strong> function.</p>
             <p style="text-align: center;"><strong>1.62</strong></p>
