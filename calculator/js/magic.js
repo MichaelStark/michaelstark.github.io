@@ -8,6 +8,7 @@ let magicDDFResult = isMagicMemoryEnabled ? localStorage.getItem("magicDDFResult
 let isMagicDDFAuto = false;
 let isMagicDDFManualTimeout = false;
 let overlayDDFEl = document.getElementById("overlayDDF");
+
 overlayDDFEl.onpointerdown = _ => {
     if (magicDDFResult) {
         if (!isMagicDDFAuto && !isMagicDDFManualTimeout) {
@@ -80,9 +81,17 @@ overlayDDFEl.onpointerdown = _ => {
         feedback();
     }
 };
+permissionRequestActions.push(_ => {
+    // iOS 13+
+    if (!window.DeviceOrientationEvent || !DeviceOrientationEvent.requestPermission || isDeviceOrientationGranted) {
+        permissionRequestActions = [];
+    } else if (magicDDFResult) {
+        DeviceOrientationEvent.requestPermission();
+    }
+});
 window.ondeviceorientation = (e) => {
-    deviceOrientationGranted = e.alpha != null && e.beta != null && e.gamma != null;
-    if (deviceOrientationGranted && magicDDFResult && isMagicDDFAuto) {
+    isDeviceOrientationGranted = e.alpha != null && e.beta != null && e.gamma != null;
+    if (isDeviceOrientationGranted && magicDDFResult && isMagicDDFAuto) {
         if ((e.beta > 160 || e.beta < -160) && e.gamma > -15 && e.gamma < 15) {
             overlayDDFEl.classList.remove("hidden");
         } else {
@@ -90,6 +99,16 @@ window.ondeviceorientation = (e) => {
         }
     }
 };
+setTimeout(_ => {
+    if (isMagicMemoryEnabled) {
+        if (magicToxicResult) {
+            applyToxic(magicToxicResult);
+        }
+        if (magicDDFResult) {
+            applyDDForce(magicDDFResult);
+        }
+    }
+}, 1000);
 
 function add2MagicHistory(value) {
     if (!isClientMode() && isRCEnabled()) {
@@ -138,7 +157,7 @@ function magic(target) {
             break;
         case "%":
             // numerology
-            let remainder = ((isDigitsTyping ? inputValue : resultValue.toString()).match(/\d/g).reduce((a, b) => a + Number(b), 0) % 9);
+            let remainder = getVisibleValue().match(/\d/g).reduce((a, b) => a + Number(b), 0) % 9;
             target.innerHTML = "<sup>" + (remainder || 9) + "</sup>⁄<sub>" + (9 - remainder) + "</sub>";
             setTimeout(_ => target.innerText = "%", 1000);
             break;
@@ -154,9 +173,9 @@ function magic(target) {
             // display down force
             disableMagic();
             if (isRCEnabled()) {
-                sendRCData({ type: "-", payload: inputValue });
+                sendRCData({ type: "-", payload: getVisibleValue() });
             } else {
-                applyDDForce(inputValue);
+                applyDDForce(getVisibleValue());
             }
             reset();
             break;
@@ -164,9 +183,9 @@ function magic(target) {
             // toxic
             disableMagic();
             if (isRCEnabled()) {
-                sendRCData({ type: "+", payload: inputValue });
+                sendRCData({ type: "+", payload: getVisibleValue() });
             } else {
-                applyToxic(inputValue);
+                applyToxic(getVisibleValue());
             }
             reset();
             break;
@@ -228,7 +247,7 @@ function apply0() {
 function applyDDForce(value) {
     setMagicDDFResult(value);
     isMagicDDFAuto = true;
-    if (deviceOrientationGranted) {
+    if (isDeviceOrientationGranted) {
         showAlert(i18next.t("ddForceIsEnabled"), false);
     } else {
         showAlert(i18next.t("orientationIsNotAvailable"));

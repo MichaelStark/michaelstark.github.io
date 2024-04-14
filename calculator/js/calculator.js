@@ -14,7 +14,7 @@ i18next.use(i18nextBrowserLanguageDetector).init(i18n);
 
 // permissions
 let isNotificationGranted = window.Notification && Notification.permission === "granted";
-let deviceOrientationGranted = false;
+let isDeviceOrientationGranted = false;
 
 // notification
 if (navigator.permissions) {
@@ -22,16 +22,15 @@ if (navigator.permissions) {
 }
 
 // requests
-window.addEventListener("pointerup", getPermissions);
-function getPermissions() {
-    window.removeEventListener("pointerup", getPermissions);
+let permissionRequestActions = [];
+window.onpointerup = e => {
     if (window.Notification && Notification.permission === "default") {
         Notification.requestPermission();
     }
-    if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission && !deviceOrientationGranted) {
-        DeviceOrientationEvent.requestPermission(); // iOS 13+
-    }
-}
+    permissionRequestActions.forEach(action => {
+        action(e);
+    });
+};
 
 // client/host mode detection
 const params = new Proxy(new URLSearchParams(window.location.search), {
@@ -45,8 +44,8 @@ if (isClientMode()) {
 // version
 const currentVersion = localStorage.getItem("currentVersion");
 if (!currentVersion || currentVersion !== version) {
-    if (!isClientMode()) {
-        alert(i18next.t("newVersionAvailable"));
+    if (!isClientMode() && !!currentVersion) {
+        alert(i18next.t("newVersionAvailable") + currentVersion);
     }
     localStorage.setItem("currentVersion", version);
 }
@@ -375,6 +374,10 @@ function displayValue(value, showAsIs = false) {
     do {
         displayEl.className = "displayS" + sizeIndex;
     } while (sizeIndex++ < 12 && displayEl.scrollWidth > displayEl.clientWidth);
+}
+
+function getVisibleValue() {
+    return isDigitsTyping ? inputValue : resultValue.toString();
 }
 
 function reset() {
