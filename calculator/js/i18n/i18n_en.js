@@ -95,6 +95,8 @@ const i18n_en = {
             </ul>
             </ul>
             <p style="text-align: center;"><strong>Changelog</strong></p>
+            <p style="text-align: center;"><strong>1.65</strong></p>
+            <p style="text-align: center;">Fixed a bug when clearing С the value and enabling functions.</p>
             <p style="text-align: center;"><strong>1.64</strong></p>
             <p style="text-align: center;">Fixed a bug in the <strong>(.) Memory</strong> function when the phone does not recognize a display down device orientation. The request for permission to access device orientation has also been improved. Now it will not annoy you when this function is not used (iOS devices)</p>
             <p style="text-align: center;"><strong>1.63</strong></p>

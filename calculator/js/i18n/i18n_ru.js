@@ -95,6 +95,8 @@ const i18n_ru = {
             </ul>
             </ul>
             <p style="text-align: center;"><strong>Список изменений</strong></p>
+            <p style="text-align: center;"><strong>1.65</strong></p>
+            <p style="text-align: center;">Исправлен баг при очистке значения С и включения функций.</p>
             <p style="text-align: center;"><strong>1.64</strong></p>
             <p style="text-align: center;">Исправлен баг в функции <strong>(.) Memory</strong> когда телефон не распознает перевернутое устройство. Так же улучшен запрос разрешения на доступ к ориентации устройства. Теперь он не будет раздражать вас когда эта функция не используется (iOS устройства)</p>
             <p style="text-align: center;"><strong>1.63</strong></p>

@@ -377,7 +377,7 @@ function displayValue(value, showAsIs = false) {
 }
 
 function getVisibleValue() {
-    return isDigitsTyping ? inputValue : resultValue.toString();
+    return isDigitsTyping ? inputValue : resetEl.innerText === "AC" ? inputValue : resultValue.toString();
 }
 
 function reset() {
