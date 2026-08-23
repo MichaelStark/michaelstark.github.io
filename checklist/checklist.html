@@ -59,26 +59,32 @@
             box-shadow: 0 10px 20px -10px rgba(15, 23, 42, 0.9);
         }
 
-        /* Fixed-height Header */
+        /* Fixed-height Header with 2-row layout and integrated bottom progress bar */
         header {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border: 1px solid var(--card-border);
             border-radius: 16px;
-            padding: 16px 20px;
+            padding: 16px 20px 18px 20px;
             margin-bottom: 14px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 16px;
+            flex-direction: column;
+            justify-content: center;
+            gap: 6px;
             min-height: 94px;
+            max-height: 98px;
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
         }
 
-        .header-info {
-            flex: 1 1 auto;
-            min-width: 0;
+        .header-top-row {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            min-height: 38px;
         }
 
         h1 { 
@@ -89,17 +95,11 @@
             align-items: center; 
             gap: 10px; 
             line-height: 1.2;
-            min-height: 1.2em;
-        }
-
-        .subtitle { 
-            color: var(--text-secondary); 
-            margin-top: 4px; 
-            font-size: 0.88rem; 
-            line-height: 1.35; 
-            min-height: 2.7em; 
-            display: flex;
-            align-items: flex-start;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1 1 auto;
+            min-width: 0;
         }
 
         #header-action {
@@ -110,13 +110,41 @@
             margin-left: auto;
         }
 
+        .subtitle { 
+            color: var(--text-secondary); 
+            font-size: 0.86rem; 
+            line-height: 1.35; 
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-height: 1.35em;
+        }
+
+        .header-progress-track {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 4px;
+            background-color: rgba(51, 65, 85, 0.5);
+        }
+
+        .header-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #38bdf8, #4ade80);
+            transition: width 0.3s ease;
+        }
+
         .btn-action {
             background: #2563eb;
             color: #fff;
             border: 1px solid #3b82f6;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 10px;
-            font-size: 0.92rem;
+            font-size: 0.88rem;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
@@ -168,30 +196,40 @@
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         }
 
-        /* Responsive Grid for Tabs */
+        /* Single-Row Browser-style Tabs Bar (Fully collapsible inactive tabs) */
         .tabs {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 10px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: center;
+            gap: 5px;
             margin-bottom: 12px;
+            width: 100%;
+            overflow-x: hidden;
         }
 
         .tab-btn {
             background-color: var(--card-bg);
             color: var(--text-secondary);
             border: 1px solid var(--card-border);
-            padding: 10px 14px;
+            padding: 0 8px;
             border-radius: 10px;
-            font-size: 0.9rem;
+            font-size: 0.86rem;
             font-weight: 600;
             cursor: pointer;
-            display: flex;
-            justify-content: space-between;
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
-            transition: all 0.15s ease;
-            text-align: left;
-            min-height: 44px;
+            justify-content: flex-start;
+            gap: 6px;
+            min-height: 38px;
+            height: 38px;
+            box-sizing: border-box;
+            flex: 1 1 0px; /* Collapsible: shrinks padding, text and space smoothly */
+            min-width: 36px;
+            max-width: max-content;
+            overflow: hidden;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
         }
 
         .tab-btn:hover {
@@ -205,54 +243,36 @@
             border-color: #3b82f6;
             color: #fff;
             box-shadow: 0 4px 12px 0 rgba(37, 99, 235, 0.35);
+            flex: 0 0 auto; /* Active tab never gets squished */
+            padding: 0 14px;
+            gap: 8px;
         }
 
-        .tab-label {
+        .tab-icon {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+            line-height: 1;
+        }
+
+        .tab-text {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            min-width: 0;
+            flex: 1 1 auto;
         }
 
         .tab-count {
             background-color: rgba(255, 255, 255, 0.15);
-            padding: 2px 8px;
+            padding: 2px 7px;
             border-radius: 20px;
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             font-weight: 700;
             flex-shrink: 0;
-        }
-
-        /* Fixed-height Progress Card */
-        .progress-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 10px;
-            padding: 12px 16px;
-            margin-bottom: 12px;
-            min-height: 64px;
-        }
-
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 6px;
-            font-weight: 600;
-            font-size: 0.88rem;
-            min-height: 1.3em;
-        }
-
-        .progress-bar-bg {
-            background-color: #334155;
-            height: 10px;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #38bdf8, #4ade80);
-            width: 0%;
-            transition: width 0.3s ease;
+            margin-left: auto;
         }
 
         /* Filter Chips Bar (Zero shifts) */
@@ -428,25 +448,19 @@
     <div class="container">
         <!-- Sticky Fixed Control Center -->
         <div class="sticky-dashboard">
-            <header>
-                <div class="header-info">
+            <header id="main-header">
+                <div class="header-top-row">
                     <h1 id="main-title">Реестр документов</h1>
-                    <p class="subtitle" id="main-subtitle"></p>
+                    <div id="header-action"></div>
                 </div>
-                <div id="header-action"></div>
+                <p class="subtitle" id="main-subtitle"></p>
+                <!-- Sleek Integrated Progress Bar at bottom of header -->
+                <div class="header-progress-track" id="header-progress-track" style="display:none">
+                    <div id="progress-bar" class="header-progress-fill"></div>
+                </div>
             </header>
 
             <div class="tabs" id="tabs-container" style="display:none"></div>
-
-            <div class="progress-card" id="progress-card" style="display:none">
-                <div class="progress-header">
-                    <span id="progress-label">Готовность</span>
-                    <span id="progress-text">0%</span>
-                </div>
-                <div class="progress-bar-bg">
-                    <div id="progress-bar" class="progress-bar-fill"></div>
-                </div>
-            </div>
 
             <div class="controls-bar" id="controls-bar" style="display:none">
                 <div class="filter-group" id="filter-group-container"></div>
@@ -573,7 +587,7 @@
             document.getElementById("main-title").innerText = "Реестр документов";
             document.getElementById("main-subtitle").innerText = "";
             document.getElementById("tabs-container").style.display = "none";
-            document.getElementById("progress-card").style.display = "none";
+            document.getElementById("header-progress-track").style.display = "none";
             document.getElementById("controls-bar").style.display = "none";
             document.getElementById("header-action").innerHTML = "";
             document.getElementById("content-area").innerHTML = `
@@ -637,8 +651,8 @@
             const keys = Object.keys(applicantsData);
             if (keys.length > 0) {
                 document.getElementById("empty-prompt") && (document.getElementById("empty-prompt").style.display = "none");
-                document.getElementById("tabs-container").style.display = "grid";
-                document.getElementById("progress-card").style.display = "block";
+                document.getElementById("tabs-container").style.display = "flex";
+                document.getElementById("header-progress-track").style.display = "block";
                 document.getElementById("controls-bar").style.display = "flex";
 
                 const fullPath = getDisplayPath(dirHandle);
@@ -671,7 +685,6 @@
             if (lower === "актуализация" || lower === "aktualizacja" || lower === "update") return "badge-update";
             if (lower === "срочно" || lower === "urgent" || lower === "pilne") return "badge-urgent";
 
-            // Hash fallback for custom tags
             const colors = ["badge-custom-cyan", "badge-custom-emerald", "badge-custom-purple"];
             let hash = 0;
             for (let i = 0; i < tag.length; i++) hash += tag.charCodeAt(i);
@@ -688,8 +701,6 @@
                 if (str[i] === '(') depth++;
                 else if (str[i] === ')') depth--;
 
-                // If depth drops to 0 before the last character, the outer parens do not enclose the entire string
-                // Example: "(школа) (с печатью)" -> depth becomes 0 at index 6, so do NOT strip
                 if (depth === 0 && i < str.length - 1) {
                     return str;
                 }
@@ -736,7 +747,6 @@
                     const isChecked = match[2].toLowerCase() === 'x';
                     let fullText = match[3].trim();
 
-                    // 1. Extract all explicit #hashtags from line
                     const tags = [];
                     const badges = [];
                     const tagMatches = fullText.match(/(?:^|\s)#([a-zA-Z0-9а-яА-ЯёЁ_\-]+)/g);
@@ -753,7 +763,6 @@
                                 });
                             }
                         });
-                        // Remove hashtags from readable line text
                         fullText = fullText.replace(/(?:^|\s)#[a-zA-Z0-9а-яА-ЯёЁ_\-]+/g, " ").replace(/\s{2,}/g, " ").trim();
                     }
 
@@ -791,6 +800,7 @@
             return { title, subtitle, sections, allTags: Array.from(allTagsSet) };
         }
 
+        // Single-row browser-style expanding tabs
         function renderTabs() {
             const container = document.getElementById("tabs-container");
             container.innerHTML = "";
@@ -805,15 +815,35 @@
                     });
                 });
 
+                let title = app.title || key;
+                let icon = "";
+                let text = title;
+
+                // Match leading emoji (e.g. 💼, 💍, 🎒, 🧸, 🖨️, 📁)
+                const emojiMatch = title.match(/^(\p{Extended_Pictographic}(?:\uFE0F|\u200D\p{Extended_Pictographic})*|\S+)\s*(.*)$/u);
+                if (emojiMatch && emojiMatch[2]) {
+                    icon = emojiMatch[1];
+                    text = emojiMatch[2];
+                }
+
                 const btn = document.createElement("button");
                 btn.className = `tab-btn ${key === currentApplicantKey ? "active" : ""}`;
                 btn.onclick = () => switchApplicant(key);
-                btn.innerHTML = `
-                    <div class="tab-label">
-                        <span>${app.title}</span>
-                    </div>
-                    <span class="tab-count">${done}/${total}</span>
-                `;
+                btn.title = `${title} (${done}/${total})`;
+
+                if (icon) {
+                    btn.innerHTML = `
+                        <span class="tab-icon">${icon}</span>
+                        <span class="tab-text">${text}</span>
+                        <span class="tab-count">${done}/${total}</span>
+                    `;
+                } else {
+                    btn.innerHTML = `
+                        <span class="tab-text">${text}</span>
+                        <span class="tab-count">${done}/${total}</span>
+                    `;
+                }
+
                 container.appendChild(btn);
             });
         }
@@ -821,7 +851,6 @@
         function switchApplicant(key) {
             currentApplicantKey = key;
             localStorage.setItem("active_tab", key);
-            // Persistent filters: do not clear, preserve user selection across tabs
             renderTabs();
             renderCurrentApplicant();
         }
@@ -851,7 +880,6 @@
                 <button class="filter-chip ${isAll ? 'active' : ''}" onclick="toggleFilter('all')">Все</button>
             `;
 
-            // Stable Global Pool of all distinct hashtags across the entire workspace
             globalAllTags.forEach(tag => {
                 const tagLower = tag.toLowerCase();
                 const isActive = activeFilters.has(tagLower);
@@ -911,7 +939,6 @@
             document.getElementById("main-title").innerText = app.title || "Реестр документов";
             document.getElementById("main-subtitle").innerText = app.subtitle || "";
 
-            // Render persistent global filter chips
             renderFilterChips();
 
             const container = document.getElementById("content-area");
@@ -988,7 +1015,6 @@
                 container.appendChild(secCard);
             });
 
-            // If active filter has no matches in this applicant's file
             if (totalRenderedSections === 0 && activeFilters.size > 0) {
                 const noMatchDiv = document.createElement("div");
                 noMatchDiv.className = "no-matches";
@@ -998,8 +1024,6 @@
 
             const percent = totalItems > 0 ? Math.round((totalDone / totalItems) * 100) : 0;
             document.getElementById("progress-bar").style.width = percent + "%";
-            document.getElementById("progress-text").innerText = `${percent}% (${totalDone} из ${totalItems} готово)`;
-            document.getElementById("progress-label").innerText = `Готовность: ${app.title}`;
         }
 
         window.addEventListener("DOMContentLoaded", async () => {
