@@ -678,6 +678,29 @@
             return colors[Math.abs(hash) % colors.length];
         }
 
+        function stripOuterParentheses(str) {
+            if (!str) return "";
+            str = str.trim();
+            if (!str.startsWith("(") || !str.endsWith(")")) return str;
+
+            let depth = 0;
+            for (let i = 0; i < str.length; i++) {
+                if (str[i] === '(') depth++;
+                else if (str[i] === ')') depth--;
+
+                // If depth drops to 0 before the last character, the outer parens do not enclose the entire string
+                // Example: "(школа) (с печатью)" -> depth becomes 0 at index 6, so do NOT strip
+                if (depth === 0 && i < str.length - 1) {
+                    return str;
+                }
+            }
+
+            if (depth === 0) {
+                return str.slice(1, -1).trim();
+            }
+            return str;
+        }
+
         function parseMarkdown(mdText) {
             const lines = mdText.split(/\r?\n/);
             const sections = [];
@@ -739,15 +762,7 @@
                     const boldMatch = fullText.match(/^\*\*(.*?)\*\*(.*)$/);
                     if (boldMatch) {
                         name = boldMatch[1].trim();
-                        desc = boldMatch[2].trim().replace(/^[\-:]\s*/, "");
-                        if (desc.startsWith("(") && desc.endsWith(")")) {
-                            const inner = desc.slice(1, -1);
-                            const openCount = (inner.match(/\(/g) || []).length;
-                            const closeCount = (inner.match(/\)/g) || []).length;
-                            if (openCount === closeCount) {
-                                desc = inner.trim();
-                            }
-                        }
+                        desc = stripOuterParentheses(boldMatch[2].trim().replace(/^[\-:]\s*/, ""));
                     }
 
                     const item = {
