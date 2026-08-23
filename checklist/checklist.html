@@ -27,7 +27,7 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* Full-screen application layout: No page scrolling */
+        /* Full-screen application layout */
         html, body {
             height: 100vh;
             max-height: 100vh;
@@ -46,7 +46,7 @@
             box-sizing: border-box;
         }
 
-        /* 3-Column Fixed Application Container */
+        /* 3-Column Working Grid */
         .app-layout {
             width: 100%;
             max-width: 68rem; /* ~1088px: 11rem + 44rem (4x) + 11rem + gaps */
@@ -54,26 +54,36 @@
             max-height: 100%;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: minmax(2.6rem, 1fr) minmax(0, 24rem) minmax(2.6rem, 1fr);
+            grid-template-columns: 
+                clamp(2.6rem, calc((100% - 24rem - clamp(8px, 2vw, 24px)) / 2), 11rem) 
+                minmax(0, 44rem) 
+                clamp(2.6rem, calc((100% - 24rem - clamp(8px, 2vw, 24px)) / 2), 11rem);
             gap: clamp(4px, 1vw, 12px);
+            justify-content: center;
             box-sizing: border-box;
             align-items: stretch;
             overflow: hidden;
         }
 
-        @media (min-width: 46.5rem) {
-            .app-layout {
-                grid-template-columns: minmax(2.6rem, 11rem) minmax(0, 44rem) minmax(2.6rem, 11rem);
-                justify-content: center;
-                gap: clamp(6px, 1.2vw, 16px);
-            }
+        /* Centered Welcome / Empty State Mode (Before folder is connected) */
+        .app-layout.empty-state-mode {
+            display: flex;
+            flex-direction: column;
+            max-width: 32rem;
+            height: auto;
+            margin: auto;
+            gap: 14px;
+            align-self: center;
+        }
+
+        .app-layout.empty-state-mode header {
+            display: none;
         }
 
         /* Fixed Left Rail */
         .sidebar-left {
             width: 100%;
-            max-width: 11rem;
-            min-width: 2.6rem;
+            min-width: 0;
             display: flex;
             flex-direction: column;
             gap: clamp(3px, 0.5vw, 6px);
@@ -85,8 +95,7 @@
         /* Fixed Right Rail */
         .sidebar-right {
             width: 100%;
-            max-width: 11rem;
-            min-width: 2.6rem;
+            min-width: 0;
             display: flex;
             flex-direction: column;
             gap: clamp(3px, 0.5vw, 6px);
@@ -318,14 +327,15 @@
             background: #2563eb;
             color: #fff;
             border: 1px solid #3b82f6;
-            padding: 5px 10px;
-            border-radius: 7px;
-            font-size: 0.78rem;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.84rem;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
+            gap: 6px;
             transition: all 0.2s ease;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
             white-space: nowrap;
@@ -600,13 +610,14 @@
         .empty-state {
             background-color: var(--card-bg);
             border: 1px dashed var(--card-border);
-            border-radius: 12px;
-            padding: 30px 16px;
+            border-radius: 14px;
+            padding: 36px 20px;
             text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .empty-state h3 { font-size: 1.1rem; margin-bottom: 6px; color: #fff; }
-        .empty-state p { color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 16px; }
+        .empty-state h3 { font-size: 1.15rem; margin-bottom: 8px; color: #fff; font-weight: 700; }
+        .empty-state p { color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 20px; line-height: 1.45; }
 
         .no-matches {
             background-color: var(--card-bg);
@@ -620,7 +631,7 @@
     </style>
 </head>
 <body>
-    <div class="app-layout">
+    <div class="app-layout empty-state-mode" id="app-layout">
         <!-- Fixed Left Rail -->
         <aside class="sidebar-left" id="tabs-container" style="display:none"></aside>
 
@@ -776,6 +787,7 @@
             activeTagFilters.clear();
             globalAllTags = [];
 
+            document.getElementById("app-layout").classList.add("empty-state-mode");
             document.getElementById("main-title").innerText = "Реестр документов";
             document.getElementById("main-subtitle").innerText = "";
             document.getElementById("tabs-container").style.display = "none";
@@ -842,6 +854,7 @@
 
             const keys = Object.keys(applicantsData);
             if (keys.length > 0) {
+                document.getElementById("app-layout").classList.remove("empty-state-mode");
                 document.getElementById("empty-prompt") && (document.getElementById("empty-prompt").style.display = "none");
                 document.getElementById("tabs-container").style.display = "flex";
                 document.getElementById("tags-sidebar").style.display = "flex";
@@ -1121,8 +1134,17 @@
             if (!currentApplicantKey || !applicantsData[currentApplicantKey]) return;
             const app = applicantsData[currentApplicantKey];
 
-            document.getElementById("main-title").innerText = app.title || "Реестр документов";
-            document.getElementById("main-subtitle").innerText = app.subtitle || "";
+            const mainTitleEl = document.getElementById("main-title");
+            const mainSubtitleEl = document.getElementById("main-subtitle");
+
+            const fullTitle = app.title || "Реестр документов";
+            const fullSubtitle = app.subtitle || "";
+
+            mainTitleEl.innerText = fullTitle;
+            mainTitleEl.title = fullTitle;
+
+            mainSubtitleEl.innerText = fullSubtitle;
+            mainSubtitleEl.title = fullSubtitle;
 
             renderTagSidebar();
 
@@ -1160,7 +1182,7 @@
                 secCard.className = "section-card";
                 secCard.innerHTML = `
                     <div class="section-header">
-                        <div class="section-title">${section.title}</div>
+                        <div class="section-title" title="${section.title}">${section.title}</div>
                         <span class="section-badge">${completedInSection} / ${section.items.length} готово</span>
                     </div>
                     <div class="items-list" id="sec-list-${sIdx}"></div>
@@ -1172,11 +1194,11 @@
                     const row = document.createElement("div");
                     row.className = `item-row ${item.isChecked ? "completed" : ""}`;
 
-                    let badgesHtml = item.badges.map(b => `<span class="badge ${b.class}">${b.text}</span>`).join(" ");
+                    let badgesHtml = item.badges.map(b => `<span class="badge ${b.class}" title="Лейбл: #${b.text}">${b.text}</span>`).join(" ");
 
                     let sublinesHtml = "";
                     if (item.sublines.length > 0) {
-                        sublinesHtml = item.sublines.map(s => `<div class="item-subtext">${s}</div>`).join("");
+                        sublinesHtml = item.sublines.map(s => `<div class="item-subtext" title="${s}">${s}</div>`).join("");
                     }
 
                     row.innerHTML = `
@@ -1184,11 +1206,11 @@
                         <div class="item-body">
                             <div class="item-top">
                                 <div class="item-name-wrap">
-                                    <label for="chk-${item.lineIndex}" class="item-name" style="cursor:pointer">${item.name}</label>
+                                    <label for="chk-${item.lineIndex}" class="item-name" style="cursor:pointer" title="${item.name}">${item.name}</label>
                                 </div>
                                 ${badgesHtml ? `<div class="item-badges-wrap">${badgesHtml}</div>` : ""}
                             </div>
-                            ${item.desc ? `<div class="item-desc">${item.desc}</div>` : ""}
+                            ${item.desc ? `<div class="item-desc" title="${item.desc}">${item.desc}</div>` : ""}
                             ${sublinesHtml}
                         </div>
                     `;
@@ -1218,6 +1240,7 @@
                     if (perm === "granted") {
                         await scanAndLoadDirectory(savedDir);
                     } else {
+                        document.getElementById("app-layout").classList.add("empty-state-mode");
                         document.getElementById("content-area").innerHTML = `
                             <div class="empty-state" id="empty-prompt">
                                 <h3>Восстановление доступа к рабочей папке</h3>
@@ -1228,9 +1251,12 @@
                             </div>
                         `;
                     }
+                } else {
+                    document.getElementById("app-layout").classList.add("empty-state-mode");
                 }
             } catch (e) {
                 console.error("Auto-restore check error:", e);
+                document.getElementById("app-layout").classList.add("empty-state-mode");
             }
         });
     </script>
