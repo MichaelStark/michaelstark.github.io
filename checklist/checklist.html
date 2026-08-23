@@ -27,76 +27,89 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* Stable scrollbar prevents layout shifts */
-        html {
-            scrollbar-gutter: stable;
-            overflow-y: scroll;
+        /* Full-screen application layout: No page scrolling */
+        html, body {
+            height: 100vh;
+            max-height: 100vh;
+            overflow: hidden;
             background-color: var(--bg-color);
         }
 
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-color);
             color: var(--text-primary);
             line-height: 1.5;
-            padding: 10px clamp(4px, 1.5vw, 16px);
-            min-height: 100vh;
-        }
-
-        /* 3-Column Smart Priority Layout */
-        .app-layout {
-            width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
+            padding: clamp(6px, 1.2vw, 16px);
             display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-            gap: clamp(6px, 1vw, 12px);
+            justify-content: center;
+            align-items: stretch;
             box-sizing: border-box;
         }
 
-        /* Sticky Left Rail: Shrinks to 42px first on small screens */
-        .sidebar-left {
-            flex: 0 10 160px;
-            width: 160px;
-            min-width: 42px;
-            max-width: 160px;
-            position: sticky;
-            top: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            z-index: 10;
+        /* 3-Column Fixed Application Container */
+        .app-layout {
+            width: 100%;
+            max-width: 68rem; /* ~1088px: 11rem + 44rem (4x) + 11rem + gaps */
+            height: 100%;
+            max-height: 100%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: minmax(2.6rem, 1fr) minmax(0, 24rem) minmax(2.6rem, 1fr);
+            gap: clamp(4px, 1vw, 12px);
+            box-sizing: border-box;
+            align-items: stretch;
+            overflow: hidden;
         }
 
-        /* Sticky Right Rail: Contains Status Filters on Top + Hashtag Pills below */
-        .sidebar-right {
-            flex: 0 10 auto;
-            width: fit-content;
-            min-width: 42px;
-            max-width: 140px;
-            position: sticky;
-            top: 10px;
+        @media (min-width: 46.5rem) {
+            .app-layout {
+                grid-template-columns: minmax(2.6rem, 11rem) minmax(0, 44rem) minmax(2.6rem, 11rem);
+                justify-content: center;
+                gap: clamp(6px, 1.2vw, 16px);
+            }
+        }
+
+        /* Fixed Left Rail */
+        .sidebar-left {
+            width: 100%;
+            max-width: 11rem;
+            min-width: 2.6rem;
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            z-index: 10;
+            gap: clamp(3px, 0.5vw, 6px);
+            z-index: 20;
+            overflow-y: auto;
+            max-height: 100%;
+        }
+
+        /* Fixed Right Rail */
+        .sidebar-right {
+            width: 100%;
+            max-width: 11rem;
+            min-width: 2.6rem;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(3px, 0.5vw, 6px);
+            z-index: 20;
+            overflow-y: auto;
+            max-height: 100%;
         }
 
         /* Status Filters Group (Top of Right Rail) */
         .status-group {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: clamp(2px, 0.4vw, 4px);
             width: 100%;
+            flex-shrink: 0;
         }
 
         .status-btn {
             background-color: var(--card-bg);
             border: 1px solid var(--card-border);
             color: var(--text-secondary);
-            padding: 5px clamp(4px, 0.8vw, 8px);
-            border-radius: 6px; /* Less rounded style */
+            padding: clamp(3px, 0.5vw, 5px) clamp(4px, 0.8vw, 8px);
+            border-radius: 6px;
             font-size: 0.74rem;
             font-weight: 600;
             cursor: pointer;
@@ -149,15 +162,16 @@
         .sidebar-divider {
             height: 1px;
             background-color: var(--card-border);
-            margin: 3px 0;
+            margin: clamp(2px, 0.4vw, 4px) 0;
             width: 100%;
             opacity: 0.6;
+            flex-shrink: 0;
         }
 
         .tags-group {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: clamp(3px, 0.5vw, 6px);
             width: 100%;
         }
 
@@ -166,7 +180,7 @@
             background-color: var(--card-bg);
             border: 1px solid var(--card-border);
             color: var(--text-secondary);
-            padding: 0 8px;
+            padding: 0 clamp(4px, 0.8vw, 8px);
             height: 28px;
             border-radius: 14px;
             font-size: 0.72rem;
@@ -182,6 +196,7 @@
             width: 100%;
             overflow: hidden;
             white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .tag-btn:hover {
@@ -209,26 +224,30 @@
 
         /* Center Main Column */
         .main-column {
-            flex: 1 1 540px;
-            min-width: 280px;
+            width: 100%;
+            min-width: 0;
+            height: 100%;
+            max-height: 100%;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
+            overflow: hidden;
         }
 
-        /* Header in Center Column */
+        /* Fixed Header at top of Main Column */
         header {
+            flex-shrink: 0;
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border: 1px solid var(--card-border);
             border-radius: 14px;
-            padding: 12px clamp(8px, 1.5vw, 16px) 14px clamp(8px, 1.5vw, 16px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            padding: 10px clamp(8px, 1.5vw, 16px) 12px clamp(8px, 1.5vw, 16px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
             justify-content: center;
             gap: 4px;
-            min-height: 82px;
-            max-height: 90px;
+            min-height: 74px;
+            max-height: 82px;
             position: relative;
             overflow: hidden;
             box-sizing: border-box;
@@ -240,11 +259,12 @@
             align-items: center;
             gap: 8px;
             width: 100%;
-            min-height: 32px;
+            min-height: 30px;
+            min-width: 0;
         }
 
         h1 { 
-            font-size: 1.22rem; 
+            font-size: 1.18rem; 
             font-weight: 700; 
             color: #fff; 
             display: flex; 
@@ -268,7 +288,7 @@
 
         .subtitle { 
             color: var(--text-secondary); 
-            font-size: 0.82rem; 
+            font-size: 0.8rem; 
             line-height: 1.3; 
             width: 100%;
             white-space: nowrap;
@@ -298,9 +318,9 @@
             background: #2563eb;
             color: #fff;
             border: 1px solid #3b82f6;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.82rem;
+            padding: 5px 10px;
+            border-radius: 7px;
+            font-size: 0.78rem;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
@@ -319,7 +339,7 @@
             border: 1px solid rgba(248, 113, 113, 0.3);
             padding: 4px 8px;
             border-radius: 7px;
-            font-size: 0.76rem;
+            font-size: 0.74rem;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
@@ -337,14 +357,14 @@
 
         /* Full Path Badge */
         .status-badge {
-            font-size: 0.76rem;
+            font-size: 0.74rem;
             color: #4ade80;
             display: inline-flex;
             align-items: center;
             gap: 5px;
             background: rgba(74, 222, 128, 0.08);
-            padding: 4px 8px;
-            border-radius: 7px;
+            padding: 3px 7px;
+            border-radius: 6px;
             border: 1px solid rgba(74, 222, 128, 0.5);
             font-weight: 600;
             white-space: nowrap;
@@ -352,12 +372,41 @@
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         }
 
+        /* Scrollable Content Container (ONLY this scrolls!) */
+        #content-area {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 2px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Clean Dark Scrollbars */
+        #content-area::-webkit-scrollbar,
+        .sidebar-left::-webkit-scrollbar,
+        .sidebar-right::-webkit-scrollbar {
+            width: 6px;
+        }
+        #content-area::-webkit-scrollbar-track,
+        .sidebar-left::-webkit-scrollbar-track,
+        .sidebar-right::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        #content-area::-webkit-scrollbar-thumb,
+        .sidebar-left::-webkit-scrollbar-thumb,
+        .sidebar-right::-webkit-scrollbar-thumb {
+            background-color: var(--card-border);
+            border-radius: 3px;
+        }
+
         /* 2-Row Vertical Tab: Icon+Name on Row 1, Counter on Row 2 */
         .tab-btn {
             background-color: var(--card-bg);
             color: var(--text-secondary);
             border: 1px solid var(--card-border);
-            padding: 5px clamp(2px, 0.8vw, 8px);
+            padding: clamp(3px, 0.5vw, 5px) clamp(4px, 0.8vw, 8px);
             border-radius: 9px;
             cursor: pointer;
             display: flex;
@@ -371,6 +420,7 @@
             overflow: hidden;
             transition: all 0.2s ease;
             user-select: none;
+            flex-shrink: 0;
         }
 
         .tab-btn:hover {
@@ -437,12 +487,13 @@
             background-color: var(--card-bg);
             border: 1px solid var(--card-border);
             border-radius: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 4px;
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         .section-header {
-            padding: 10px 14px;
+            padding: 9px 14px;
             background-color: rgba(255, 255, 255, 0.03);
             border-bottom: 1px solid var(--card-border);
             display: flex;
@@ -450,13 +501,13 @@
             align-items: center;
         }
 
-        .section-title { font-size: 0.98rem; font-weight: 600; }
+        .section-title { font-size: 0.94rem; font-weight: 600; }
         .section-badge { font-size: 0.72rem; padding: 2px 6px; border-radius: 5px; background-color: #334155; color: #cbd5e1; }
 
         .items-list { padding: 2px 0; }
 
         .item-row {
-            padding: 10px 14px;
+            padding: 9px 14px;
             display: flex;
             align-items: flex-start;
             gap: 12px;
@@ -500,7 +551,7 @@
 
         .item-name { 
             font-weight: 600; 
-            font-size: 0.92rem; 
+            font-size: 0.90rem; 
             color: var(--text-primary); 
             line-height: 1.35;
         }
@@ -570,7 +621,7 @@
 </head>
 <body>
     <div class="app-layout">
-        <!-- Sticky Left Rail: Applicant Tabs (2-Row Layout) -->
+        <!-- Fixed Left Rail -->
         <aside class="sidebar-left" id="tabs-container" style="display:none"></aside>
 
         <!-- Center Main Column -->
@@ -586,6 +637,7 @@
                 </div>
             </header>
 
+            <!-- Scrollable Content Area: Only this scrolls! -->
             <div id="content-area">
                 <div class="empty-state" id="empty-prompt">
                     <h3>Подключение рабочей папки</h3>
@@ -597,7 +649,7 @@
             </div>
         </main>
 
-        <!-- Sticky Right Rail: Status Filter on Top + Hashtag Pills Below -->
+        <!-- Fixed Right Rail -->
         <aside class="sidebar-right" id="tags-sidebar" style="display:none">
             <div class="status-group">
                 <button class="status-btn active" id="seg-all" onclick="setStatusFilter('all')" title="Все">
