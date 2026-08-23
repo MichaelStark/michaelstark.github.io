@@ -27,7 +27,7 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* Stable scrollbar prevents any horizontal page jumps */
+        /* Stable scrollbar prevents layout shifts */
         html {
             scrollbar-gutter: stable;
             overflow-y: scroll;
@@ -39,40 +39,196 @@
             background-color: var(--bg-color);
             color: var(--text-primary);
             line-height: 1.5;
-            padding: 0 20px 40px 20px;
+            padding: 10px clamp(4px, 1.5vw, 16px);
             min-height: 100vh;
         }
 
-        .container { 
-            max-width: 1000px; 
-            margin: 0 auto; 
+        /* 3-Column Smart Priority Layout */
+        .app-layout {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: clamp(6px, 1vw, 12px);
+            box-sizing: border-box;
         }
 
-        /* Sticky Control Center (Pinned at top, content scrolls below) */
-        .sticky-dashboard {
+        /* Sticky Left Rail: Shrinks to 42px first on small screens */
+        .sidebar-left {
+            flex: 0 10 160px;
+            width: 160px;
+            min-width: 42px;
+            max-width: 160px;
             position: sticky;
-            top: 0;
-            z-index: 100;
-            background-color: var(--bg-color);
-            padding-top: 16px;
-            padding-bottom: 12px;
-            box-shadow: 0 10px 20px -10px rgba(15, 23, 42, 0.9);
+            top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 10;
         }
 
-        /* Fixed-height Header with 2-row layout and integrated bottom progress bar */
+        /* Sticky Right Rail: Contains Status Filters on Top + Hashtag Pills below */
+        .sidebar-right {
+            flex: 0 10 auto;
+            width: fit-content;
+            min-width: 42px;
+            max-width: 140px;
+            position: sticky;
+            top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            z-index: 10;
+        }
+
+        /* Status Filters Group (Top of Right Rail) */
+        .status-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            width: 100%;
+        }
+
+        .status-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-secondary);
+            padding: 5px clamp(4px, 0.8vw, 8px);
+            border-radius: 6px; /* Less rounded style */
+            font-size: 0.74rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: left;
+            box-sizing: border-box;
+            user-select: none;
+            width: 100%;
+            min-height: 28px;
+            height: 28px;
+            overflow: hidden;
+            white-space: nowrap;
+            gap: 5px;
+        }
+
+        .status-btn:hover {
+            background-color: #334155;
+            color: #fff;
+            border-color: #475569;
+        }
+
+        .status-btn.active {
+            background-color: #334155;
+            color: #38bdf8;
+            border-color: #38bdf8;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            font-weight: 700;
+        }
+
+        .status-btn-icon {
+            flex-shrink: 0;
+            font-size: 0.85rem;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status-btn-text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            min-width: 0;
+            flex: 1 1 auto;
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background-color: var(--card-border);
+            margin: 3px 0;
+            width: 100%;
+            opacity: 0.6;
+        }
+
+        .tags-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 100%;
+        }
+
+        /* Left-aligned Pill-shaped Tag Filters */
+        .tag-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-secondary);
+            padding: 0 8px;
+            height: 28px;
+            border-radius: 14px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: left;
+            box-sizing: border-box;
+            user-select: none;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .tag-btn:hover {
+            background-color: #334155;
+            color: #fff;
+            border-color: #475569;
+        }
+
+        .tag-btn.active {
+            background-color: #38bdf8;
+            color: #0f172a;
+            border-color: #38bdf8;
+            box-shadow: 0 2px 8px rgba(56, 189, 248, 0.35);
+            font-weight: 700;
+        }
+
+        .tag-btn-text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            min-width: 0;
+            width: 100%;
+            text-align: left;
+        }
+
+        /* Center Main Column */
+        .main-column {
+            flex: 1 1 540px;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Header in Center Column */
         header {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 16px 20px 18px 20px;
-            margin-bottom: 14px;
+            border-radius: 14px;
+            padding: 12px clamp(8px, 1.5vw, 16px) 14px clamp(8px, 1.5vw, 16px);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 6px;
-            min-height: 94px;
-            max-height: 98px;
+            gap: 4px;
+            min-height: 82px;
+            max-height: 90px;
             position: relative;
             overflow: hidden;
             box-sizing: border-box;
@@ -82,18 +238,18 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 16px;
+            gap: 8px;
             width: 100%;
-            min-height: 38px;
+            min-height: 32px;
         }
 
         h1 { 
-            font-size: 1.35rem; 
+            font-size: 1.22rem; 
             font-weight: 700; 
             color: #fff; 
             display: flex; 
             align-items: center; 
-            gap: 10px; 
+            gap: 6px; 
             line-height: 1.2;
             white-space: nowrap;
             overflow: hidden;
@@ -106,19 +262,19 @@
             flex: 0 0 auto;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
             margin-left: auto;
         }
 
         .subtitle { 
             color: var(--text-secondary); 
-            font-size: 0.86rem; 
-            line-height: 1.35; 
+            font-size: 0.82rem; 
+            line-height: 1.3; 
             width: 100%;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            min-height: 1.35em;
+            min-height: 1.3em;
         }
 
         .header-progress-track {
@@ -142,14 +298,14 @@
             background: #2563eb;
             color: #fff;
             border: 1px solid #3b82f6;
-            padding: 8px 16px;
-            border-radius: 10px;
-            font-size: 0.88rem;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.82rem;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
             transition: all 0.2s ease;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
             white-space: nowrap;
@@ -161,14 +317,14 @@
             background: rgba(248, 113, 113, 0.1);
             color: #fca5a5;
             border: 1px solid rgba(248, 113, 113, 0.3);
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.82rem;
+            padding: 4px 8px;
+            border-radius: 7px;
+            font-size: 0.76rem;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             transition: all 0.2s ease;
             white-space: nowrap;
         }
@@ -179,16 +335,16 @@
             color: #fff;
         }
 
-        /* Full Path Badge with Green Border */
+        /* Full Path Badge */
         .status-badge {
-            font-size: 0.82rem;
+            font-size: 0.76rem;
             color: #4ade80;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
             background: rgba(74, 222, 128, 0.08);
-            padding: 6px 12px;
-            border-radius: 8px;
+            padding: 4px 8px;
+            border-radius: 7px;
             border: 1px solid rgba(74, 222, 128, 0.5);
             font-weight: 600;
             white-space: nowrap;
@@ -196,39 +352,24 @@
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         }
 
-        /* Single-Row Browser-style Tabs Bar (Fully collapsible inactive tabs) */
-        .tabs {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            align-items: center;
-            gap: 5px;
-            margin-bottom: 12px;
-            width: 100%;
-            overflow-x: hidden;
-        }
-
+        /* 2-Row Vertical Tab: Icon+Name on Row 1, Counter on Row 2 */
         .tab-btn {
             background-color: var(--card-bg);
             color: var(--text-secondary);
             border: 1px solid var(--card-border);
-            padding: 0 8px;
-            border-radius: 10px;
-            font-size: 0.86rem;
-            font-weight: 600;
+            padding: 5px clamp(2px, 0.8vw, 8px);
+            border-radius: 9px;
             cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 6px;
-            min-height: 38px;
-            height: 38px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 2px;
+            min-height: 46px;
+            height: 46px;
             box-sizing: border-box;
-            flex: 1 1 0px; /* Collapsible: shrinks padding, text and space smoothly */
-            min-width: 36px;
-            max-width: max-content;
+            width: 100%;
             overflow: hidden;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
             user-select: none;
         }
 
@@ -243,18 +384,24 @@
             border-color: #3b82f6;
             color: #fff;
             box-shadow: 0 4px 12px 0 rgba(37, 99, 235, 0.35);
-            flex: 0 0 auto; /* Active tab never gets squished */
-            padding: 0 14px;
-            gap: 8px;
+        }
+
+        .tab-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 6px;
+            width: 100%;
+            min-width: 0;
         }
 
         .tab-icon {
             flex-shrink: 0;
+            font-size: 1rem;
+            line-height: 1;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.05rem;
-            line-height: 1;
         }
 
         .tab-text {
@@ -263,86 +410,39 @@
             white-space: nowrap;
             min-width: 0;
             flex: 1 1 auto;
+            text-align: left;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .tab-bottom-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
         }
 
         .tab-count {
-            background-color: rgba(255, 255, 255, 0.15);
-            padding: 2px 7px;
-            border-radius: 20px;
-            font-size: 0.72rem;
+            background-color: rgba(255, 255, 255, 0.12);
+            padding: 1px 5px;
+            border-radius: 6px;
+            font-size: 0.68rem;
             font-weight: 700;
-            flex-shrink: 0;
-            margin-left: auto;
+            line-height: 1.2;
+            white-space: nowrap;
         }
 
-        /* Filter Chips Bar (Zero shifts) */
-        .controls-bar {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            min-height: 36px;
-        }
-
-        .filter-group { 
-            display: flex; 
-            gap: 8px; 
-            flex-wrap: wrap; 
-            align-items: center; 
-        }
-
-        /* Equal-Height Filter Chips with constant font-weight */
-        .filter-chip {
-            background-color: #1e293b;
-            border: 1px solid var(--card-border);
-            color: var(--text-secondary);
-            padding: 0 14px;
-            height: 36px;
-            border-radius: 18px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            box-sizing: border-box;
-            line-height: 1;
-            user-select: none;
-            flex-shrink: 0;
-        }
-
-        .filter-chip:hover {
-            background-color: #334155;
-            color: #fff;
-            border-color: #475569;
-        }
-
-        .filter-chip.active {
-            background-color: #38bdf8;
-            color: #0f172a;
-            border-color: #38bdf8;
-            box-shadow: 0 2px 10px rgba(56, 189, 248, 0.35);
-        }
-
-        /* Content Area (Scrolls smoothly below sticky panel) */
-        #content-area {
-            margin-top: 14px;
-        }
-
-        /* Sections */
+        /* Sections & Checklists */
         .section-card {
             background-color: var(--card-bg);
             border: 1px solid var(--card-border);
-            border-radius: 14px;
-            margin-bottom: 18px;
+            border-radius: 12px;
+            margin-bottom: 12px;
             overflow: hidden;
         }
 
         .section-header {
-            padding: 14px 20px;
+            padding: 10px 14px;
             background-color: rgba(255, 255, 255, 0.03);
             border-bottom: 1px solid var(--card-border);
             display: flex;
@@ -350,17 +450,17 @@
             align-items: center;
         }
 
-        .section-title { font-size: 1.05rem; font-weight: 600; }
-        .section-badge { font-size: 0.75rem; padding: 3px 8px; border-radius: 6px; background-color: #334155; color: #cbd5e1; }
+        .section-title { font-size: 0.98rem; font-weight: 600; }
+        .section-badge { font-size: 0.72rem; padding: 2px 6px; border-radius: 5px; background-color: #334155; color: #cbd5e1; }
 
-        .items-list { padding: 4px 0; }
+        .items-list { padding: 2px 0; }
 
         .item-row {
-            padding: 14px 20px;
+            padding: 10px 14px;
             display: flex;
             align-items: flex-start;
-            gap: 16px;
-            border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+            gap: 12px;
+            border-bottom: 1px solid rgba(51, 65, 85, 0.4);
             transition: background-color 0.15s ease;
         }
 
@@ -370,54 +470,78 @@
         .item-row.completed .item-name { text-decoration: line-through; color: #64748b; }
 
         .custom-checkbox {
-            margin-top: 3px;
-            width: 20px;
-            height: 20px;
+            margin-top: 2px;
+            width: 18px;
+            height: 18px;
             cursor: pointer;
             accent-color: #38bdf8;
             flex-shrink: 0;
         }
 
-        .item-body { flex-grow: 1; }
-
-        .item-top {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 4px;
+        .item-body { 
+            flex-grow: 1; 
+            min-width: 0;
         }
 
-        .item-name { font-weight: 600; font-size: 0.98rem; color: var(--text-primary); }
+        /* Clean Top Row: Name on Left, Badges on Right */
+        .item-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 2px;
+            flex-wrap: wrap;
+        }
 
-        /* Badges / Hashtag Pills */
-        .badge {
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
+        .item-name-wrap {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .item-name { 
+            font-weight: 600; 
+            font-size: 0.92rem; 
+            color: var(--text-primary); 
+            line-height: 1.35;
+        }
+
+        .item-badges-wrap {
+            flex: 0 0 auto;
             display: inline-flex;
             align-items: center;
             gap: 4px;
+            margin-left: auto;
         }
 
-        .badge-orig { background-color: rgba(236, 72, 153, 0.2); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.4); }
-        .badge-copy { background-color: rgba(99, 102, 241, 0.2); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.4); }
-        .badge-update { background-color: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
-        .badge-urgent { background-color: rgba(248, 113, 113, 0.2); color: #fca5a5; border: 1px solid rgba(248, 113, 113, 0.4); }
-        .badge-custom-cyan { background-color: rgba(6, 182, 212, 0.2); color: #67e8f9; border: 1px solid rgba(6, 182, 212, 0.4); }
-        .badge-custom-emerald { background-color: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); }
-        .badge-custom-purple { background-color: rgba(168, 85, 247, 0.2); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.4); }
+        /* Right-Aligned Compact Badges */
+        .badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            display: inline-flex;
+            align-items: center;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
 
-        .item-desc { color: var(--text-secondary); font-size: 0.875rem; margin-top: 4px; }
+        .badge-orig { background-color: rgba(236, 72, 153, 0.18); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.35); }
+        .badge-copy { background-color: rgba(99, 102, 241, 0.18); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.35); }
+        .badge-update { background-color: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
+        .badge-urgent { background-color: rgba(248, 113, 113, 0.18); color: #fca5a5; border: 1px solid rgba(248, 113, 113, 0.35); }
+        .badge-custom-cyan { background-color: rgba(6, 182, 212, 0.18); color: #67e8f9; border: 1px solid rgba(6, 182, 212, 0.35); }
+        .badge-custom-emerald { background-color: rgba(16, 185, 129, 0.18); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.35); }
+        .badge-custom-purple { background-color: rgba(168, 85, 247, 0.18); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.35); }
+
+        .item-desc { color: var(--text-secondary); font-size: 0.82rem; margin-top: 2px; line-height: 1.35; }
         .item-subtext {
-            margin-top: 6px;
-            padding: 6px 10px;
+            margin-top: 4px;
+            padding: 4px 8px;
             background: rgba(15, 23, 42, 0.6);
             border-radius: 6px;
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             color: #cbd5e1;
             border-left: 2px solid #38bdf8;
         }
@@ -425,58 +549,72 @@
         .empty-state {
             background-color: var(--card-bg);
             border: 1px dashed var(--card-border);
-            border-radius: 14px;
-            padding: 40px 20px;
+            border-radius: 12px;
+            padding: 30px 16px;
             text-align: center;
         }
 
-        .empty-state h3 { font-size: 1.2rem; margin-bottom: 8px; color: #fff; }
-        .empty-state p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px; }
+        .empty-state h3 { font-size: 1.1rem; margin-bottom: 6px; color: #fff; }
+        .empty-state p { color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 16px; }
 
         .no-matches {
             background-color: var(--card-bg);
             border: 1px dashed var(--card-border);
-            border-radius: 14px;
-            padding: 36px 20px;
+            border-radius: 12px;
+            padding: 28px 16px;
             text-align: center;
             color: var(--text-secondary);
-            font-size: 0.95rem;
+            font-size: 0.88rem;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Sticky Fixed Control Center -->
-        <div class="sticky-dashboard">
+    <div class="app-layout">
+        <!-- Sticky Left Rail: Applicant Tabs (2-Row Layout) -->
+        <aside class="sidebar-left" id="tabs-container" style="display:none"></aside>
+
+        <!-- Center Main Column -->
+        <main class="main-column">
             <header id="main-header">
                 <div class="header-top-row">
                     <h1 id="main-title">Реестр документов</h1>
                     <div id="header-action"></div>
                 </div>
                 <p class="subtitle" id="main-subtitle"></p>
-                <!-- Sleek Integrated Progress Bar at bottom of header -->
                 <div class="header-progress-track" id="header-progress-track" style="display:none">
                     <div id="progress-bar" class="header-progress-fill"></div>
                 </div>
             </header>
 
-            <div class="tabs" id="tabs-container" style="display:none"></div>
-
-            <div class="controls-bar" id="controls-bar" style="display:none">
-                <div class="filter-group" id="filter-group-container"></div>
+            <div id="content-area">
+                <div class="empty-state" id="empty-prompt">
+                    <h3>Подключение рабочей папки</h3>
+                    <p>Нажмите кнопку ниже и выберите рабочую папку. Движок автоматически просканирует подпапки на наличие списков документов.</p>
+                    <button class="btn-action" style="margin:0 auto" onclick="requestFolderAccess()">
+                        <span>Выбрать рабочую папку</span>
+                    </button>
+                </div>
             </div>
-        </div>
+        </main>
 
-        <!-- Scrollable Document Module -->
-        <div id="content-area">
-            <div class="empty-state" id="empty-prompt">
-                <h3>Подключение рабочей папки</h3>
-                <p>Нажмите кнопку ниже и выберите рабочую папку. Движок автоматически просканирует подпапки на наличие списков документов.</p>
-                <button class="btn-action" style="margin:0 auto" onclick="requestFolderAccess()">
-                    <span>Выбрать рабочую папку</span>
+        <!-- Sticky Right Rail: Status Filter on Top + Hashtag Pills Below -->
+        <aside class="sidebar-right" id="tags-sidebar" style="display:none">
+            <div class="status-group">
+                <button class="status-btn active" id="seg-all" onclick="setStatusFilter('all')" title="Все">
+                    <span class="status-btn-text">Все</span>
+                </button>
+                <button class="status-btn" id="seg-uncompleted" onclick="setStatusFilter('uncompleted')" title="Не готово">
+                    <span class="status-btn-icon">⏳</span>
+                    <span class="status-btn-text">Не готово</span>
+                </button>
+                <button class="status-btn" id="seg-completed" onclick="setStatusFilter('completed')" title="Готово">
+                    <span class="status-btn-icon">✅</span>
+                    <span class="status-btn-text">Готово</span>
                 </button>
             </div>
-        </div>
+            <div class="sidebar-divider" id="tags-divider" style="display:none"></div>
+            <div class="tags-group" id="tags-group"></div>
+        </aside>
     </div>
 
     <script>
@@ -548,8 +686,9 @@
         let rootDirectoryHandle = null;
         let applicantsData = {};
         let currentApplicantKey = null;
-        let activeFilters = new Set(); // Multi-select filters (empty means "Все")
-        let globalAllTags = [];        // Global pool of all tags across all markdown files
+        let activeStatusFilter = "all";
+        let activeTagFilters = new Set();
+        let globalAllTags = [];
 
         async function requestFolderAccess() {
             try {
@@ -581,14 +720,15 @@
             rootDirectoryHandle = null;
             applicantsData = {};
             currentApplicantKey = null;
-            activeFilters.clear();
+            activeStatusFilter = "all";
+            activeTagFilters.clear();
             globalAllTags = [];
 
             document.getElementById("main-title").innerText = "Реестр документов";
             document.getElementById("main-subtitle").innerText = "";
             document.getElementById("tabs-container").style.display = "none";
+            document.getElementById("tags-sidebar").style.display = "none";
             document.getElementById("header-progress-track").style.display = "none";
-            document.getElementById("controls-bar").style.display = "none";
             document.getElementById("header-action").innerHTML = "";
             document.getElementById("content-area").innerHTML = `
                 <div class="empty-state" id="empty-prompt">
@@ -652,8 +792,8 @@
             if (keys.length > 0) {
                 document.getElementById("empty-prompt") && (document.getElementById("empty-prompt").style.display = "none");
                 document.getElementById("tabs-container").style.display = "flex";
+                document.getElementById("tags-sidebar").style.display = "flex";
                 document.getElementById("header-progress-track").style.display = "block";
-                document.getElementById("controls-bar").style.display = "flex";
 
                 const fullPath = getDisplayPath(dirHandle);
                 document.getElementById("header-action").innerHTML = `
@@ -663,7 +803,7 @@
                     </div>
                     <button class="btn-disconnect" onclick="disconnectFolder()" title="Очистить память и выбрать другую папку">
                         <span>✕</span>
-                        <span>Отвязать папку</span>
+                        <span>Отвязать</span>
                     </button>
                 `;
 
@@ -742,7 +882,7 @@
                     continue;
                 }
 
-                const match = line.match(/^(\s*)-\s*\[([ xX])\]\s*(.*)$/);
+                const match = line.match(/^(\s*)[\-\*\+]\s*\\?\[([ xX])\\?\]\s*(.*)$/);
                 if (match) {
                     const isChecked = match[2].toLowerCase() === 'x';
                     let fullText = match[3].trim();
@@ -800,7 +940,7 @@
             return { title, subtitle, sections, allTags: Array.from(allTagsSet) };
         }
 
-        // Single-row browser-style expanding tabs
+        // Render 2-Row Vertical Tabs (Left Column)
         function renderTabs() {
             const container = document.getElementById("tabs-container");
             container.innerHTML = "";
@@ -819,7 +959,6 @@
                 let icon = "";
                 let text = title;
 
-                // Match leading emoji (e.g. 💼, 💍, 🎒, 🧸, 🖨️, 📁)
                 const emojiMatch = title.match(/^(\p{Extended_Pictographic}(?:\uFE0F|\u200D\p{Extended_Pictographic})*|\S+)\s*(.*)$/u);
                 if (emojiMatch && emojiMatch[2]) {
                     icon = emojiMatch[1];
@@ -831,18 +970,15 @@
                 btn.onclick = () => switchApplicant(key);
                 btn.title = `${title} (${done}/${total})`;
 
-                if (icon) {
-                    btn.innerHTML = `
-                        <span class="tab-icon">${icon}</span>
+                btn.innerHTML = `
+                    <div class="tab-top-row">
+                        ${icon ? `<span class="tab-icon">${icon}</span>` : ''}
                         <span class="tab-text">${text}</span>
+                    </div>
+                    <div class="tab-bottom-row">
                         <span class="tab-count">${done}/${total}</span>
-                    `;
-                } else {
-                    btn.innerHTML = `
-                        <span class="tab-text">${text}</span>
-                        <span class="tab-count">${done}/${total}</span>
-                    `;
-                }
+                    </div>
+                `;
 
                 container.appendChild(btn);
             });
@@ -855,50 +991,47 @@
             renderCurrentApplicant();
         }
 
-        // Multi-select Filter Handler
-        function toggleFilter(filterKey) {
-            if (filterKey === "all") {
-                activeFilters.clear();
+        // Status Filter Handler
+        function setStatusFilter(status) {
+            activeStatusFilter = status;
+            document.querySelectorAll(".status-btn").forEach(btn => btn.classList.remove("active"));
+            const activeBtn = document.getElementById(`seg-${status}`);
+            if (activeBtn) activeBtn.classList.add("active");
+            renderCurrentApplicant();
+        }
+
+        // Tag Filters Handler (Right Column)
+        function toggleTagFilter(tagLower) {
+            if (activeTagFilters.has(tagLower)) {
+                activeTagFilters.delete(tagLower);
             } else {
-                if (activeFilters.has(filterKey)) {
-                    activeFilters.delete(filterKey);
-                } else {
-                    if (filterKey === "uncompleted") activeFilters.delete("completed");
-                    if (filterKey === "completed") activeFilters.delete("uncompleted");
-                    activeFilters.add(filterKey);
-                }
+                activeTagFilters.add(tagLower);
             }
             renderCurrentApplicant();
         }
 
-        function renderFilterChips() {
-            const container = document.getElementById("filter-group-container");
+        function renderTagSidebar() {
+            const container = document.getElementById("tags-group");
+            const divider = document.getElementById("tags-divider");
             if (!container) return;
 
-            const isAll = activeFilters.size === 0;
-            let html = `
-                <button class="filter-chip ${isAll ? 'active' : ''}" onclick="toggleFilter('all')">Все</button>
-            `;
-
-            globalAllTags.forEach(tag => {
-                const tagLower = tag.toLowerCase();
-                const isActive = activeFilters.has(tagLower);
-                html += `
-                    <button class="filter-chip ${isActive ? 'active' : ''}" onclick="toggleFilter('${tagLower}')">
-                        <span>🏷️ #${tag}</span>
-                    </button>
-                `;
-            });
-
-            const isUncompleted = activeFilters.has("uncompleted");
-            const isCompleted = activeFilters.has("completed");
-
-            html += `
-                <button class="filter-chip ${isUncompleted ? 'active' : ''}" onclick="toggleFilter('uncompleted')">⏳ Не готово</button>
-                <button class="filter-chip ${isCompleted ? 'active' : ''}" onclick="toggleFilter('completed')">✅ Готово</button>
-            `;
-
-            container.innerHTML = html;
+            if (globalAllTags.length > 0) {
+                divider && (divider.style.display = "block");
+                let html = "";
+                globalAllTags.forEach(tag => {
+                    const tagLower = tag.toLowerCase();
+                    const isActive = activeTagFilters.has(tagLower);
+                    html += `
+                        <button class="tag-btn ${isActive ? 'active' : ''}" onclick="toggleTagFilter('${tagLower}')" title="#${tag}">
+                            <span class="tag-btn-text">#${tag}</span>
+                        </button>
+                    `;
+                });
+                container.innerHTML = html;
+            } else {
+                divider && (divider.style.display = "none");
+                container.innerHTML = "";
+            }
         }
 
         async function toggleItem(lineIndex, checkbox) {
@@ -908,9 +1041,9 @@
 
             if (lines[lineIndex]) {
                 if (checkbox.checked) {
-                    lines[lineIndex] = lines[lineIndex].replace(/-\s*\[\s*\]/, "- [x]");
+                    lines[lineIndex] = lines[lineIndex].replace(/([\-\*\+]\s*\\?\[)\s*(\\?\])/, "$1x$2");
                 } else {
-                    lines[lineIndex] = lines[lineIndex].replace(/-\s*\[[xX]\]/, "- [ ]");
+                    lines[lineIndex] = lines[lineIndex].replace(/([\-\*\+]\s*\\?\[)[xX](\\?\])/, "$1 $2");
                 }
                 app.rawMarkdown = lines.join("\n");
 
@@ -939,7 +1072,7 @@
             document.getElementById("main-title").innerText = app.title || "Реестр документов";
             document.getElementById("main-subtitle").innerText = app.subtitle || "";
 
-            renderFilterChips();
+            renderTagSidebar();
 
             const container = document.getElementById("content-area");
             container.innerHTML = "";
@@ -948,19 +1081,15 @@
             let totalDone = 0;
             let totalRenderedSections = 0;
 
-            const selectedTags = Array.from(activeFilters).filter(f => f !== "uncompleted" && f !== "completed");
-            const hasUncompleted = activeFilters.has("uncompleted");
-            const hasCompleted = activeFilters.has("completed");
+            const selectedTags = Array.from(activeTagFilters);
 
             app.sections.forEach((section, sIdx) => {
                 const filtered = section.items.filter(item => {
                     totalItems++;
                     if (item.isChecked) totalDone++;
 
-                    if (activeFilters.size === 0) return true;
-
-                    if (hasUncompleted && item.isChecked) return false;
-                    if (hasCompleted && !item.isChecked) return false;
+                    if (activeStatusFilter === "uncompleted" && item.isChecked) return false;
+                    if (activeStatusFilter === "completed" && !item.isChecked) return false;
 
                     if (selectedTags.length > 0) {
                         const hasMatchingTag = selectedTags.some(t => item.tags.includes(t));
@@ -970,7 +1099,7 @@
                     return true;
                 });
 
-                if (filtered.length === 0 && activeFilters.size > 0) return;
+                if (filtered.length === 0 && (activeStatusFilter !== "all" || selectedTags.length > 0)) return;
 
                 totalRenderedSections++;
                 const completedInSection = section.items.filter(i => i.isChecked).length;
@@ -1002,8 +1131,10 @@
                         <input type="checkbox" class="custom-checkbox" id="chk-${item.lineIndex}" ${item.isChecked ? "checked" : ""} onchange="toggleItem(${item.lineIndex}, this)">
                         <div class="item-body">
                             <div class="item-top">
-                                <label for="chk-${item.lineIndex}" class="item-name" style="cursor:pointer">${item.name}</label>
-                                ${badgesHtml}
+                                <div class="item-name-wrap">
+                                    <label for="chk-${item.lineIndex}" class="item-name" style="cursor:pointer">${item.name}</label>
+                                </div>
+                                ${badgesHtml ? `<div class="item-badges-wrap">${badgesHtml}</div>` : ""}
                             </div>
                             ${item.desc ? `<div class="item-desc">${item.desc}</div>` : ""}
                             ${sublinesHtml}
@@ -1015,7 +1146,7 @@
                 container.appendChild(secCard);
             });
 
-            if (totalRenderedSections === 0 && activeFilters.size > 0) {
+            if (totalRenderedSections === 0 && (activeStatusFilter !== "all" || selectedTags.length > 0)) {
                 const noMatchDiv = document.createElement("div");
                 noMatchDiv.className = "no-matches";
                 noMatchDiv.innerText = "🔍 В этом пакете нет документов, соответствующих выбранным фильтрам.";
