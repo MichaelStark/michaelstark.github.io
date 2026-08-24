@@ -1,0 +1,31 @@
+# Auto-detect text files and normalize line endings to LF in repo
+* text=auto
+
+# Text files
+*.html text
+*.css text
+*.js text
+*.json text
+*.md text
+*.txt text
+*.svg text
+
+# Scripts
+*.sh text eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.pdf binary
+*.zip binary
