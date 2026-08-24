@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Реестр чек-листов</title>
+    <title>✓ HaCheck</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -21,7 +21,6 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* Full-screen application layout */
         html, body {
             height: 100vh;
             max-height: 100vh;
@@ -40,7 +39,6 @@
             box-sizing: border-box;
         }
 
-        /* 3-Column Working Grid */
         .app-layout {
             width: 100%;
             max-width: 68rem;
@@ -59,7 +57,6 @@
             overflow: hidden;
         }
 
-        /* Centered Welcome / Empty State Mode */
         .app-layout.empty-state-mode {
             display: flex;
             flex-direction: column;
@@ -74,7 +71,6 @@
             display: none;
         }
 
-        /* Fixed Left Rail */
         .sidebar-left {
             width: 100%;
             min-width: 0;
@@ -86,7 +82,6 @@
             max-height: 100%;
         }
 
-        /* Fixed Right Rail */
         .sidebar-right {
             width: 100%;
             min-width: 0;
@@ -98,7 +93,6 @@
             max-height: 100%;
         }
 
-        /* Status Filters Group (Top of Right Rail) */
         .status-group {
             display: flex;
             flex-direction: column;
@@ -180,7 +174,6 @@
             width: 100%;
         }
 
-        /* Tag Filters in Right Column Matching Badge Size & Flowing Wrapping */
         .tag-btn {
             background-color: var(--tag-bg);
             border: 1px solid var(--tag-border);
@@ -231,7 +224,6 @@
             text-align: left;
         }
 
-        /* Center Main Column */
         .main-column {
             width: 100%;
             min-width: 0;
@@ -296,7 +288,6 @@
             font-weight: 600;
         }
 
-        /* Fixed Header at top of Main Column */
         header {
             flex-shrink: 0;
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
@@ -418,7 +409,6 @@
             color: #fff;
         }
 
-        /* Full Path Badge */
         .status-badge {
             font-size: 0.74rem;
             color: #4ade80;
@@ -435,7 +425,6 @@
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         }
 
-        /* Scrollable Content Container */
         #content-area {
             flex: 1 1 auto;
             overflow-y: auto;
@@ -446,7 +435,6 @@
             gap: 8px;
         }
 
-        /* Clean Dark Scrollbars */
         #content-area::-webkit-scrollbar,
         .sidebar-left::-webkit-scrollbar,
         .sidebar-right::-webkit-scrollbar {
@@ -464,7 +452,6 @@
             border-radius: 3px;
         }
 
-        /* 2-Row Vertical Tab: Icon+Name on Row 1, Counter on Row 2 */
         .tab-btn {
             background-color: var(--card-bg);
             color: var(--text-secondary);
@@ -545,7 +532,6 @@
             white-space: nowrap;
         }
 
-        /* Sections & Checklists */
         .section-card {
             background-color: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -597,7 +583,6 @@
             min-width: 0;
         }
 
-        /* Clean Top Row: Name on Left, Badges on Right */
         .item-top {
             display: flex;
             justify-content: space-between;
@@ -627,7 +612,6 @@
             margin-left: auto;
         }
 
-        /* Dynamic Palette Badges */
         .badge {
             font-size: 0.65rem;
             font-weight: 700;
@@ -680,14 +664,12 @@
 </head>
 <body>
     <div class="app-layout empty-state-mode" id="app-layout">
-        <!-- Fixed Left Rail -->
         <aside class="sidebar-left" id="tabs-container" style="display:none"></aside>
 
-        <!-- Center Main Column -->
         <main class="main-column">
             <header id="main-header">
                 <div class="header-top-row">
-                    <h1 id="main-title">Реестр документов</h1>
+                    <h1 id="main-title">HaCheck</h1>
                     <div id="header-action"></div>
                 </div>
                 <p class="subtitle" id="main-subtitle"></p>
@@ -696,18 +678,16 @@
                 </div>
             </header>
 
-            <!-- Scrollable Content Area: Only this scrolls! -->
             <div id="content-area">
                 <div class="empty-state" id="empty-prompt">
-                    <h3>Подключение рабочей папки</h3>
-                    <p>Нажмите кнопку ниже и выберите рабочую папку. Движок автоматически просканирует подпапки на наличие списков документов.</p>
+                    <h3>Connect Workspace</h3>
+                    <p>Select your working directory to load document checklists. HaCheck will automatically discover packages.</p>
                     <button class="btn-action" style="margin:0 auto" onclick="requestFolderAccess()">
-                        <span>Выбрать рабочую папку</span>
+                        <span>Select Working Folder</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Centered Footer: Pure Vector Logo + Detailed Copyright -->
             <footer class="app-footer">
                 <div class="footer-logo-row">
                     <svg class="footer-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
@@ -719,24 +699,23 @@
                     <span>&copy; 2026</span>
                     <span class="footer-author-name">Mikhail Tsiuzhou</span>
                     <span>•</span>
-                    <span>Все права защищены</span>
+                    <span>All rights reserved</span>
                 </div>
             </footer>
         </main>
 
-        <!-- Fixed Right Rail -->
         <aside class="sidebar-right" id="tags-sidebar" style="display:none">
             <div class="status-group">
-                <button class="status-btn active" id="seg-all" onclick="setStatusFilter('all')" title="Все">
-                    <span class="status-btn-text">Все</span>
+                <button class="status-btn active" id="seg-all" onclick="setStatusFilter('all')" title="All">
+                    <span class="status-btn-text">All</span>
                 </button>
-                <button class="status-btn" id="seg-uncompleted" onclick="setStatusFilter('uncompleted')" title="Не готово">
+                <button class="status-btn" id="seg-uncompleted" onclick="setStatusFilter('uncompleted')" title="Pending">
                     <span class="status-btn-icon">⏳</span>
-                    <span class="status-btn-text">Не готово</span>
+                    <span class="status-btn-text">Pending</span>
                 </button>
-                <button class="status-btn" id="seg-completed" onclick="setStatusFilter('completed')" title="Готово">
+                <button class="status-btn" id="seg-completed" onclick="setStatusFilter('completed')" title="Done">
                     <span class="status-btn-icon">✅</span>
-                    <span class="status-btn-text">Готово</span>
+                    <span class="status-btn-text">Done</span>
                 </button>
             </div>
             <div class="sidebar-divider" id="tags-divider" style="display:none"></div>
@@ -745,12 +724,11 @@
     </div>
 
     <script>
-        const DB_NAME = "ChecklistEngineDB";
+        const DB_NAME = "HaCheckDB";
         const STORE_NAME = "workspace_handles";
 
-        // Base 8 HSL Hues for primary cycle
-        const BASE_HUES = [155, 199, 45, 330, 243, 187, 25, 275]; // Emerald, Sky, Amber, Pink, Indigo, Cyan, Orange, Purple
-        const CYCLE_HUE_SHIFT = 23; // Progressive hue rotation per extra cycle
+        const BASE_HUES = [155, 199, 45, 330, 243, 187, 25, 275];
+        const CYCLE_HUE_SHIFT = 23;
 
         function openDB() {
             return new Promise((resolve, reject) => {
@@ -769,7 +747,7 @@
                 const tx = db.transaction(STORE_NAME, "readwrite");
                 tx.objectStore(STORE_NAME).put(handle, key);
             } catch (e) {
-                console.error("IndexedDB save error:", e);
+                console.error("Storage error:", e);
             }
         }
 
@@ -793,7 +771,7 @@
                 const tx = db.transaction(STORE_NAME, "readwrite");
                 tx.objectStore(STORE_NAME).delete(key);
             } catch (e) {
-                console.error("IndexedDB delete error:", e);
+                console.error("Storage clear error:", e);
             }
         }
 
@@ -811,7 +789,7 @@
                     return path.replace(/\//g, "\\");
                 } catch (e) {}
             }
-            return dirHandle ? ("/" + dirHandle.name) : "Pobyt";
+            return dirHandle ? ("/" + dirHandle.name) : "Workspace";
         }
 
         let rootDirectoryHandle = null;
@@ -821,7 +799,6 @@
         let activeTagFilters = new Set();
         let globalAllTags = [];
 
-        // Progressive Hue-Shift Palette Generator
         function getTagInlineStyle(tagLower) {
             let index = globalAllTags.indexOf(tagLower);
             if (index === -1) {
@@ -832,7 +809,6 @@
 
             const cycle = Math.floor(index / BASE_HUES.length);
             const baseIndex = index % BASE_HUES.length;
-            // Progressive shift: each new cycle rotates hue forward by CYCLE_HUE_SHIFT degrees
             const hue = (BASE_HUES[baseIndex] + (cycle * CYCLE_HUE_SHIFT)) % 360;
 
             return `style="--tag-bg: hsla(${hue}, 80%, 55%, 0.16); --tag-color: hsl(${hue}, 88%, 74%); --tag-border: hsla(${hue}, 80%, 55%, 0.38); --tag-active-bg: hsl(${hue}, 85%, 52%);"`;
@@ -846,10 +822,10 @@
                     await saveHandle("last_folder", dirHandle);
                     await scanAndLoadDirectory(dirHandle);
                 } else {
-                    alert("Ваш браузер не поддерживает File System Access API. Рекомендуется Chrome или Edge.");
+                    alert("Your browser does not support the File System Access API. Chrome or Edge is recommended.");
                 }
             } catch (err) {
-                console.log("Выбор папки отменен:", err);
+                console.log("Folder selection cancelled:", err);
             }
         }
 
@@ -873,7 +849,7 @@
             globalAllTags = [];
 
             document.getElementById("app-layout").classList.add("empty-state-mode");
-            document.getElementById("main-title").innerText = "Реестр документов";
+            document.getElementById("main-title").innerText = "HaCheck";
             document.getElementById("main-subtitle").innerText = "";
             document.getElementById("tabs-container").style.display = "none";
             document.getElementById("tags-sidebar").style.display = "none";
@@ -881,10 +857,10 @@
             document.getElementById("header-action").innerHTML = "";
             document.getElementById("content-area").innerHTML = `
                 <div class="empty-state" id="empty-prompt">
-                    <h3>Подключение рабочей папки</h3>
-                    <p>Нажмите кнопку ниже и выберите рабочую папку. Движок автоматически просканирует подпапки на наличие списков документов.</p>
+                    <h3>Connect Workspace</h3>
+                    <p>Select your working directory to load document checklists. HaCheck will automatically discover packages.</p>
                     <button class="btn-action" style="margin:0 auto" onclick="requestFolderAccess()">
-                        <span>Выбрать рабочую папку</span>
+                        <span>Select Working Folder</span>
                     </button>
                 </div>
             `;
@@ -900,9 +876,8 @@
                 }
             }
 
-            // 1. Root hacheck.md if exists
             try {
-                const rootFileHandle = await dirHandle.getFileHandle("checklist.md", { create: false });
+                const rootFileHandle = await dirHandle.getFileHandle("hacheck.md", { create: false });
                 const file = await rootFileHandle.getFile();
                 const text = await file.text();
                 const parsed = parseMarkdown(text);
@@ -919,11 +894,10 @@
                 };
             } catch (e) {}
 
-            // 2. All non-hidden subfolders (depth 1)
             for await (const entry of dirHandle.values()) {
                 if (entry.kind === "directory" && !entry.name.startsWith(".")) {
                     try {
-                        const fileHandle = await entry.getFileHandle("checklist.md", { create: false });
+                        const fileHandle = await entry.getFileHandle("hacheck.md", { create: false });
                         const file = await fileHandle.getFile();
                         const text = await file.text();
                         const parsed = parseMarkdown(text);
@@ -956,9 +930,9 @@
                         <span>📂</span>
                         <span>${fullPath}</span>
                     </div>
-                    <button class="btn-disconnect" onclick="disconnectFolder()" title="Очистить память и выбрать другую папку">
+                    <button class="btn-disconnect" onclick="disconnectFolder()" title="Disconnect workspace">
                         <span>✕</span>
-                        <span>Отвязать</span>
+                        <span>Disconnect</span>
                     </button>
                 `;
 
@@ -968,7 +942,7 @@
                 renderTabs();
                 renderCurrentApplicant();
             } else {
-                alert("В выбранной папке не найдены файлы checklist.md.");
+                alert("No hacheck.md files found in the selected folder.");
             }
         }
 
@@ -996,7 +970,7 @@
         function parseMarkdown(mdText) {
             const lines = mdText.split(/\r?\n/);
             const sections = [];
-            let currentSection = { title: "Документы", items: [] };
+            let currentSection = { title: "Documents", items: [] };
             let title = "";
             let subtitle = "";
             const allTagsSet = new Set();
@@ -1008,7 +982,7 @@
                     title = line.replace("# ", "").trim();
                     continue;
                 }
-                if ((line.startsWith("**") || line.startsWith("> ") || line.startsWith("Статус:")) && !subtitle && !line.startsWith("- ")) {
+                if ((line.startsWith("**") || line.startsWith("> ") || line.startsWith("Status:")) && !subtitle && !line.startsWith("- ")) {
                     subtitle = line.replace(/\*\*/g, "").replace(/^>\s*/, "").trim();
                     continue;
                 }
@@ -1081,7 +1055,6 @@
             return { title, subtitle, sections, allTags: Array.from(allTagsSet) };
         }
 
-        // Render 2-Row Vertical Tabs (Left Column)
         function renderTabs() {
             const container = document.getElementById("tabs-container");
             container.innerHTML = "";
@@ -1132,7 +1105,6 @@
             renderCurrentApplicant();
         }
 
-        // Status Filter Handler
         function setStatusFilter(status) {
             activeStatusFilter = status;
             document.querySelectorAll(".status-btn").forEach(btn => btn.classList.remove("active"));
@@ -1141,7 +1113,6 @@
             renderCurrentApplicant();
         }
 
-        // Tag Filters Handler (Right Column)
         function toggleTagFilter(tagLower) {
             if (activeTagFilters.has(tagLower)) {
                 activeTagFilters.delete(tagLower);
@@ -1164,7 +1135,7 @@
                     const inlineStyle = getTagInlineStyle(tagLower);
                     const displayTag = tagLower.toUpperCase();
                     html += `
-                        <button class="tag-btn ${isActive ? 'active' : ''}" ${inlineStyle} onclick="toggleTagFilter('${tagLower}')" title="Фильтр: ${displayTag}">
+                        <button class="tag-btn ${isActive ? 'active' : ''}" ${inlineStyle} onclick="toggleTagFilter('${tagLower}')" title="Filter: ${displayTag}">
                             <span class="tag-btn-text">${displayTag}</span>
                         </button>
                     `;
@@ -1195,7 +1166,7 @@
                         await writable.write(app.rawMarkdown);
                         await writable.close();
                     } catch (err) {
-                        console.error("Ошибка записи файла:", err);
+                        console.error("Save error:", err);
                     }
                 }
 
@@ -1214,7 +1185,7 @@
             const mainTitleEl = document.getElementById("main-title");
             const mainSubtitleEl = document.getElementById("main-subtitle");
 
-            const fullTitle = app.title || "Реестр документов";
+            const fullTitle = app.title || "HaCheck";
             const fullSubtitle = app.subtitle || "";
 
             mainTitleEl.innerText = fullTitle;
@@ -1260,7 +1231,7 @@
                 secCard.innerHTML = `
                     <div class="section-header">
                         <div class="section-title" title="${section.title}">${section.title}</div>
-                        <span class="section-badge">${completedInSection} / ${section.items.length} готово</span>
+                        <span class="section-badge">${completedInSection} / ${section.items.length} done</span>
                     </div>
                     <div class="items-list" id="sec-list-${sIdx}"></div>
                 `;
@@ -1273,7 +1244,7 @@
 
                     let badgesHtml = item.badges.map(b => {
                         const inlineStyle = getTagInlineStyle(b.tagLower);
-                        return `<span class="badge" ${inlineStyle} title="Лейбл: ${b.text}">${b.text}</span>`;
+                        return `<span class="badge" ${inlineStyle} title="Badge: ${b.text}">${b.text}</span>`;
                     }).join(" ");
 
                     let sublinesHtml = "";
@@ -1303,7 +1274,7 @@
             if (totalRenderedSections === 0 && (activeStatusFilter !== "all" || selectedTags.length > 0)) {
                 const noMatchDiv = document.createElement("div");
                 noMatchDiv.className = "no-matches";
-                noMatchDiv.innerText = "🔍 В этом пакете нет документов, соответствующих выбранным фильтрам.";
+                noMatchDiv.innerText = "🔍 No documents match the selected filters.";
                 container.appendChild(noMatchDiv);
             }
 
@@ -1323,10 +1294,10 @@
                         document.getElementById("app-layout").classList.add("empty-state-mode");
                         document.getElementById("content-area").innerHTML = `
                             <div class="empty-state" id="empty-prompt">
-                                <h3>Восстановление доступа к рабочей папке</h3>
-                                <p>Рабочая папка была сохранена ранее. Нажмите кнопку для подтверждения доступа в 1 клик.</p>
+                                <h3>Restore Workspace Access</h3>
+                                <p>A workspace was previously connected. Click below to grant access in 1 click.</p>
                                 <button class="btn-action" style="margin:0 auto" onclick="restoreSavedAccess()">
-                                    <span>Подтвердить доступ</span>
+                                    <span>Grant Access</span>
                                 </button>
                             </div>
                         `;
