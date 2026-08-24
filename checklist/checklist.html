@@ -21,16 +21,6 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* Indexed Dynamic Color Palette (Order of Tag Queue) */
-        .color-tag-0 { --tag-bg: rgba(16, 185, 129, 0.16); --tag-color: #6ee7b7; --tag-border: rgba(16, 185, 129, 0.38); --tag-active-bg: #10b981; }
-        .color-tag-1 { --tag-bg: rgba(56, 189, 248, 0.16); --tag-color: #7dd3fc; --tag-border: rgba(56, 189, 248, 0.38); --tag-active-bg: #38bdf8; }
-        .color-tag-2 { --tag-bg: rgba(245, 158, 11, 0.16); --tag-color: #fcd34d; --tag-border: rgba(245, 158, 11, 0.38); --tag-active-bg: #f59e0b; }
-        .color-tag-3 { --tag-bg: rgba(236, 72, 153, 0.16); --tag-color: #f472b6; --tag-border: rgba(236, 72, 153, 0.38); --tag-active-bg: #ec4899; }
-        .color-tag-4 { --tag-bg: rgba(99, 102, 241, 0.16); --tag-color: #a5b4fc; --tag-border: rgba(99, 102, 241, 0.38); --tag-active-bg: #6366f1; }
-        .color-tag-5 { --tag-bg: rgba(6, 182, 212, 0.16); --tag-color: #67e8f9; --tag-border: rgba(6, 182, 212, 0.38); --tag-active-bg: #06b6d4; }
-        .color-tag-6 { --tag-bg: rgba(249, 115, 22, 0.16); --tag-color: #fdba74; --tag-border: rgba(249, 115, 22, 0.38); --tag-active-bg: #f97316; }
-        .color-tag-7 { --tag-bg: rgba(168, 85, 247, 0.16); --tag-color: #d8b4fe; --tag-border: rgba(168, 85, 247, 0.38); --tag-active-bg: #a855f7; }
-
         /* Full-screen application layout */
         html, body {
             height: 100vh;
@@ -43,7 +33,7 @@
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             color: var(--text-primary);
             line-height: 1.5;
-            padding: clamp(6px, 1.2vw, 16px);
+            padding: 8px;
             display: flex;
             justify-content: center;
             align-items: stretch;
@@ -59,10 +49,10 @@
             margin: 0 auto;
             display: grid;
             grid-template-columns: 
-                clamp(2.6rem, calc((100% - 24rem - clamp(8px, 2vw, 24px)) / 2), 11rem) 
+                clamp(2.6rem, calc((100% - 24rem - 16px) / 2), 11rem) 
                 minmax(0, 44rem) 
-                clamp(2.6rem, calc((100% - 24rem - clamp(8px, 2vw, 24px)) / 2), 11rem);
-            gap: clamp(4px, 1vw, 12px);
+                clamp(2.6rem, calc((100% - 24rem - 16px) / 2), 11rem);
+            gap: 8px;
             justify-content: center;
             box-sizing: border-box;
             align-items: stretch;
@@ -76,7 +66,7 @@
             max-width: 32rem;
             height: auto;
             margin: auto;
-            gap: 14px;
+            gap: 12px;
             align-self: center;
         }
 
@@ -90,7 +80,7 @@
             min-width: 0;
             display: flex;
             flex-direction: column;
-            gap: clamp(3px, 0.5vw, 6px);
+            gap: 6px;
             z-index: 20;
             overflow-y: auto;
             max-height: 100%;
@@ -102,7 +92,7 @@
             min-width: 0;
             display: flex;
             flex-direction: column;
-            gap: clamp(3px, 0.5vw, 6px);
+            gap: 6px;
             z-index: 20;
             overflow-y: auto;
             max-height: 100%;
@@ -112,7 +102,7 @@
         .status-group {
             display: flex;
             flex-direction: column;
-            gap: clamp(2px, 0.4vw, 4px);
+            gap: 4px;
             width: 100%;
             flex-shrink: 0;
         }
@@ -121,7 +111,7 @@
             background-color: var(--card-bg);
             border: 1px solid var(--card-border);
             color: var(--text-secondary);
-            padding: clamp(3px, 0.5vw, 5px) clamp(4px, 0.8vw, 8px);
+            padding: 4px 8px;
             border-radius: 6px;
             font-size: 0.74rem;
             font-weight: 600;
@@ -175,7 +165,7 @@
         .sidebar-divider {
             height: 1px;
             background-color: var(--card-border);
-            margin: clamp(2px, 0.4vw, 4px) 0;
+            margin: 4px 0;
             width: 100%;
             opacity: 0.6;
             flex-shrink: 0;
@@ -186,7 +176,7 @@
             flex-direction: row;
             flex-wrap: wrap;
             align-items: flex-start;
-            gap: clamp(3px, 0.5vw, 6px);
+            gap: 6px;
             width: 100%;
         }
 
@@ -259,7 +249,7 @@
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border: 1px solid var(--card-border);
             border-radius: 14px;
-            padding: 10px clamp(8px, 1.5vw, 16px) 12px clamp(8px, 1.5vw, 16px);
+            padding: 10px 14px 12px 14px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
@@ -426,7 +416,7 @@
             background-color: var(--card-bg);
             color: var(--text-secondary);
             border: 1px solid var(--card-border);
-            padding: clamp(3px, 0.5vw, 5px) clamp(4px, 0.8vw, 8px);
+            padding: 4px 8px;
             border-radius: 9px;
             cursor: pointer;
             display: flex;
@@ -688,7 +678,10 @@
     <script>
         const DB_NAME = "ChecklistEngineDB";
         const STORE_NAME = "workspace_handles";
-        const PALETTE_COUNT = 8;
+
+        // Base 8 HSL Hues for primary cycle
+        const BASE_HUES = [155, 199, 45, 330, 243, 187, 25, 275]; // Emerald, Sky, Amber, Pink, Indigo, Cyan, Orange, Purple
+        const CYCLE_HUE_SHIFT = 23; // Progressive hue rotation per extra cycle
 
         function openDB() {
             return new Promise((resolve, reject) => {
@@ -759,15 +752,21 @@
         let activeTagFilters = new Set();
         let globalAllTags = [];
 
-        // Indexed Dynamic Color Palette Resolver (Queue order)
-        function getTagColorClass(tagLower) {
+        // Progressive Hue-Shift Palette Generator
+        function getTagInlineStyle(tagLower) {
             let index = globalAllTags.indexOf(tagLower);
             if (index === -1) {
                 let hash = 0;
                 for (let i = 0; i < tagLower.length; i++) hash += tagLower.charCodeAt(i);
                 index = Math.abs(hash);
             }
-            return `color-tag-${index % PALETTE_COUNT}`;
+
+            const cycle = Math.floor(index / BASE_HUES.length);
+            const baseIndex = index % BASE_HUES.length;
+            // Progressive shift: each new cycle rotates hue forward by CYCLE_HUE_SHIFT degrees
+            const hue = (BASE_HUES[baseIndex] + (cycle * CYCLE_HUE_SHIFT)) % 360;
+
+            return `style="--tag-bg: hsla(${hue}, 80%, 55%, 0.16); --tag-color: hsl(${hue}, 88%, 74%); --tag-border: hsla(${hue}, 80%, 55%, 0.38); --tag-active-bg: hsl(${hue}, 85%, 52%);"`;
         }
 
         async function requestFolderAccess() {
@@ -1093,10 +1092,10 @@
                 let html = "";
                 globalAllTags.forEach(tagLower => {
                     const isActive = activeTagFilters.has(tagLower);
-                    const colorClass = getTagColorClass(tagLower);
+                    const inlineStyle = getTagInlineStyle(tagLower);
                     const displayTag = tagLower.toUpperCase();
                     html += `
-                        <button class="tag-btn ${colorClass} ${isActive ? 'active' : ''}" onclick="toggleTagFilter('${tagLower}')" title="Фильтр: ${displayTag}">
+                        <button class="tag-btn ${isActive ? 'active' : ''}" ${inlineStyle} onclick="toggleTagFilter('${tagLower}')" title="Фильтр: ${displayTag}">
                             <span class="tag-btn-text">${displayTag}</span>
                         </button>
                     `;
@@ -1204,8 +1203,8 @@
                     row.className = `item-row ${item.isChecked ? "completed" : ""}`;
 
                     let badgesHtml = item.badges.map(b => {
-                        const colorClass = getTagColorClass(b.tagLower);
-                        return `<span class="badge ${colorClass}" title="Лейбл: #${b.text}">${b.text}</span>`;
+                        const inlineStyle = getTagInlineStyle(b.tagLower);
+                        return `<span class="badge" ${inlineStyle} title="Лейбл: ${b.text}">${b.text}</span>`;
                     }).join(" ");
 
                     let sublinesHtml = "";
