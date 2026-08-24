@@ -17,15 +17,19 @@
             --accent-blue: #38bdf8;
             --accent-green: #4ade80;
             --accent-red: #f87171;
-            --badge-amber: #f59e0b;
-            --badge-pink: #ec4899;
-            --badge-indigo: #6366f1;
-            --badge-emerald: #10b981;
-            --badge-cyan: #06b6d4;
-            --badge-purple: #a855f7;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        /* Indexed Dynamic Color Palette (Order of Tag Queue) */
+        .color-tag-0 { --tag-bg: rgba(16, 185, 129, 0.16); --tag-color: #6ee7b7; --tag-border: rgba(16, 185, 129, 0.38); --tag-active-bg: #10b981; }
+        .color-tag-1 { --tag-bg: rgba(56, 189, 248, 0.16); --tag-color: #7dd3fc; --tag-border: rgba(56, 189, 248, 0.38); --tag-active-bg: #38bdf8; }
+        .color-tag-2 { --tag-bg: rgba(245, 158, 11, 0.16); --tag-color: #fcd34d; --tag-border: rgba(245, 158, 11, 0.38); --tag-active-bg: #f59e0b; }
+        .color-tag-3 { --tag-bg: rgba(236, 72, 153, 0.16); --tag-color: #f472b6; --tag-border: rgba(236, 72, 153, 0.38); --tag-active-bg: #ec4899; }
+        .color-tag-4 { --tag-bg: rgba(99, 102, 241, 0.16); --tag-color: #a5b4fc; --tag-border: rgba(99, 102, 241, 0.38); --tag-active-bg: #6366f1; }
+        .color-tag-5 { --tag-bg: rgba(6, 182, 212, 0.16); --tag-color: #67e8f9; --tag-border: rgba(6, 182, 212, 0.38); --tag-active-bg: #06b6d4; }
+        .color-tag-6 { --tag-bg: rgba(249, 115, 22, 0.16); --tag-color: #fdba74; --tag-border: rgba(249, 115, 22, 0.38); --tag-active-bg: #f97316; }
+        .color-tag-7 { --tag-bg: rgba(168, 85, 247, 0.16); --tag-color: #d8b4fe; --tag-border: rgba(168, 85, 247, 0.38); --tag-active-bg: #a855f7; }
 
         /* Full-screen application layout */
         html, body {
@@ -49,7 +53,7 @@
         /* 3-Column Working Grid */
         .app-layout {
             width: 100%;
-            max-width: 68rem; /* ~1088px: 11rem + 44rem (4x) + 11rem + gaps */
+            max-width: 68rem;
             height: 100%;
             max-height: 100%;
             margin: 0 auto;
@@ -65,7 +69,7 @@
             overflow: hidden;
         }
 
-        /* Centered Welcome / Empty State Mode (Before folder is connected) */
+        /* Centered Welcome / Empty State Mode */
         .app-layout.empty-state-mode {
             display: flex;
             flex-direction: column;
@@ -179,21 +183,24 @@
 
         .tags-group {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: flex-start;
             gap: clamp(3px, 0.5vw, 6px);
             width: 100%;
         }
 
-        /* Left-aligned Pill-shaped Tag Filters */
+        /* Tag Filters in Right Column Matching Badge Size & Flowing Wrapping */
         .tag-btn {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            color: var(--text-secondary);
-            padding: 0 clamp(4px, 0.8vw, 8px);
-            height: 28px;
-            border-radius: 14px;
-            font-size: 0.72rem;
-            font-weight: 600;
+            background-color: var(--tag-bg);
+            border: 1px solid var(--tag-border);
+            color: var(--tag-color);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
             cursor: pointer;
             transition: all 0.15s ease;
             display: inline-flex;
@@ -202,23 +209,26 @@
             text-align: left;
             box-sizing: border-box;
             user-select: none;
-            width: 100%;
+            width: auto;
+            max-width: 100%;
             overflow: hidden;
+            text-overflow: ellipsis;
             white-space: nowrap;
             flex-shrink: 0;
+            line-height: 1.2;
         }
 
         .tag-btn:hover {
-            background-color: #334155;
-            color: #fff;
-            border-color: #475569;
+            filter: brightness(1.3);
+            border-color: var(--tag-color);
+            box-shadow: 0 0 8px var(--tag-bg);
         }
 
         .tag-btn.active {
-            background-color: #38bdf8;
+            background-color: var(--tag-color);
             color: #0f172a;
-            border-color: #38bdf8;
-            box-shadow: 0 2px 8px rgba(56, 189, 248, 0.35);
+            border-color: var(--tag-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
             font-weight: 700;
         }
 
@@ -382,7 +392,7 @@
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         }
 
-        /* Scrollable Content Container (ONLY this scrolls!) */
+        /* Scrollable Content Container */
         #content-area {
             flex: 1 1 auto;
             overflow-y: auto;
@@ -574,7 +584,7 @@
             margin-left: auto;
         }
 
-        /* Right-Aligned Compact Badges */
+        /* Dynamic Palette Badges */
         .badge {
             font-size: 0.65rem;
             font-weight: 700;
@@ -586,15 +596,10 @@
             align-items: center;
             line-height: 1.2;
             white-space: nowrap;
+            background-color: var(--tag-bg);
+            color: var(--tag-color);
+            border: 1px solid var(--tag-border);
         }
-
-        .badge-orig { background-color: rgba(236, 72, 153, 0.18); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.35); }
-        .badge-copy { background-color: rgba(99, 102, 241, 0.18); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.35); }
-        .badge-update { background-color: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
-        .badge-urgent { background-color: rgba(248, 113, 113, 0.18); color: #fca5a5; border: 1px solid rgba(248, 113, 113, 0.35); }
-        .badge-custom-cyan { background-color: rgba(6, 182, 212, 0.18); color: #67e8f9; border: 1px solid rgba(6, 182, 212, 0.35); }
-        .badge-custom-emerald { background-color: rgba(16, 185, 129, 0.18); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.35); }
-        .badge-custom-purple { background-color: rgba(168, 85, 247, 0.18); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.35); }
 
         .item-desc { color: var(--text-secondary); font-size: 0.82rem; margin-top: 2px; line-height: 1.35; }
         .item-subtext {
@@ -683,6 +688,7 @@
     <script>
         const DB_NAME = "ChecklistEngineDB";
         const STORE_NAME = "workspace_handles";
+        const PALETTE_COUNT = 8;
 
         function openDB() {
             return new Promise((resolve, reject) => {
@@ -753,6 +759,17 @@
         let activeTagFilters = new Set();
         let globalAllTags = [];
 
+        // Indexed Dynamic Color Palette Resolver (Queue order)
+        function getTagColorClass(tagLower) {
+            let index = globalAllTags.indexOf(tagLower);
+            if (index === -1) {
+                let hash = 0;
+                for (let i = 0; i < tagLower.length; i++) hash += tagLower.charCodeAt(i);
+                index = Math.abs(hash);
+            }
+            return `color-tag-${index % PALETTE_COUNT}`;
+        }
+
         async function requestFolderAccess() {
             try {
                 if (window.showDirectoryPicker) {
@@ -807,7 +824,13 @@
 
         async function scanAndLoadDirectory(dirHandle) {
             applicantsData = {};
-            const globalTagsSet = new Set();
+            globalAllTags = [];
+
+            function registerGlobalTag(tLower) {
+                if (!globalAllTags.includes(tLower)) {
+                    globalAllTags.push(tLower);
+                }
+            }
 
             // 1. Root checklist.md if exists
             try {
@@ -815,6 +838,8 @@
                 const file = await rootFileHandle.getFile();
                 const text = await file.text();
                 const parsed = parseMarkdown(text);
+                parsed.allTags.forEach(t => registerGlobalTag(t.toLowerCase()));
+
                 applicantsData["_root"] = {
                     key: "_root",
                     title: parsed.title || dirHandle.name,
@@ -824,7 +849,6 @@
                     sections: parsed.sections,
                     allTags: parsed.allTags
                 };
-                parsed.allTags.forEach(t => globalTagsSet.add(t));
             } catch (e) {}
 
             // 2. All non-hidden subfolders (depth 1)
@@ -835,6 +859,7 @@
                         const file = await fileHandle.getFile();
                         const text = await file.text();
                         const parsed = parseMarkdown(text);
+                        parsed.allTags.forEach(t => registerGlobalTag(t.toLowerCase()));
 
                         applicantsData[entry.name] = {
                             key: entry.name,
@@ -845,12 +870,9 @@
                             sections: parsed.sections,
                             allTags: parsed.allTags
                         };
-                        parsed.allTags.forEach(t => globalTagsSet.add(t));
                     } catch (e) {}
                 }
             }
-
-            globalAllTags = Array.from(globalTagsSet);
 
             const keys = Object.keys(applicantsData);
             if (keys.length > 0) {
@@ -880,20 +902,6 @@
             } else {
                 alert("В выбранной папке не найдены файлы checklist.md.");
             }
-        }
-
-        // Hashtag styling palette
-        function getBadgeClassForTag(tag) {
-            const lower = tag.toLowerCase();
-            if (lower === "оригинал" || lower === "original" || lower === "wgląd") return "badge-orig";
-            if (lower === "копия" || lower === "kopia" || lower === "copy") return "badge-copy";
-            if (lower === "актуализация" || lower === "aktualizacja" || lower === "update") return "badge-update";
-            if (lower === "срочно" || lower === "urgent" || lower === "pilne") return "badge-urgent";
-
-            const colors = ["badge-custom-cyan", "badge-custom-emerald", "badge-custom-purple"];
-            let hash = 0;
-            for (let i = 0; i < tag.length; i++) hash += tag.charCodeAt(i);
-            return colors[Math.abs(hash) % colors.length];
         }
 
         function stripOuterParentheses(str) {
@@ -958,13 +966,13 @@
                     if (tagMatches) {
                         tagMatches.forEach(rawTag => {
                             const cleanTag = rawTag.trim().replace(/^#/, "");
-                            if (cleanTag && !tags.includes(cleanTag.toLowerCase())) {
-                                const tagLower = cleanTag.toLowerCase();
+                            const tagLower = cleanTag.toLowerCase();
+                            if (cleanTag && !tags.includes(tagLower)) {
                                 tags.push(tagLower);
-                                allTagsSet.add(cleanTag);
+                                allTagsSet.add(tagLower);
                                 badges.push({
                                     text: cleanTag.toUpperCase(),
-                                    class: getBadgeClassForTag(cleanTag)
+                                    tagLower: tagLower
                                 });
                             }
                         });
@@ -1083,12 +1091,13 @@
             if (globalAllTags.length > 0) {
                 divider && (divider.style.display = "block");
                 let html = "";
-                globalAllTags.forEach(tag => {
-                    const tagLower = tag.toLowerCase();
+                globalAllTags.forEach(tagLower => {
                     const isActive = activeTagFilters.has(tagLower);
+                    const colorClass = getTagColorClass(tagLower);
+                    const displayTag = tagLower.toUpperCase();
                     html += `
-                        <button class="tag-btn ${isActive ? 'active' : ''}" onclick="toggleTagFilter('${tagLower}')" title="#${tag}">
-                            <span class="tag-btn-text">#${tag}</span>
+                        <button class="tag-btn ${colorClass} ${isActive ? 'active' : ''}" onclick="toggleTagFilter('${tagLower}')" title="Фильтр: ${displayTag}">
+                            <span class="tag-btn-text">${displayTag}</span>
                         </button>
                     `;
                 });
@@ -1194,7 +1203,10 @@
                     const row = document.createElement("div");
                     row.className = `item-row ${item.isChecked ? "completed" : ""}`;
 
-                    let badgesHtml = item.badges.map(b => `<span class="badge ${b.class}" title="Лейбл: #${b.text}">${b.text}</span>`).join(" ");
+                    let badgesHtml = item.badges.map(b => {
+                        const colorClass = getTagColorClass(b.tagLower);
+                        return `<span class="badge ${colorClass}" title="Лейбл: #${b.text}">${b.text}</span>`;
+                    }).join(" ");
 
                     let sublinesHtml = "";
                     if (item.sublines.length > 0) {
