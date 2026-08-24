@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✓ HaCheck</title>
+    <title>Hachecko</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -261,16 +261,37 @@
         }
 
         .footer-brand-title {
-            font-size: 0.90rem;
+            font-size: 0.98rem;
             font-weight: 700;
             letter-spacing: -0.01em;
             color: #f8fafc;
             display: inline-flex;
             align-items: center;
+            line-height: 1;
+        }
+
+        .footer-brand-title .brand-ha {
+            color: #f8fafc;
         }
 
         .footer-brand-title .brand-accent {
             color: #38bdf8;
+        }
+
+        .brand-o-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 17px;
+            height: 17px;
+            margin-left: 1.5px;
+            vertical-align: middle;
+        }
+
+        .brand-o-svg {
+            width: 100%;
+            height: 100%;
+            display: block;
         }
 
         .footer-copy-row {
@@ -669,7 +690,7 @@
         <main class="main-column">
             <header id="main-header">
                 <div class="header-top-row">
-                    <h1 id="main-title">HaCheck</h1>
+                    <h1 id="main-title">Hachecko</h1>
                     <div id="header-action"></div>
                 </div>
                 <p class="subtitle" id="main-subtitle"></p>
@@ -681,7 +702,7 @@
             <div id="content-area">
                 <div class="empty-state" id="empty-prompt">
                     <h3>Connect Workspace</h3>
-                    <p>Select your working directory to load document checklists. HaCheck will automatically discover packages.</p>
+                    <p>Select your working directory to load document checklists. Hachecko will automatically discover packages.</p>
                     <button class="btn-action" style="margin:0 auto" onclick="requestFolderAccess()">
                         <span>Select Working Folder</span>
                     </button>
@@ -690,10 +711,7 @@
 
             <footer class="app-footer">
                 <div class="footer-logo-row">
-                    <svg class="footer-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    <span class="footer-brand-title">Ha<span class="brand-accent">Check</span></span>
+                    <span class="footer-brand-title"><span class="brand-ha">Ha</span><span class="brand-accent">Check</span><span class="brand-o-badge"><svg class="brand-o-svg" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="#f8fafc" stroke-width="2.5"/><polyline points="7.5 12 10.5 15 16.5 9" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
                 </div>
                 <div class="footer-copy-row">
                     <span>&copy; 2026</span>
@@ -724,7 +742,7 @@
     </div>
 
     <script>
-        const DB_NAME = "HaCheckDB";
+        const DB_NAME = "HacheckoDB";
         const STORE_NAME = "workspace_handles";
 
         const BASE_HUES = [155, 199, 45, 330, 243, 187, 25, 275];
@@ -849,7 +867,7 @@
             globalAllTags = [];
 
             document.getElementById("app-layout").classList.add("empty-state-mode");
-            document.getElementById("main-title").innerText = "HaCheck";
+            document.getElementById("main-title").innerText = "Hachecko";
             document.getElementById("main-subtitle").innerText = "";
             document.getElementById("tabs-container").style.display = "none";
             document.getElementById("tags-sidebar").style.display = "none";
@@ -858,7 +876,7 @@
             document.getElementById("content-area").innerHTML = `
                 <div class="empty-state" id="empty-prompt">
                     <h3>Connect Workspace</h3>
-                    <p>Select your working directory to load document checklists. HaCheck will automatically discover packages.</p>
+                    <p>Select your working directory to load document checklists. Hachecko will automatically discover packages.</p>
                     <button class="btn-action" style="margin:0 auto" onclick="requestFolderAccess()">
                         <span>Select Working Folder</span>
                     </button>
@@ -877,7 +895,7 @@
             }
 
             try {
-                const rootFileHandle = await dirHandle.getFileHandle("hacheck.md", { create: false });
+                const rootFileHandle = await dirHandle.getFileHandle("hachecko.md", { create: false });
                 const file = await rootFileHandle.getFile();
                 const text = await file.text();
                 const parsed = parseMarkdown(text);
@@ -897,7 +915,7 @@
             for await (const entry of dirHandle.values()) {
                 if (entry.kind === "directory" && !entry.name.startsWith(".")) {
                     try {
-                        const fileHandle = await entry.getFileHandle("hacheck.md", { create: false });
+                        const fileHandle = await entry.getFileHandle("hachecko.md", { create: false });
                         const file = await fileHandle.getFile();
                         const text = await file.text();
                         const parsed = parseMarkdown(text);
@@ -942,7 +960,7 @@
                 renderTabs();
                 renderCurrentApplicant();
             } else {
-                alert("No hacheck.md files found in the selected folder.");
+                alert("No hachecko.md files found in the selected folder.");
             }
         }
 
@@ -1185,7 +1203,7 @@
             const mainTitleEl = document.getElementById("main-title");
             const mainSubtitleEl = document.getElementById("main-subtitle");
 
-            const fullTitle = app.title || "HaCheck";
+            const fullTitle = app.title || "Hachecko";
             const fullSubtitle = app.subtitle || "";
 
             mainTitleEl.innerText = fullTitle;
