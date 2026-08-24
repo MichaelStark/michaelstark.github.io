@@ -243,6 +243,59 @@
             overflow: hidden;
         }
 
+        .app-footer {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            padding: 2px 0 0 0;
+            user-select: none;
+        }
+
+        .footer-logo-row {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .footer-check-icon {
+            width: 15px;
+            height: 15px;
+            stroke: #38bdf8;
+            stroke-width: 3;
+            filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.45));
+        }
+
+        .footer-brand-title {
+            font-size: 0.90rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: #f8fafc;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .footer-brand-title .brand-accent {
+            color: #38bdf8;
+        }
+
+        .footer-copy-row {
+            font-size: 0.69rem;
+            color: #64748b;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .footer-author-name {
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
         /* Fixed Header at top of Main Column */
         header {
             flex-shrink: 0;
@@ -653,6 +706,22 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Centered Footer: Pure Vector Logo + Detailed Copyright -->
+            <footer class="app-footer">
+                <div class="footer-logo-row">
+                    <svg class="footer-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span class="footer-brand-title">Ha<span class="brand-accent">Check</span></span>
+                </div>
+                <div class="footer-copy-row">
+                    <span>&copy; 2026</span>
+                    <span class="footer-author-name">Mikhail Tsiuzhou</span>
+                    <span>•</span>
+                    <span>Все права защищены</span>
+                </div>
+            </footer>
         </main>
 
         <!-- Fixed Right Rail -->
@@ -831,7 +900,7 @@
                 }
             }
 
-            // 1. Root checklist.md if exists
+            // 1. Root hacheck.md if exists
             try {
                 const rootFileHandle = await dirHandle.getFileHandle("checklist.md", { create: false });
                 const file = await rootFileHandle.getFile();
