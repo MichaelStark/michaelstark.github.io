@@ -1134,7 +1134,7 @@
                     text = emojiMatch[2];
                 }
 
-                const isCompleted = total > 0 && done === total;
+                const isCompleted = done === total;
                 const activeClass = key === currentApplicantKey ? "active" : "";
                 const completedClass = isCompleted ? "completed" : "";
 
@@ -1337,12 +1337,12 @@
                 container.appendChild(noMatchDiv);
             }
 
-            const percent = totalItems > 0 ? Math.round((totalDone / totalItems) * 100) : 0;
+            const percent = totalItems > 0 ? Math.round((totalDone / totalItems) * 100) : 100;
             document.getElementById("progress-bar").style.width = percent + "%";
 
             const headerEl = document.getElementById("main-header");
             if (headerEl) {
-                if (totalItems > 0 && totalDone === totalItems) {
+                if (totalDone === totalItems) {
                     headerEl.classList.add("completed");
                 } else {
                     headerEl.classList.remove("completed");
