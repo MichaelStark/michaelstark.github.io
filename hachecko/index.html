@@ -325,6 +325,13 @@
             position: relative;
             overflow: hidden;
             box-sizing: border-box;
+            transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        header.completed {
+            background: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
+            border-color: rgba(74, 222, 128, 0.5);
+            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.35), 0 0 15px rgba(74, 222, 128, 0.1);
         }
 
         .header-top-row {
@@ -505,6 +512,35 @@
             border-color: #3b82f6;
             color: #fff;
             box-shadow: 0 4px 12px 0 rgba(37, 99, 235, 0.35);
+        }
+
+        .tab-btn.completed {
+            background-color: rgba(16, 185, 129, 0.12);
+            border-color: rgba(74, 222, 128, 0.35);
+            color: #86efac;
+        }
+
+        .tab-btn.completed:hover {
+            background-color: rgba(16, 185, 129, 0.22);
+            border-color: rgba(74, 222, 128, 0.6);
+            color: #bbf7d0;
+        }
+
+        .tab-btn.completed.active {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            border-color: #10b981;
+            color: #fff;
+            box-shadow: 0 4px 12px 0 rgba(16, 185, 129, 0.35);
+        }
+
+        .tab-btn.completed .tab-count {
+            background-color: rgba(74, 222, 128, 0.2);
+            color: #bbf7d0;
+        }
+
+        .tab-btn.completed.active .tab-count {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
         }
 
         .tab-top-row {
@@ -867,6 +903,7 @@
             globalAllTags = [];
 
             document.getElementById("app-layout").classList.add("empty-state-mode");
+            document.getElementById("main-header").classList.remove("completed");
             document.getElementById("main-title").innerText = "Hachecko";
             document.getElementById("main-subtitle").innerText = "";
             document.getElementById("tabs-container").style.display = "none";
@@ -1097,8 +1134,12 @@
                     text = emojiMatch[2];
                 }
 
+                const isCompleted = total > 0 && done === total;
+                const activeClass = key === currentApplicantKey ? "active" : "";
+                const completedClass = isCompleted ? "completed" : "";
+
                 const btn = document.createElement("button");
-                btn.className = `tab-btn ${key === currentApplicantKey ? "active" : ""}`;
+                btn.className = `tab-btn ${activeClass} ${completedClass}`.trim();
                 btn.onclick = () => switchApplicant(key);
                 btn.title = `${title} (${done}/${total})`;
 
@@ -1298,6 +1339,15 @@
 
             const percent = totalItems > 0 ? Math.round((totalDone / totalItems) * 100) : 0;
             document.getElementById("progress-bar").style.width = percent + "%";
+
+            const headerEl = document.getElementById("main-header");
+            if (headerEl) {
+                if (totalItems > 0 && totalDone === totalItems) {
+                    headerEl.classList.add("completed");
+                } else {
+                    headerEl.classList.remove("completed");
+                }
+            }
         }
 
         window.addEventListener("DOMContentLoaded", async () => {
